@@ -8,7 +8,7 @@ library(DT)
 library(ggokabeito)
 library(ggthemes)
 library(keras)
-
+#Testando commits
 source("data_handling.R")
 source("inicio.R")
 source("tipos_variaveis.R")

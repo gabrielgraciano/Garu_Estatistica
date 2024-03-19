@@ -2399,10 +2399,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   if (numero_exercicio %in% c(2, 3, 4, 8, 9, 10, 11, 12)) {
                     resposta_esperada <- respostas_esperadas_pc[[paste0("ex", numero_exercicio)]]
                     fluidRow(
-                      column(6,
-                             p(HTML(enunciado))
-                      ),
-                      column(6,
+                      column(4,
+                             p(HTML(enunciado)),
+                    
                              h3('Seleção de variáveis e Tipo de Gráfico'),
                              
                              pickerInput('variavel_pc_x', 'Escolha a variável para o eixo x:',
@@ -2411,16 +2410,18 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                                          choices = c("Não se aplica", colnames(dados_paralisia))),
                              pickerInput('tipo_grafico_pc', 'Escolha o tipo de gráfico:',
                                          choices = c("Não se aplica", 'Boxplot', 'Dispersão', 'Barras'))
-                      )
+                             
+                      ),
+                      column(8,
+                             plotOutput('grafico_pc'))
                     )
                   }
                   
                   else if (numero_exercicio == 1) {
                     fluidRow(
-                      column(6,
-                             p(HTML(enunciado))
-                      ),
-                      column(6,
+                      column(4,
+                             p(HTML(enunciado)),
+                      
                              h3('Seleção de variáveis'),
                              
                              pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
@@ -2431,9 +2432,13 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                                          choices = c('Média', 'Porcentagem', 'Mediana')),
                              pickerInput('medidas_resumo_quanti', 'Qual é uma medida resumo adequada para variáveis quantitativas?',
                                          choices = c('Porcentagem', 'Frequência absoluta', 'Média'))
-                             
-                             
+
+                      ),
+                      column(8,
+                             DT::dataTableOutput('tabela_exs')
                       )
+                      
+                      
                     )
                   }
                   
@@ -2446,7 +2451,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                              h3('Seleção de variáveis'),
                              
                              pickerInput('medidas_resumo_ex5', 'Quais são as medidas-resumo adequadas?',
-                                         choices = c('Média', 'Desvio-Padrão','Moda', 'Frequência relativa'), multiple = TRUE)
+                                         choices = c('Média', 'Desvio-Padrão','Moda', 'Frequência relativa'), multiple = TRUE),
+                             DT::dataTableOutput('tabela_exs')
+                             
                              
                              
                       )
@@ -2457,6 +2464,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     fluidRow(
                       column(6,
                              p(HTML(enunciado)),
+                             gt_output('plot_ex6'),
                              render_gt(plot_ex6)
                       ),
                       column(6,
@@ -2475,10 +2483,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   
                   else if (numero_exercicio == 7) {
                     fluidRow(
-                      column(6,
                              p(HTML(enunciado)),
-                             render_gt(plot_ex7)
-                      ),
+                             render_gt(plot_ex7),
                       column(6,
                              h3('Seleção de variáveis'),
                              
@@ -2753,14 +2759,12 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     
                     return(NULL)
                     
-                  } else {
-                    return(NULL)
-                  }
+                  } 
                 }
               })
                 
               
-            output$tabela_ex1 <- DT::renderDataTable({
+            output$tabela_exs <- DT::renderDataTable({
               
               if ( is.null(validar_opcoes_ex())) {
                 exercicio_selecionado <- input$exercicio_pc
@@ -2809,7 +2813,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   
                   # Mantendo apenas as colunas desejadas
                   plot_dt <- datatable(
-                    plot$table_body[, c("variable", "label", "stat_0")],
+                    plot$table_body,
                     options = list(
                       dom = 't',
                       paging = FALSE,

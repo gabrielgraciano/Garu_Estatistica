@@ -6,11 +6,7 @@ paralisia <-
   tabItem(tabName = 'paralisia',
           fluidPage(
             fluidRow(
-              HTML('<center><img src="images/garu_3.png"></center>')),
-            sidebarLayout(
-              sidebarPanel(
-                selectInput('exercicio_pc','Escolha o exercício a ser resolvido', choices = 1:12 ),
-                titlePanel(h3("Exercícios Práticos - Paralisia Cerebral")),
+                wellPanel(titlePanel(h3("Exercícios Práticos - Paralisia Cerebral")),
                 HTML("<p>Segundo as <a href= 'https://bvsms.saude.gov.br/bvs/publicacoes/diretrizes_atencao_paralisia_cerebral.pdf'> Diretrizes de Atenção à
               Pessoa com Paralisia Cerebral do Ministério da Saúde (2014)</a>,
              a paralisia cerebral (PC) descreve um grupo de desordens da desenvolução do movimento e postura atribuído
@@ -36,18 +32,16 @@ paralisia <-
              <p>Tempo pastoso: tempo, em segundos, para deglutição de 140 g de iogurte de morango homogêneo
              e sem pedaços de fruta
              <p>Tempo sólido: tempo, em segundos, para deglutição de 12 g de bolacha recheada de chocolate"
-                     
                 )
-              ),
+                ),
+                column(4,
+                selectInput('exercicio_pc','Escolha o exercício a ser resolvido', choices = 1:12 ))
+                ),
               mainPanel(
                 uiOutput('opcoes_exercicio_pc'),
-                actionButton('gerar_pc', 'Gerar'),
-                plotOutput('grafico_pc'),
-                DT::dataTableOutput('tabela_ex1'),
-                gt_output('plot_ex6')
-                
+                actionButton('gerar_pc', 'Gerar')
               )
-            )
+            
           )
   )
   

@@ -67,11 +67,3 @@ explicação das variáveis que vocês podem encontrar e usar no aplicativo. </p
             )
           )
   )
-  
-
-
-
-
-
-
-              

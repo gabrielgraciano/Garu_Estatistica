@@ -17,49 +17,42 @@ source("medidas_resumo.R")
 source('graf_qualitativa.R')
 source('graf_quantitativa.R')
 source('graf_bidimensional.R')
-source("prob.R")
-source("prob_cond.R")
-source("distr_prob.R")
 source("inferencia.R") 
-source("geometry.R")
-source('print_glossario.R')
 source('questionario.R')
 source('perguntaspibiti.R')
 source('expraticos.R')
 source('enunciados_pc.R')
+source('data_cleaning_paralisia.R')
 
 useShinyalert(force=TRUE)
 
-#Comcecei aqui
-#substitui graficos.R por outras três sources
-#substitui inferencia por outras quatro sources (ainda não troquei, talvez não precise)
-
-
 dashboardPage(
-  dashboardHeader(title = 'Garu Estatística'),
+  dashboardHeader(title = 'Garu+'),
+  
   dashboardSidebar(
-    sidebarMenu(
-      menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
+    
+      sidebarMenu(
       
-      menuItem('Descritiva', icon = icon("table", lib = "font-awesome"),
+          menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
+      
+      
+          menuItem('Estatística Descritiva', icon = icon("table", lib = "font-awesome"),
                menuSubItem('Tipos de Variáveis', tabName = 'tipos_variaveis'),
                menuSubItem('Tabela de Frequências', tabName = 'tabela_frequencias'),
                menuSubItem('Medidas Resumo', tabName = 'medidas_resumo')),
       
-      menuItem('Gráficos', icon = icon("pie-chart", lib="font-awesome"),
-               menuSubItem('Variáveis Qualitativas', tabName = 'graf_qualitativa'),
-               menuSubItem('Variáveis Quantitativas', tabName = 'graf_quantitativa'),
-               menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
+          
+          menuItem('Gráficos', icon = icon("pie-chart", lib="font-awesome"),
+                   menuSubItem('Variáveis Qualitativas', tabName = 'graf_qualitativa'),
+                   menuSubItem('Variáveis Quantitativas', tabName = 'graf_quantitativa'),
+                   menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
       
-      
-      menuItem('Glossário', tabName = 'glossario', icon = icon("font", lib = "font-awesome")),
-               
-      
-      menuItem('Exercícios', tabName = 'questionario', icon = icon("pencil", lib="font-awesome")),
-
-      
-      menuItem('Exercícios Práticos',
-               menuSubItem('Dados - Paralisia Cerebral', tabName = 'paralisia'))
+          menuItem('Estatística Inferencial', icon = icon("magnifying-glass", lib = "font-awesome"),
+                   menuSubItem('Teste de média')),
+          
+          menuItem('Exercícios', icon = icon("pencil", lib="font-awesome"),
+                   menuSubItem('Teóricos', tabName = 'questionario'),
+                   menuSubItem('Contextualizados', tabName = 'paralisia'))
       
     )
   ),
@@ -84,20 +77,8 @@ dashboardPage(
       graf_quantitativa,
       graf_qualitativa,
       graf_bidimensional,
-      glossario,
       questionario,
       paralisia
     )
   )
 )
-
-
-
-
-
-#navbarMenu("Glosssário",
-#tabPanel('Glossário', glossario, value = 'tabGlossario'),
-#icon = icon('font', lib='font-awesome')),
-
-
-#tabPanel('Glossário', glossario, value = 'tabGlossario'),

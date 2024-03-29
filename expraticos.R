@@ -1,5 +1,3 @@
-#Retirar fluidROw!!!!!!!
-
 counter_ex9 <- 0
 useShinyjs()
 paralisia <-
@@ -44,15 +42,3 @@ paralisia <-
             
           )
   )
-  
-
-
-
-
-
-
-
-
-
-# fluidPage(
-#titlePanel(p(strong(h3('Banco de Dados - Paralisia Cerebral')))),

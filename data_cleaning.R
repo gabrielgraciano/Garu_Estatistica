@@ -1,4 +1,4 @@
- data <- read.csv("data/food-choices/food_coded.csv")
+data <- read.csv("data/food-choices/food_coded.csv")
 head(data)
 ncol(data)
 colnames(data)

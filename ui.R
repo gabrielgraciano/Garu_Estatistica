@@ -8,8 +8,10 @@ library(DT)
 library(ggokabeito)
 library(ggthemes)
 library(keras)
-#Testando commits
+
+
 source("data_handling.R")
+source('data_cleaning_paralisia.R')
 source("inicio.R")
 source("tipos_variaveis.R")
 source("tabela_frequencias.R")
@@ -22,7 +24,7 @@ source('questionario.R')
 source('perguntaspibiti.R')
 source('expraticos.R')
 source('enunciados_pc.R')
-source('data_cleaning_paralisia.R')
+
 
 useShinyalert(force=TRUE)
 
@@ -48,7 +50,10 @@ dashboardPage(
                    menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
       
           menuItem('Estatística Inferencial', icon = icon("magnifying-glass", lib = "font-awesome"),
-                   menuSubItem('Teste de média')),
+                   menuSubItem('Teste T para uma amostra', tabName = "teste_t_1"), 
+                   menuSubItem("Teste T para duas amostras (dep.)", tabName = "teste_t_2"),
+                   menuSubItem("Teste qui quadrado", tabName ="teste_qui"),
+                   menuSubItem("Teste de Correlação", tabName = "teste_corr")),
           
           menuItem('Exercícios', icon = icon("pencil", lib="font-awesome"),
                    menuSubItem('Teóricos', tabName = 'questionario'),
@@ -77,6 +82,10 @@ dashboardPage(
       graf_quantitativa,
       graf_qualitativa,
       graf_bidimensional,
+      teste_t_1,
+      teste_t_2,
+      teste_qui,
+      teste_corr,
       questionario,
       paralisia
     )

@@ -1,7 +1,3 @@
-library(ggplot2)
-
-
-library(dplyr)
 library(tidyverse)
 library(shiny)
 library(htmltools)
@@ -712,6 +708,3 @@ A partir dos resultados obtidos, em termos relativos, assinale a alternativa cuj
   )
   
   )
-  
-  
-  

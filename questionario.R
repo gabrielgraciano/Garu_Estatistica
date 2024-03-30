@@ -20,5 +20,3 @@ questionario <-
             )
           )
   )
-
-#                gt_output('score')

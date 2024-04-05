@@ -2317,7 +2317,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
               
               observe({
                 if (pergunta_atual() > length(perguntas_respostas)) {
-                  if (counter() == length(perguntas_respostas)) {
+                  if (acertos() == length(perguntas_respostas)) {
                     shinyalert(
                       title = "Parabéns!",
                       text = "Você acertou todas as perguntas.",
@@ -2326,7 +2326,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   } else {
                     shinyalert(
                       title = "Resultado",
-                      text = paste("Você acertou", counter(), "perguntas."),
+                      text = paste("Você acertou", acertos(), "perguntas."),
                       type = "info"
                     )
                   }
@@ -2383,479 +2383,83 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 updateNavbarPage(session, "mainNav", selected = "tabTesteCorr")
               })
               '
-             
-              ###Exercícios - Paralisia Cerebral
+              numero_do_exercicio <- reactiveVal(0)
               
-               # Plotar UI
-              output$opcoes_exercicio_pc <- renderUI({
-                exercicio_selecionado <- input$exercicio_pc
-                criar_ui_exercicio(as.character(exercicio_selecionado))
+              
+              #Atualizando o valor do numero_do_exercicio
+              
+              observeEvent(input$tabs, {
+                if (input$tabs == 'ex1') {
+                  numero_do_exercicio(1)  
+                } else if (input$tabs == 'ex2') {
+                  numero_do_exercicio(2)  
+                } else if (input$tabs == 'ex3') {
+                  numero_do_exercicio(3)  
+                }
               })
               
-              criar_ui_exercicio <- function(numero_exercicio) {
-                enunciado <- enunciados_pc[[numero_exercicio]]
-                
-                if (!is.null(enunciado)) {
-                  if (numero_exercicio %in% c(2, 3, 4, 8, 9, 10, 11, 12)) {
-                    resposta_esperada <- respostas_esperadas_pc[[paste0("ex", numero_exercicio)]]
-                    fluidRow(
-                      column(4,
-                             p(HTML(enunciado)),
-                    
-                             h3('Seleção de variáveis e Tipo de Gráfico'),
-                             
-                             pickerInput('variavel_pc_x', 'Escolha a variável para o eixo x:',
-                                         choices = c("Não se aplica", colnames(dados_paralisia))),
-                             pickerInput('variavel_pc_y', 'Escolha a variável para o eixo y:',
-                                         choices = c("Não se aplica", colnames(dados_paralisia))),
-                             pickerInput('tipo_grafico_pc', 'Escolha o tipo de gráfico:',
-                                         choices = c("Não se aplica", 'Boxplot', 'Dispersão', 'Barras'))
-                             
-                      ),
-                      column(8,
-                             plotOutput('grafico_pc'))
-                    )
-                  }
-                  
-                  else if (numero_exercicio == 1) {
-                    fluidRow(
-                      column(4,
-                             p(HTML(enunciado)),
-                      
-                             h3('Seleção de variáveis'),
-                             
-                             pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
-                                         choices = c(colnames(dados_paralisia)), multiple = TRUE),
-                             pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
-                                         choices = c(colnames(dados_paralisia)), multiple = TRUE),
-                             pickerInput('medidas_resumo_quali', 'Qual é uma medida resumo adequada para variáveis qualitativas?',
-                                         choices = c('Média', 'Porcentagem', 'Mediana')),
-                             pickerInput('medidas_resumo_quanti', 'Qual é uma medida resumo adequada para variáveis quantitativas?',
-                                         choices = c('Porcentagem', 'Frequência absoluta', 'Média'))
+              
+              #UI para exercício 1
+              output$ex1 <- renderUI({
+                enunciado <- enunciados_pc_novo[[1]]
 
-                      ),
-                      column(8,
-                             DT::dataTableOutput('tabela_exs')
-                      )
-                      
-                      
-                    )
-                  }
-                  
-                  else if (numero_exercicio == 5) {
-                    fluidRow(
-                      column(6,
-                             p(HTML(enunciado))
-                      ),
-                      column(6,
-                             h3('Seleção de variáveis'),
-                             
-                             pickerInput('medidas_resumo_ex5', 'Quais são as medidas-resumo adequadas?',
-                                         choices = c('Média', 'Desvio-Padrão','Moda', 'Frequência relativa'), multiple = TRUE),
-                             DT::dataTableOutput('tabela_exs')
-                             
-                             
-                             
-                      )
-                    )
-                  }
-                  
-                  else if (numero_exercicio == 6) {
-                    fluidRow(
-                      column(6,
-                             p(HTML(enunciado)),
-                             gt_output('plot_ex6'),
-                             render_gt(plot_ex6)
-                      ),
-                      column(6,
-                             h3('Seleção de variáveis'),
-                             
-                             pickerInput('teste_ex6', 'Qual seria o  teste estatístico mais adequado para verificação da hipótese?',
-                                         choices = c('Teste t de Student', 'Teste Qui-quadrado de Pearson', 'ANOVA')),
-                             uiOutput("hipotese_ui_6"),
-                             verbatimTextOutput('resultado_teste_ex_6'),
-                             actionButton('calcular_teste', 'Calcular')
-
-                             
-                      )
-                    )
-                  }
-                  
-                  else if (numero_exercicio == 7) {
-                    fluidRow(
-                             p(HTML(enunciado)),
-                             render_gt(plot_ex7),
-                      column(6,
-                             h3('Seleção de variáveis'),
-                             
-                             pickerInput('teste_ex7', 'Qual seria o  teste estatístico mais adequado para verificação da hipótese?',
-                                         choices = c('Teste t de Student', 'Teste Qui-quadrado de Pearson', 'ANOVA')),
-                             uiOutput("hipotese_ui_7"),
-                             verbatimTextOutput('resultado_teste_ex_7'),
-                             actionButton('calcular_teste', 'Calcular')
-                             
-                             
-                      )
-                    )
-                  }
-                  
-                  else {
-                    fluidRow(
-                      column(12,
-                             p(enunciado)
-                      )
-                    )
-                  }
-                } else {
-                  NULL
-                }
-              }
-              
-              output$hipotese_ui_6 <- renderUI({
-                if(input$teste_ex6 == 'Teste Qui-quadrado de Pearson' && input$calcular_teste > 0 && length(calculo_teste()) == 0) {
-                  pickerInput('hipotese_ex6', 'A perda auditiva está associada à Paralisia Cerebral?',
-                              choices = c('Sim', 'Não'), selected = 'Sim')
-                }
-                
-                else {
-                  NULL
-                }
-              })
-              
-              output$hipotese_ui_7 <- renderUI({
-                if(input$teste_ex7 == 'Teste Qui-quadrado de Pearson' && input$calcular_teste > 0 && length(calculo_teste()) == 0) {
-                  pickerInput('hipotese_ex7', 'A perda auditiva está associada à Paralisia Cerebral?',
-                              choices = c('Sim', 'Não'), selected = 'Sim')
-                }
-                else {
-                  NULL
-                }
-              })
-                
-              
-              output$resultado_teste_ex_6 <- renderPrint({
-                if(input$teste_ex6 == 'Teste Qui-quadrado de Pearson' && input$calcular_teste > 0 && length(calculo_teste()) == 0) {
-                  chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo)
-                }
-              })
-              
-              output$resultado_teste_ex_7 <- renderPrint({
-                if(input$teste_ex7 == 'Teste Qui-quadrado de Pearson' && input$calcular_teste > 0 && length(calculo_teste()) == 0) {
-                  chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo)
-                }
-              })
-
-              
-              
-             
-              
-              validar_opcoes_ex <- reactive({
-                msgs_erro <- character(0)
-                
-                print(input$exercicio_pc)
-                req(!is.null(input$exercicio_pc))  
-                
-                # Verificar se as variáveis estão sendo definidas corretamente
-                print(input$variavel_pc_x)
-                print(input$variavel_pc_y)
-                print(input$tipo_grafico_pc)
-                
-                if (!is.null(input$variavel_pc_x) && !is.null(input$variavel_pc_y) && !is.null(input$tipo_grafico_pc) && input$exercicio_pc %in% c(2, 3, 4, 8, 9, 10, 11, 12)) {
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  
-                  # Verificar se resposta_esperada está sendo definido corretamente
-                  print(resposta_esperada)
-                  
-                  if (input$variavel_pc_x != resposta_esperada$variavel_pc_x) {
-                    print("Variável x incorreta")
-                    msgs_erro <- c(msgs_erro, "Essa não é a variável correta para o eixo x")
-                  }
-                  
-                  else if (input$variavel_pc_y != resposta_esperada$variavel_pc_y) {
-                    print("Variável y incorreta")
-                    msgs_erro <- c(msgs_erro, "Essa não é a variável correta para o eixo y")
-                  }
-                  
-                  else if (input$tipo_grafico_pc != resposta_esperada$tipo_grafico_pc) {
-                    print("Tipo de gráfico incorreto")
-                    msgs_erro <- c(msgs_erro, "Esse não é o tipo de gráfico correto")
-                  }
-                  
-                  else if (input$variavel_pc_x == input$variavel_pc_y) {
-                    print("Variáveis iguais")
-                    msgs_erro <- c(msgs_erro, 'As variáveis não podem ser iguais')
-                  }
-                }
-                
-                else if (input$exercicio_pc == 1){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  print(resposta_esperada)
-                  print(input$variavel_quali)
-                  print(input$variavel_quanti)
-                  print(input$medidas_resumo_quali)
-                  print(input$medidas_resumo_quanti)
-
-                  
-                    if (!identical(input$variavel_quali, resposta_esperada$variavel_quali)) {
-                      msgs_erro <- c(msgs_erro, "Não foram selecionadas todas as variáveis categóricas")
-                  }
-                  
-                  
-                    if (!identical(input$variavel_quanti, resposta_esperada$variavel_quanti)) {
-                      msgs_erro <- c(msgs_erro, "Não foram selecionadas todas as variáveis contínuas")
-                  }
-                  
-                  # Verificar se as medidas resumo selecionadas correspondem às esperadas
-                  
-                    if (input$medidas_resumo_quali != resposta_esperada$medidas_resumo_quali) {
-                      msgs_erro <- c(msgs_erro, "Essa não é a medida resumo adequada para variáveis categóricas")
-                  }
-                  
-                  
-                    if (input$medidas_resumo_quanti != resposta_esperada$medidas_resumo_quanti) {
-                      msgs_erro <- c(msgs_erro, "Essa não é a medida resumo adequada para variáveis contínuas")
-                  }
-                }
-                
-                else if (input$exercicio_pc == 5){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  
-                  
-                  if (!identical(input$medidas_resumo_ex5, resposta_esperada$medidas_resumo_ex5)) {
-                    msgs_erro <- c(msgs_erro, "Não foram selecionadas somente as medidas-resumo adequadas")
-                  }
-                  
-                  
-                  
-                }
-                
-                else if (input$exercicio_pc == 6){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  
-                  if(!identical(input$hipotese_ex6, resposta_esperada$hipotese_ex6)){
-                    msgs_erro <- c(msgs_erro, 'Essa não é a conclusão correta')
-                  }
-                }
-                
-                else if (input$exercicio_pc == 7){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  
-                  if(!identical(input$hipotese_ex7, resposta_esperada$hipotese_ex7)){
-                    msgs_erro <- c(msgs_erro, 'Essa não é a conclusão correta')
-                  }
-                }
-
-                
-                else if (length(msgs_erro) > 0) {
-                  return(msgs_erro)
-                } else {
-                  return(NULL)
-                }
-              })
-              
-    
-              # Renderizar shinyalert
-              observeEvent(input$gerar_pc, {
-                if (!is.null(validar_opcoes_ex())) {
-                  shinyalert(title = "Erro!", text = validar_opcoes_ex(), type = "error")
-                }
-              })
-              
-              
-              # Renderizar testes estatísticos
-              calculo_teste <- reactive({
-                msgs_erro_teste <- character(0)
-                req(!is.null(input$exercicio_pc))
-                
-                if(input$exercicio_pc == 6){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  if (!identical(input$teste_ex6, resposta_esperada$teste_ex6)) {
-                    msgs_erro <- c(msgs_erro_teste, "Este não é o teste adequado")
-                  }
-                }
-                
-                if(input$exercicio_pc == 7){
-                  ex <- input$exercicio_pc
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", ex)]]
-                  if (!identical(input$teste_ex7, resposta_esperada$teste_ex7)) {
-                    msgs_erro <- c(msgs_erro_teste, "Este não é o teste adequado")
-                  }
-                }
-                
-              })
-                
-              observeEvent(input$calcular_teste, {
-                if(!is.null(calculo_teste())){
-                  shinyalert(title = 'Erro!', text = calculo_teste(), type = 'error')
-                }
-              })
-              
-              
-              
-              output$grafico_pc <- renderPlot({
-                
-                if(input$exercicio_pc %in% c(2, 3, 4, 8, 9, 10, 11, 12)){
-                  
-                  if ( is.null(validar_opcoes_ex())) {
-                    exercicio_selecionado <- input$exercicio_pc
-                    resposta_esperada <- respostas_esperadas_pc[[paste0("ex", exercicio_selecionado)]]
-                    
-                    
-                    
-                    
-                    if (exercicio_selecionado == 2){
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_pc_x, fill = input$variavel_pc_x ))+
-                        geom_bar(stat = 'count')
-                      req(input$gerar_pc)
-                      return(plot)
-                    }
-                    
-                    if (exercicio_selecionado == 3){
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_pc_x, fill = input$variavel_pc_x ))+
-                        geom_bar(stat = 'count')
-                      req(input$gerar_pc)
-                      return(plot)
-                    }
-                    
-                    if (exercicio_selecionado == 4){
-                      plot <- ggplot(dados_paralisia, aes_string(x = 1, y = input$variavel_pc_y))+
-                        geom_boxplot()
-                      req(input$gerar_pc)
-                      return(plot)
-                    }
-                    
-                    
-                    if (resposta_esperada$tipo_grafico_pc == 'Boxplot') {
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_pc_x, y = input$variavel_pc_y)) +
-                        geom_boxplot()
-                      req(input$gerar_pc)
-                      return(plot)
-                      
-                    }
-                    
-                    else if (resposta_esperada$tipo_grafico_pc == 'Dispersão') {
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_pc_x, y = input$variavel_pc_y)) +
-                        geom_point()
-                      req(input$gerar_pc)
-                      return(plot)
-                      
-                    } else if (resposta_esperada$tipo_grafico_pc == 'Barras') {
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_pc_x, y = input$variavel_pc_y)) +
-                        geom_bar()
-                      req(input$gerar_pc)
-                      return(plot)
-                      
-                    } else {
-                      plot <- NULL
-                      
-                      
-                    }
-                    
-                    return(NULL)
-                    
-                  } 
-                }
-              })
-                
-              
-            output$tabela_exs <- DT::renderDataTable({
-              
-              if ( is.null(validar_opcoes_ex())) {
-                exercicio_selecionado <- input$exercicio_pc
-                resposta_esperada <- respostas_esperadas_pc[[paste0("ex", exercicio_selecionado)]]
-                
-                if (exercicio_selecionado == 1) {
-                  
-                  plot <- dados_paralisia %>%
-                    tbl_summary(
-                      missing = 'no',
-                      digits = 
-                        list(all_continuous() ~ 1,
-                             all_categorical() ~ c(0, 2)),
-                      statistic = list(all_continuous() ~ "{mean} ({sd})",
-                                       all_categorical() ~ "{n} ({p}%)")
-                    ) %>%
-                    modify_header(label = '**Variável') %>%
-                    modify_footnote(update = starts_with('stat_') ~ 'Média (desvio-padrão) para variáveis numéricas; n (%) para variáveis categóricas')
-                  
-                  # Converter para formato DT
-                  plot_dt <- datatable(
-                    plot$table_body,
-                    options = list(
-                      dom = 't',
-                      paging = FALSE,
-                      searching = FALSE,
-                      ordering = FALSE
-                    )
+                fluidRow(
+                  column(4,
+                         p(HTML(enunciado)),
+                         h3('Classificação de variáveis'),
+                         pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
+                                     choices = nomes_exibidos, multiple = TRUE),
+                         pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
+                                     choices = nomes_exibidos, multiple = TRUE)
+                  ),
+                  column(8,
+                         actionButton('verificando_respostas', 'Verificar')
                   )
-                  
-                  return(plot_dt)
-                }
-                
-                if (exercicio_selecionado == 5) {
-                  
-                  plot <- dados_paralisia %>%
-                    select(td_liquido, td_pastoso, td_solido, grupo) %>%
-                    tbl_summary(
-                      by = 'grupo',
-                      missing = 'no',
-                      digits = list(all_continuous() ~ 1, all_categorical() ~ c(0, 2)),
-                      statistic = list(all_continuous() ~ "{mean} ({sd})", all_categorical() ~ "{n} ({p})%")
-                    ) %>%
-                    modify_header(label = '**Variável**') %>%
-                    modify_footnote(update = starts_with('stat_') ~ 'Média (desvio-padrão) para')
-                  
-                  # Mantendo apenas as colunas desejadas
-                  plot_dt <- datatable(
-                    plot$table_body,
-                    options = list(
-                      dom = 't',
-                      paging = FALSE,
-                      searching = FALSE,
-                      ordering = FALSE
-                    )
-                  )
-                  
-                  return(plot_dt)
-                  
-                }
-                
-                }
+                )
+              })
               
-            })
             
               
+
+              #Validação das respostas
+              validar_respostas <- reactive({
+                mensagem_de_erro <- character(0)
+                
+                if (numero_do_exercicio() == 1) {
+                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", 1)]]
+                  
+                  if (!identical(input$variavel_quali, resposta_esperada$variavel_quali)) {
+                    mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis qualitativas incorreta")
+                  }
+                  
+                  if (!identical(input$variavel_quanti, resposta_esperada$variavel_quanti)) {
+                    mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis quantitativas incorreta")
+                  }
+                  
+                  if (input$medidas_resumo_quali != resposta_esperada$medidas_resumo_quali) {
+                    mensagem_de_erro <- c(mensagem_de_erro, "Medida resumo para variáveis qualitativas incorreta")
+                  }
+                  
+                  if (input$medidas_resumo_quanti != resposta_esperada$medidas_resumo_quanti) {
+                    mensagem_de_erro <- c(mensagem_de_erro, "Medida resumo para variáveis quantitativas incorreta")
+                  }
+                }
+                
+                return(mensagem_de_erro)
+              })
               
-              
-              
+             
+              #Exibe mensagem de erro
+              observeEvent(input$verificando_respostas, {
+                mensagens_erro <- validar_respostas()
+                if (length(mensagens_erro) > 0) {
+                  shinyalert(title = "Erro!", text = mensagens_erro, type = "error")
+                }
+              })
+               
+
 
               
-              
-
-
-            
-              
-              
-
-          
             }
-            
-            
-              
-                          
-                         
-                         
-                  
-                            
-           
-           
-            
-
-          
-            
+             
+             

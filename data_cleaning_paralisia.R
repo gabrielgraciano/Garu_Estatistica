@@ -3,6 +3,20 @@ library(dplyr)
 library(ggplot2)
 dados_paralisia <- read.csv('data/dados_paralisia_clean.csv')
 
+#Dicionário de mudanças nos nomes
+nomes_exibidos <- c(
+  'Sexo' = 'sexo',
+  'Grupo' = 'grupo',
+  'Idade' = 'idade',
+  'Perda Auditiva' = 'perda_audit',
+  'Distúrbio de Comunicação' = 'dist_comun',
+  'Grau de Disfunção Motora Oral' = 'dmo',
+  'Tempo líquido' = 'td_liquido',
+  'Tempo pastoso' = 'td_pastoso',
+  'Tempo sólido' = 'td_solido'
+)
+
+
 # Configurar restante das variáveis
 dados_paralisia$sexo <- factor(dados_paralisia$sexo)
 dados_paralisia$grupo <- factor(dados_paralisia$grupo)

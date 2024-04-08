@@ -1,4 +1,4 @@
-# GARU Estatística - Versão 2.0
+# GARU Estatística
 
 ![](www/images/garu_3.png)
 

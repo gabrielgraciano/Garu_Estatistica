@@ -31,7 +31,9 @@ useShinyalert(force=TRUE)
 
 
 dashboardPage(
+    
   dashboardHeader(title = 'Garu Estatística'),
+  
   dashboardSidebar(
     sidebarMenu(
       menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
@@ -57,12 +59,17 @@ dashboardPage(
       
       menuItem('Exercícios práticos', icon = icon("magnifying-glass-chart", lib="font-awesome"),
                menuSubItem('Paralisia Cerebral', tabName = 'paralisia'))
-    
+      ),
       
-    )
-  ),
+      tags$div(
+          style = "position: absolute; bottom: 0; width: 100%; background-color: #000; padding: 10px;",
+          h5(HTML("Versão 1.0.6 <br> Última atualização: 08/04/2024"))
+       )
+    ),
+
   
   dashboardBody(
+        
     tags$head(tags$script(HTML('
       var fakeClick = function(tabName) {
         var dropdownList = document.getElementsByTagName("a");
@@ -74,6 +81,7 @@ dashboardPage(
         }
       };
     '))),
+    
     tabItems(
       inicio,
       tipos_variaveis,
@@ -90,4 +98,5 @@ dashboardPage(
       paralisia
     )
   )
+  
 )

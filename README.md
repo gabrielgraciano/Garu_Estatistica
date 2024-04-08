@@ -15,7 +15,7 @@ O aplicativo foi primeiramente desenvolvido por ....
 
 ## Para acessar o aplicativo na internet
 
-Acesse: <https://amenezes.shinyapps.io/garu_v2/>
+Acesse: <https://amenezes.shinyapps.io/garu_gabriel/>
 
 ## Para executar o projeto localmente
 

@@ -18,14 +18,11 @@ inicio <-
               h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"graf_bidimensional\")'>2.3 Gráficos Bidimensionais</a>")),
               br(),  
               
-              strong("3. Glossário"), br(),
-              h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"glossario\")'>3. Glossário</a>")),br(),
+              strong("3. Exercícios Teóricos"), br(),
+              h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"questionario\")'>3.1 Exercícios</a>")),br(),
               
-              strong("4. Exercícios"), br(),
-              h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"questionario\")'>4. Exercpicios</a>")),br(),
-              
-              strong("5. Exercícios Práticos"), br(),
-              h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"paralisia\")'>5.1 Paralisia Cerebral</a>")),br(),
+              strong("4. Exercícios Práticos"), br(),
+              h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"paralisia\")'>4.1 Paralisia Cerebral</a>")),br(),
               
               HTML("<p><strong>Alunos participantes:</strong> João Henrique de Araujo Morais e Gabriel Graciano Dias</p>"),
               HTML("<p><strong>Orientadoras:</strong> Profa. Dra. Camila Bertini Martins e Téc. Dra. Alessandra A. S. Menezes</p>"),
@@ -67,3 +64,11 @@ explicação das variáveis que vocês podem encontrar e usar no aplicativo. </p
             )
           )
   )
+  
+
+
+
+
+
+
+              

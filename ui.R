@@ -7,11 +7,9 @@ library(shinydashboard)
 library(DT)
 library(ggokabeito)
 library(ggthemes)
-library(keras)
 
-
-source("data_handling.R")
 source('data_cleaning_paralisia.R')
+source("data_handling.R")
 source("inicio.R")
 source("tipos_variaveis.R")
 source("tabela_frequencias.R")
@@ -25,39 +23,41 @@ source('perguntaspibiti.R')
 source('expraticos.R')
 source('enunciados_pc.R')
 
-
 useShinyalert(force=TRUE)
 
+#Comcecei aqui
+#substitui graficos.R por outras três sources
+#substitui inferencia por outras quatro sources (ainda não troquei, talvez não precise)
+
+
 dashboardPage(
-  dashboardHeader(title = 'Garu+'),
-  
+  dashboardHeader(title = 'Garu Estatística'),
   dashboardSidebar(
-    
-      sidebarMenu(
+    sidebarMenu(
+      menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
       
-          menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
-      
-      
-          menuItem('Estatística Descritiva', icon = icon("table", lib = "font-awesome"),
+      menuItem('Descritiva', icon = icon("table", lib = "font-awesome"),
                menuSubItem('Tipos de Variáveis', tabName = 'tipos_variaveis'),
                menuSubItem('Tabela de Frequências', tabName = 'tabela_frequencias'),
                menuSubItem('Medidas Resumo', tabName = 'medidas_resumo')),
       
-          
-          menuItem('Gráficos', icon = icon("pie-chart", lib="font-awesome"),
-                   menuSubItem('Variáveis Qualitativas', tabName = 'graf_qualitativa'),
-                   menuSubItem('Variáveis Quantitativas', tabName = 'graf_quantitativa'),
-                   menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
+      menuItem('Gráficos', icon = icon("pie-chart", lib="font-awesome"),
+               menuSubItem('Variáveis Qualitativas', tabName = 'graf_qualitativa'),
+               menuSubItem('Variáveis Quantitativas', tabName = 'graf_quantitativa'),
+               menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
       
-          menuItem('Estatística Inferencial', icon = icon("magnifying-glass", lib = "font-awesome"),
-                   menuSubItem('Teste T para uma amostra', tabName = "teste_t_1"), 
-                   menuSubItem("Teste T para duas amostras (dep.)", tabName = "teste_t_2"),
-                   menuSubItem("Teste qui quadrado", tabName ="teste_qui"),
-                   menuSubItem("Teste de Correlação", tabName = "teste_corr")),
-          
-          menuItem('Exercícios', icon = icon("pencil", lib="font-awesome"),
-                   menuSubItem('Teóricos', tabName = 'questionario'),
-                   menuSubItem('Contextualizados', tabName = 'paralisia'))
+      menuItem('Estatística Inferencial', icon = icon("magnifying-glass", lib = "font-awesome"),
+               menuSubItem('Teste T para uma amostra', tabName = "teste_t_1"), 
+               menuSubItem("Teste T para duas amostras (dep.)", tabName = "teste_t_2"),
+               menuSubItem("Teste qui quadrado", tabName ="teste_qui"),
+               menuSubItem("Teste de Correlação", tabName = "teste_corr")),
+      
+      menuItem('Exercícios Teóricos', icon = icon("pencil", lib="font-awesome"),
+               menuSubItem('Exercícios', tabName = 'questionario')),
+      
+      menuItem('Exercícios práticos', icon = icon("magnifying-glass-chart", lib="font-awesome"),
+               menuSubItem('Paralisia Cerebral', tabName = 'paralisia'))
+    
       
     )
   ),

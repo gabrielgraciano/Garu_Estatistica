@@ -67,6 +67,15 @@ respostas_esperadas_pc <- list(
   ex10 = list(variavel_pc_x = 'grupo', variavel_pc_y = 'td_solido', tipo_grafico_pc = 'Boxplot')
 )
 
+library(tidyverse)
+
+
+
+
+
+
+
+
 
 #############################
 # Esses são os enunciados novos
@@ -81,7 +90,7 @@ enunciados_pc_novo <- list(
   "3" = "Utilize a caixa de seleção “Medidas-resumo”
   para selecionar todas  as medidas-resumo adequadas ao distúrbio de comunicação.",
   
-  "4" = "Utilize a caixa de seleção “Elementos gráficos” para construir
+  "4" = "Utilize as caixas de seleção para construir
   um gráfico adequado para visualizar o grau de disfunção motora oral (DMO).",
   
   "5" = "Utilize a caixa de seleção “Elementos gráficos” para construir um gráfico
@@ -102,7 +111,7 @@ enunciados_pc_novo <- list(
   associadas ao nível de significância de 5%?",
   
   "8" = "A tabela abaixo apresenta os distúrbios de comunicação pelos grupos de
-  crianças SAN e PC. Para você, há indícios de que os distúrbios de comunicação estejam
+   crianças SAN e PC. Para você, há indícios de que os distúrbios de comunicação estejam
   associados à PC? Utilize a caixa de seleção “Selecione suas respostas” para verificar
   sua intuição:
   <br>

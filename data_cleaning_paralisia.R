@@ -16,7 +16,6 @@ nomes_exibidos <- c(
   'Tempo sólido' = 'td_solido'
 )
 
-
 # Configurar restante das variáveis
 dados_paralisia$sexo <- factor(dados_paralisia$sexo)
 dados_paralisia$grupo <- factor(dados_paralisia$grupo)
@@ -54,3 +53,4 @@ dados_paralisia$perda_audit[entradas == 1] <- 1
 
 dados_paralisia <- dados_paralisia[,-1]
 
+dados_paralisia

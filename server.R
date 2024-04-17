@@ -2395,7 +2395,23 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   numero_do_exercicio(2)  
                 } else if (input$tabs == 'ex3') {
                   numero_do_exercicio(3)  
+                } else if (input$tabs == 'ex4') {
+                    numero_do_exercicio(4)  
+                } else if (input$tabs == 'ex5') {
+                    numero_do_exercicio(5)  
+                } else if (input$tabs == 'ex6') {
+                    numero_do_exercicio(6)  
+                } else if (input$tabs == 'ex7') {
+                    numero_do_exercicio(7)  
+                } else if (input$tabs == 'ex8') {
+                    numero_do_exercicio(8)  
+                } else if (input$tabs == 'ex9') {
+                    numero_do_exercicio(9)  
+                } else if (input$tabs == 'ex10') {
+                    numero_do_exercicio(10)  
                 }
+                  
+                 
               })
               
               
@@ -2418,6 +2434,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 )
               })
               
+<<<<<<< Updated upstream
             
               
 
@@ -2427,11 +2444,254 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 
                 if (numero_do_exercicio() == 1) {
                   resposta_esperada <- respostas_esperadas_pc[[paste0("ex", 1)]]
+=======
+              #UI para exercício 3
+              output$ex3 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[3]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             h3(''),
+                             pickerInput('variavel_ex3', 'Medidas-resumo',
+                                         choices = c('Média', 'Mediana', 'Porcentagem',
+                                                     'Frequência absoluta', 'Desvio-padrão',
+                                                     'Frequência relativa'),
+                                         multiple = TRUE)
+                             ),
+                      column(3,
+                             actionButton('verif_resp_ex3', 'Verificar'))
+                  )
+              })
+              
+              #UI para exercício 4
+              output$ex4 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[4]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             h3(''),
+                             pickerInput('variavel_ex4x', 'Eixo x',
+                                         choices = nomes_exibidos,
+                                         multiple = TRUE),
+                             pickerInput('variavel_ex4y', 'Eixo y',
+                                         choices = c('Não se aplica', nomes_exibidos)),
+                             pickerInput('variavel_ex4_graf', 'Tipo de gráfico',
+                                         choices = c('Barras', 'Boxplot', 'Dispersão')
+                             ),
+                      
+                      
+                      column(3,
+                             actionButton('graf_ex4', 'Gerar gráfico')),
+                      column(6,
+                             plotOutput('plot_ex4'))
+                             
+                  )
+                  )
+              })
+              
+              #UI para exercício 5
+              output$ex5 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[5]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             h3(''),
+                             pickerInput('variavel_ex5x', 'Eixo x',
+                                         choices = nomes_exibidos,
+                                         multiple = TRUE),
+                             pickerInput('variavel_ex5y', 'Eixo y',
+                                         choices = c('Não se aplica', nomes_exibidos)),
+                             pickerInput('variavel_ex5_graf', 'Tipo de gráfico',
+                                         choices = c('Barras', 'Boxplot', 'Dispersão')
+                             ),
+                             
+                             
+                             column(3,
+                                    actionButton('graf_ex5', 'Gerar gráfico')),
+                             column(6,
+                                    plotOutput('plot_ex5'))
+                             
+                      )
+                  )
+              })
+              
+              #UI para exercício 6
+              output$ex6 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[6]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             h3(''),
+                             pickerInput('variavel_ex6x', 'Eixo x',
+                                         choices = nomes_exibidos,
+                                         multiple = TRUE),
+                             pickerInput('variavel_ex6y', 'Eixo y',
+                                         choices = c('Não se aplica', nomes_exibidos)),
+                             pickerInput('variavel_ex6_graf', 'Tipo de gráfico',
+                                         choices = c('Barras', 'Boxplot', 'Dispersão')
+                             ),
+                             
+                             
+                             column(3,
+                                    actionButton('graf_ex6', 'Gerar gráfico')),
+                             column(6,
+                                    plotOutput('plot_ex6'))
+                             
+                      )
+                  )
+              })
+              
+              #UI para exercício 7
+              output$ex7 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[7]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             gt_output(outputId = 'tabela_pc'),
+                             h3(''),
+                             pickerInput('teste_ex7', 'Qual é o teste mais adequado?',
+                                         choices = c('Fisher', 'Qui-Quadrado', 't de Student'))
+                  ),
+                  column(9,
+                         actionButton('botao_teste_ex7', 'Verificar'),
+                         verbatimTextOutput('resultado_teste_ex7'),
+                         uiOutput('ex7_parteb'))
+                  
+                  )
+              })
+              
+              #UI para exercício 8
+              output$ex8 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[8]]
+                  
+                  fluidRow(
+                      column(9,
+                             p(HTML(enunciado)),
+                             gt_output(outputId = 'tabela_ex8_pc'),
+                             h3(''),
+                             pickerInput('teste_ex8', 'Qual é o teste mais adequado?',
+                                         choices = c('Fisher', 'Qui-Quadrado', 't de Student'))
+                      ),
+                      column(9,
+                             actionButton('botao_teste_ex8', 'Verificar'),
+                             verbatimTextOutput('resultado_teste_ex8'),
+                             uiOutput('ex8_parteb'))
+                  )
+              })
+              
+              #UI para exercício 9
+              output$ex9 <- renderUI({
+                  enunciado <- enunciados_pc_novo[[9]]
+                  
+                  fluidRow(
+                      fluidRow(
+                          column(9,
+                                 p(HTML(enunciado)),
+                                 h3(''),
+                                 pickerInput('variavel_ex9x', 'Eixo x',
+                                             choices = nomes_exibidos,
+                                             multiple = FALSE),
+                                 pickerInput('variavel_ex9y', 'Eixo y',
+                                             choices = nomes_exibidos),
+                                 pickerInput('variavel_ex9_graf', 'Tipo de gráfico',
+                                             choices = c('Barras', 'Boxplot', 'Dispersão')
+                                 ),
+                                 
+                                 
+                                 column(3,
+                                        actionButton('graf_ex9', 'Gerar gráfico')),
+                                 column(6,
+                                        plotOutput('plot_ex9')),
+                                 column(9,
+                                        uiOutput('ex9_parteb'),
+                                        verbatimTextOutput('resultado_teste_ex9'),
+                                        uiOutput('ex9_partec'))
+                                 
+                          )
+                      )
+                  )
+                  
+              })
+          
+              #Validação das respostas
+              
+              
+              #Ex1
+              observeEvent(input$verif_resp_ex1, {
+                  
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_quali) && is.null(input$variavel_quanti)) {
+                          return("Você não selecionou as respostas!")} else {
+                              if (identical(input$variavel_quali, c("sexo", "grupo", "perda_audit", "dist_comun", "dmo")) & 
+                                  identical(input$variavel_quanti, c("idade", "td_liquido", "td_pastoso", "td_solido"))) {
+                                  return("Resposta correta.")} else {
+                                      return("Há algo errado com as suas seleções.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+              #Ex2
+              observeEvent(input$verif_resp_ex2, {
+                  
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_ex2)) {
+                          return("Você não selecionou as respostas!")} else {
+                              if (identical(input$variavel_ex2, c('Média', 'Mediana', 'Desvio-padrão'))) {
+                                  return("Resposta correta.")} else {
+                                      return("Há algo errado com sua seleção.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+              #Ex3
+              observeEvent(input$verif_resp_ex3, {
+                  
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_ex3)) {
+                          return("Você não selecionou as respostas!")} else {
+                              if (identical(input$variavel_ex3, c('Porcentagem'))) {
+                                  return("Resposta correta.")} else {
+                                      return("Há algo errado com sua seleção.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+              #Ex4
+              observeEvent(input$graf_ex4, {
+                      output$plot_ex4 <- renderPlot({
+                          req(input$variavel_ex4x == 'dmo' && input$variavel_ex4y == 'Não se aplica' && input$variavel_ex4_graf == 'Barras')
+                          plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = input$variavel_ex4x))+
+                               geom_bar(stat = 'count')
+                          return(plot)
+                      })
+                      
+>>>>>>> Stashed changes
                   
                   if (!identical(input$variavel_quali, resposta_esperada$variavel_quali)) {
                     mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis qualitativas incorreta")
                   }
                   
+<<<<<<< Updated upstream
                   if (!identical(input$variavel_quanti, resposta_esperada$variavel_quanti)) {
                     mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis quantitativas incorreta")
                   }
@@ -2463,3 +2723,338 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
             }
              
              
+=======
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_ex4x) && is.null(input$variavel_ex4y) && is.null(input$variavel_ex4_graf)) {
+                          return("Você não selecionou as respostas!")}
+                      else {
+                              if (identical(input$variavel_ex4x, 'dmo') && identical(input$variavel_ex4y, 'Não se aplica') && identical(input$variavel_ex4_graf, 'Barras')) {
+                                  return("Resposta correta.")}
+                          else {
+                                      return("Há algo errado com sua seleção.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+              #Ex5
+              observeEvent(input$graf_ex5, {
+                  output$plot_ex5 <- renderPlot({
+                      req(input$variavel_ex5x == 'dist_comun' && input$variavel_ex5y == 'Não se aplica' && input$variavel_ex5_graf == 'Barras')
+                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = input$variavel_ex5x))+
+                          geom_bar(stat = 'count')
+                      return(plot)
+                  })
+                  
+                  
+                  
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_ex5x) && is.null(input$variavel_ex5y) && is.null(input$variavel_ex5_graf)) {
+                          return("Você não selecionou as respostas!")}
+                      else {
+                          if (identical(input$variavel_ex5x, 'dist_comun') && identical(input$variavel_ex5y, 'Não se aplica') && identical(input$variavel_ex5_graf, 'Barras')) {
+                              return("Resposta correta.")}
+                          else {
+                              return("Há algo errado com sua seleção.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+              #Ex6
+              observeEvent(input$graf_ex6, {
+                  output$plot_ex6 <- renderPlot({
+                      req(input$variavel_ex6x == 'grupo' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
+                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex6x, y = input$variavel_ex6y))+
+                          geom_boxplot()
+                      return(plot)
+                  })
+                  
+                  
+                  
+                  mensagem <- reactive({
+                      if (is.null(input$variavel_ex6x) && is.null(input$variavel_ex6y) && is.null(input$variavel_ex6_graf)) {
+                          return("Você não selecionou as respostas!")}
+                      else {
+                          if (identical(input$variavel_ex6x, 'grupo') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
+                              return("Resposta correta.")}
+                          else {
+                              return("Há algo errado com sua seleção.")}}
+                  })
+                  
+                  shinyalert(
+                      title = "",
+                      text = mensagem(),
+                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                  )},
+                  ignoreNULL = T)
+              
+             #Ex7
+             output$tabela_pc <- render_gt({
+                 dados_paralisia%>%
+                     select(perda_audit, grupo)%>%
+                     tbl_summary(
+                         by = 'grupo',
+                         missing = 'no',
+                         digits = 
+                             list(all_continuous() ~ 1,
+                                  all_categorical() ~ c(0,2)),
+                         label = list(
+                             grupo ~ 'Grupo de crianças por condição de saúde',
+                             perda_audit ~ 
+                                 'Perda auditiva'))%>%
+                     modify_header(label = '**Variável**')%>%
+                     modify_footnote(update = starts_with('stat_') ~ 'n (%):
+  frequências absolutas e relativa')%>%
+                     as_gt
+             })
+             
+             observeEvent(input$botao_teste_ex7, {
+                 
+                 req(input$teste_ex7)
+                 if(input$teste_ex7 == 'Qui-Quadrado'){
+                     output$resultado_teste_ex7 <- renderPrint(
+                         chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo)
+                         
+                     )
+                 }
+                 mensagem <- reactive({
+                     if(input$teste_ex7 == 'Qui-Quadrado'){
+                         return('Resposta correta.')}
+                     else{
+                         if(is.null(input$teste_ex7)){
+                             return('Você não selecionou as respostas')}
+                            else{
+                                return('Há algo errado com sua seleção.')}
+                            }
+                         })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )},
+                 ignoreNULL = T)
+                 
+             output$ex7_parteb <- renderUI({
+                 req(input$teste_ex7 == 'Qui-Quadrado')
+                 if(input$teste_ex7 == 'Qui-Quadrado'){
+                     fluidRow(
+                         pickerInput('relacao', 'Há relação entre as variáveis?',
+                                     choices = c('Sim', 'Não')),
+                         actionButton('verificar_teste', 'Verificar')
+                     )
+                 
+                 }
+             })
+             
+             observeEvent(input$verificar_teste, {
+                 mensagem <- reactive({
+                     if(input$relacao == 'Não'){
+                         return('Resposta correta.')}
+                     else{
+                         if(is.null(input$relacao)){
+                             return('Você não selecionou as respostas')}
+                         else{
+                             return('Há algo errado com sua seleção.')}
+                     }
+                 })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )}
+             )
+             
+             #Verificar se as tabelas plotadas são iguais
+             #Ex8
+             output$tabela_ex8_pc <- render_gt({
+                 dados_paralisia%>%
+                     select(dist_comun, grupo)%>%
+                     tbl_summary(
+                         by = 'grupo',
+                         missing = 'no',
+                         digits = 
+                             list(all_continuous() ~ 1,
+                                  all_categorical() ~ c(0,2)),
+                         label = list(
+                             grupo ~ 'Grupo de crianças por condição de saúde',
+                             dist_comun ~ 
+                                 'Distúrbios de Comunicação'))%>%
+                     modify_header(label = '**Variável**')%>%
+                     modify_footnote(update = starts_with('stat_') ~ 'n (%):
+  frequências absolutas e relativa')%>%
+                     as_gt
+             })
+             
+             observeEvent(input$botao_teste_ex8, {
+                 
+                 req(input$teste_ex8)
+                 if(input$teste_ex8 == 'Qui-Quadrado'){
+                     output$resultado_teste_ex8 <- renderPrint(
+                         chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo)
+                         
+                     )
+                 }
+                 mensagem <- reactive({
+                     if(input$teste_ex8 == 'Qui-Quadrado'){
+                         return('Resposta correta.')}
+                     else{
+                         if(is.null(input$teste_ex8)){
+                             return('Você não selecionou as respostas')}
+                         else{
+                             return('Há algo errado com sua seleção.')}
+                     }
+                 })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )},
+                 ignoreNULL = T)
+             
+             output$ex8_parteb <- renderUI({
+                 req(input$botao_teste_ex8)
+                 req(input$teste_ex8 == 'Qui-Quadrado')
+                 if(input$teste_ex8 == 'Qui-Quadrado'){
+                     fluidRow(
+                         pickerInput('relacao_ex8', 'Há relação entre as variáveis?',
+                                     choices = c('Sim', 'Não')),
+                         actionButton('verificar_teste_ex8', 'Verificar')
+                     )
+                     
+                 }
+             })
+             
+             observeEvent(input$verificar_teste_ex8, {
+                 mensagem <- reactive({
+                     if(input$relacao_ex8 == 'Não'){
+                         return('Resposta correta.')}
+                     else{
+                         if(is.null(input$relacao_ex8)){
+                             return('Você não selecionou as respostas')}
+                         else{
+                             return('Há algo errado com sua seleção.')}
+                     }
+                 })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )}
+             )
+             
+             #Ex9
+             observeEvent(input$graf_ex9, {
+                 output$plot_ex9 <- renderPlot({
+                     req(input$variavel_ex9x == 'grupo' && input$variavel_ex9y == 'td_liquido' && input$variavel_ex9_graf == 'Boxplot')
+                     plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex9x, y = input$variavel_ex9y))+
+                         geom_boxplot()
+                     return(plot)
+                 })
+                 
+                 
+                 
+                 mensagem <- reactive({
+                     if (is.null(input$variavel_ex9x) && is.null(input$variavel_ex9y) && is.null(input$variavel_ex9_graf)) {
+                         return("Você não selecionou as respostas!")}
+                     else {
+                         if (identical(input$variavel_ex9x, 'grupo') && identical(input$variavel_ex9y, 'td_liquido') && identical(input$variavel_ex9_graf, 'Boxplot')) {
+                             return("Resposta correta.")}
+                         else {
+                             return("Há algo errado com sua seleção.")}}
+                 })
+                 
+                 shinyalert(
+                     title = "",
+                     text = mensagem(),
+                     type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+                 )},
+                 ignoreNULL = T)
+             
+             output$ex9_parteb <- renderUI({
+                 req(input$variavel_ex9x == 'grupo')
+                 req(input$variavel_ex9y == 'td_liquido')
+                 req(input$variavel_ex9_graf == 'Boxplot')
+                 req(input$graf_ex9)
+                 if(input$variavel_ex9x =='grupo' && input$variavel_ex9y =='td_liquido' && input$variavel_ex9_graf =='Boxplot'){
+                     fluidRow(
+                         pickerInput('teste_ex9', 'Qual é o teste mais adequado?',
+                                     choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
+                         actionButton('verificar_teste_ex9', 'Verificar')
+                     )
+                     
+                         
+                     
+                 }
+                 
+             })
+             
+             observeEvent(input$verificar_teste_ex9, {
+                 
+                 if(input$teste_ex9 == 't de Student'){
+                     output$resultado_teste_ex9 <- renderPrint(
+                         t.test(td_liquido ~ grupo, data = dados_paralisia)
+
+                     )
+                 }
+                 
+                 mensagem <- reactive({
+                     if(input$teste_ex9 == 't de Student'){
+                         return('Resposta correta.')
+                         }
+                     else{
+                         if(is.null(input$teste_ex9)){
+                             return('Você não selecionou as respostas')}
+                         else{
+                             return('Há algo errado com sua seleção.')}
+                     }
+                 })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )}
+                 
+             )
+             
+             output$ex9_partec <- renderUI({
+                 req(input$verificar_teste_ex9)
+                 if(input$teste_ex9 == 't de Student'){
+                     fluidRow(
+                         pickerInput('relacao_ex9', 'As variáveis estão associadas?',
+                                     choices = c('Sim', 'Não')),
+                         actionButton('verificar_relacao_ex9', 'Verificar')
+                         
+                     )
+                 }
+             })
+             
+             observeEvent(input$verificar_relacao_ex9, {
+                 mensagem <- reactive({
+                     if(input$relacao_ex9 == 'Sim'){
+                         return('Resposta correta.')
+                     }
+                     else{
+                         return('Há algo errado com sua seleção')
+                     }
+                 })
+                 shinyalert(
+                     title = '',
+                     text = mensagem(),
+                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+                 )
+             })
+                         
+               
+             
+
+            }
+>>>>>>> Stashed changes

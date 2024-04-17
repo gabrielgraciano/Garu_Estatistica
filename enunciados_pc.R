@@ -133,14 +133,17 @@ enunciados_pc_novo <- list(
   b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão
   associadas ao nível de significância de 5%?",
   
-  "10" = "Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
+  "10" = "<p>Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
   para a relação do tempo de deglutição de alimentos líquidos com o tempo de deglutição
-  de alimentos sólidos. Para você, há indícios de que esses tempos estão relacionados?
-  Utilize a caixa de seleção “Selecione suas respostas” para verificar sua intuição:
-  <br>
+  de alimentos sólidos.<p>
+  
+  <p>Para você, há indícios de que esses tempos estão relacionados?
+  Utilize a caixa de seleção “Selecione suas respostas” para verificar sua intuição:<p>
+  
   a) Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
   para verificar se há relação estatisticamente significante entre essas variáveis?
   <br> 
+  <br>
   b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão
   relacionadas ao nível de significância de 5%?"
 )

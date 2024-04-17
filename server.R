@@ -1533,273 +1533,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 g
               })
               
-              #####################################################################3####33
-              ##################### P R O B A B I L I D A D E ############################
-              ############################################################################
-              
-              output$tabelaProbUI <- renderUI({
-                tags <- NULL
-                if (sum(userData$shortLevels) >= 2) {
-                  tags <- tagList(
-                    fluidRow(
-                      column(6, 
-                             selectInput("probTabVar1", "Variável 1", choices = colnames(userData$data)[userData$shortLevels], selected = colnames(userData$data)[userData$shortLevels][1])
-                      ),
-                      column(6, selectInput("probTabVar2", "Variável 2", choices = colnames(userData$data)[userData$shortLevels], selected = colnames(userData$data)[userData$shortLevels][2]))
-                    ),
-                    tableOutput("tabelaProbDef")
-                  )
-                } else {
-                  tags <- tagList(
-                    column(12, align = "center",
-                           p("O conjunto de dados que você escolheu não tem variáveis qualitativas o 
-                 suficiente para esta função. Escolha outro conjunto de dados ou utilize nosso 
-                 nativo."))
-                  )
-                }
-                
-                tags
-                
-                
-                
-              })
-              
-              output$tabelaProbDef <- renderTable({
-                req(input$probTabVar1)
-                req(input$probTabVar2)
-                req(input$probTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                req(input$probTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                var1 <- input$probTabVar1
-                var2 <- input$probTabVar2
-                
-                tab <- table(userData$data[,colnames(userData$data) == var1], userData$data[,colnames(userData$data) == var2])
-                tab <- as.data.frame.matrix(tab)
-                tab <- cbind(rownames(tab), tab)
-                rownames(tab) <- NULL
-                colnames(tab)[1] <- paste0(var1, "/", var2)
-                tab$Total <- rowSums(tab[-1])
-                tab[,1] <- as.character(tab[,1])
-                tab <- rbind(tab, c("Total", colSums(tab[-1])))
-                tab[,1] <- as.factor(tab[,1])
-                tab
-              }, striped = TRUE, bordered = TRUE, digits = 0, width = "80%")
-              
-              output$calcProbUI <- renderUI({
-                tags <- NULL
-                if (sum(userData$shortLevels) >= 2) {
-                  req(input$probTabVar1)
-                  req(input$probTabVar2)
-                  req(input$probTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                  req(input$probTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                  tags <- tagList(
-                    selectInput("prob_in1", "Probabilidade de: ", 
-                                choices = levels((userData$data[,colnames(userData$data) == input$probTabVar1]))),
-                    radioButtons("probOp", " ", choices = c("União" = "uniao", "Intersecção" = "intersec", 
-                                                            "Apenas dela" = "only"), selected = "only"),
-                    conditionalPanel("input.probOp != 'only'",
-                                     selectInput("prob_in2", "com: ", 
-                                                 choices = levels((userData$data[,colnames(userData$data) == input$probTabVar2]))))
-                  )
-                }
-                
-                tags
-                
-              })
-              
-              output$caixaContaProb <- renderText({
-                text <- "Nada a mostrar."
-                if (sum(userData$shortLevels) >= 2) {
-                  req(input$probTabVar1)
-                  req(input$probTabVar2)
-                  req(input$probTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                  req(input$probTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                  req(input$probOp)
-                  var1 <- input$probTabVar1
-                  var2 <- input$probTabVar2
-                  att1 <- input$prob_in1
-                  att2 <- NULL
-                  letter1 <- substr(input$prob_in1, 1, 2)
-                  letter2 <- "NO_INPUT"
-                  
-                  #numero de ocorrencias primeiro caso
-                  freq1 <- nrow(userData$data[userData$data[!is.na(userData$data[var1]),colnames(userData$data) == var1] == att1,])
-                  tot <- nrow(userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),])
-                  #pode ser que nao tenha segunda variavel
-                  freq2 <- 0
-                  freq12 <- 0
-                  #se houver segunda variavel:
-                  if (input$probOp != "only") {
-                    att2 <- input$prob_in2
-                    letter2 <- substr(att2, 1, 2)
-                    if (letter2 == letter1) {
-                      letter2 <- substr(att2, 1, 4)
-                    }
-                    
-                    freq2 <- nrow(userData$data[userData$data[!is.na(userData$data[var2]),colnames(userData$data) == var2] == att2,])
-                    freq12 <- nrow(userData$data[userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),colnames(userData$data) == var1] == att1 & 
-                                                   userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),colnames(userData$data) == var2] == att2,])
-                    
-                  }
-                  print(letter1)
-                  print(letter2)
-                  text <- paste0(letter1, " = ", att1, "\n")
-                  text <- paste0(text, "P(", letter1, ") = Probabilidade de ", var1, " ser ", att1, "\n")
-                  text <- paste0(text, "P(", letter1, ") = ", 
-                                 freq1,
-                                 "/", tot, " = ", round((freq1/tot), 4), " = ", 
-                                 scales::percent(round((freq1/tot), 4)),
-                                 "\n"
-                  )
-                  
-                  if (letter2 != "NO_INPUT") {
-                    text <- paste0(text, "\n", letter2, " = ", att2, "\n",
-                                   "P(", letter2, ") = Probabilidade de ", var2, " ser ", att2, "\n",
-                                   "P(", letter2, ") = ", freq2,
-                                   "/", tot, " = ", round((freq2/tot), 4), " = ", 
-                                   scales::percent(round((freq2/tot), 4)),"\n"
-                                   
-                    )
-                    
-                    text <- paste0(text, 
-                                   "\nP(", letter1, " ∩ ", letter2, ") =  Probabilidade de ", 
-                                   var1, " ser ", att1, " e ", var2, " ser ", att2, 
-                                   "\nP(", letter1, " ∩ ", letter2, ") = ", freq12, "/", tot, 
-                                   " = ", round((freq12/tot), 4), " = ", 
-                                   scales::percent(round((freq12/tot), 4)), "\n")
-                    
-                    if (input$probOp == "uniao") {
-                      text <- paste0(text, "\nP(", letter1, " ∪ ", 
-                                     letter2, ") = ", "P(", letter1, ") + P(", letter2, ") - P(", letter1, " ∩ ", letter2,
-                                     ") = ", round((freq1/tot), 4), " + ", round((freq2/tot), 4), 
-                                     " - ", round((freq12/tot), 4), " = ", 
-                                     round(((freq1 + freq2 - freq12)/tot), 4), " = ",
-                                     scales::percent(round(((freq1 + freq2 - freq12)/tot), 4)), "\n"
-                      )
-                    }
-                  }
-                }
-                
-                
-                text
-                
-              })
-              
-              
-              output$formulasProb <- renderUI({
-                formula <- ifelse(input$probOp == "uniao", 
-                                  "P(A ∪ B) = $$ P(A) + P(B) - P(A ∩ B) $$",
-                                  ifelse(input$probOp == "intersec", 
-                                         "P(A ∩ B) = $$\\frac{Freq(A, B)}{Total}$$", 
-                                         "P(A) = $$\\frac{Freq(A)}{Total}$$")
-                )
-                withMathJax(helpText(formula))
-              })
-              
-              output$tabelaCondUI <- renderUI({
-                tags <- NULL
-                if (sum(userData$shortLevels) >= 2) {
-                  tags <- tagList(
-                    column(6, selectInput("condTabVar1", "Variável 1", choices = colnames(userData$data)[userData$shortLevels], selected = colnames(userData$data)[userData$shortLevels][1])),
-                    column(6, selectInput("condTabVar2", "Variável 2", choices = colnames(userData$data)[userData$shortLevels], selected = colnames(userData$data)[userData$shortLevels][2])),
-                    tableOutput("tabelaProbCond")
-                  )
-                } else {
-                  tags <- tagList(
-                    column(12, align = "center",
-                           p("O conjunto de dados que você escolheu não tem variáveis qualitativas o 
-                 suficiente para esta função. Escolha outro conjunto de dados ou utilize nosso 
-                 nativo."))
-                  )
-                }
-                
-                tags
-              })
-              
-              
-              #create frequency table
-              output$tabelaProbCond <- renderTable({
-                req(input$condTabVar1)
-                req(input$condTabVar2)
-                req(input$condTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                req(input$condTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                var1 <- input$condTabVar1
-                var2 <- input$condTabVar2
-                
-                tab <- table(userData$data[,colnames(userData$data) == var1], userData$data[,colnames(userData$data) == var2])
-                tab <- as.data.frame.matrix(tab)
-                tab <- cbind(rownames(tab), tab)
-                rownames(tab) <- NULL
-                colnames(tab)[1] <- paste0(var1, "/", var2)
-                tab$Total <- rowSums(tab[-1])
-                tab[,1] <- as.character(tab[,1])
-                tab <- rbind(tab, c("Total", colSums(tab[-1])))
-                tab[,1] <- as.factor(tab[,1])
-                tab
-              }, striped = TRUE, bordered = TRUE, width = "80%")
-              
-              output$caixaContaProbCond <- renderText({
-                text <- NULL
-                if (sum(userData$shortLevels) >= 2) {
-                  req(input$prob_cond1)
-                  req(input$prob_cond2)
-                  req(input$condTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                  req(input$condTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                  
-                  var1 <- input$condTabVar1
-                  var2 <- input$condTabVar2
-                  att1 <- input$prob_cond1
-                  att2 <- input$prob_cond2
-                  tot <- nrow(userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),])
-                  
-                  freq1 <- nrow(userData$data[userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2])
-                                                            ,colnames(userData$data) == var1] == att1,])
-                  freq2 <- nrow(userData$data[userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),
-                                                            colnames(userData$data) == var2] == att2,])
-                  freq12 <- nrow(userData$data[userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),colnames(userData$data) == var1] == att1 & 
-                                                 userData$data[!is.na(userData$data[var1]) & !is.na(userData$data[var2]),colnames(userData$data) == var2] == att2,])
-                  
-                  text <- paste0("A: ", var1, " é ", att1, "\n")
-                  text <- paste0(text, "B: ", var2, " é ", att2, "\n\n")
-                  
-                  text <- paste0(text, "P(A) = ", freq1, "/", tot, " = ", round((freq1/tot), 4), "\n")
-                  text <- paste0(text, "P(B) = ", freq2, "/", tot, "= ", round((freq2/tot), 4), "\n")
-                  text <- paste0(text, "P(A ∩ B) = ", freq12, "/", tot, " = ", round((freq12/tot), 4), "\n\n")
-                  
-                  text <- paste0(text, "P(A | B) = P(A ∩ B)/P(B)\n")
-                  text <- paste0(text, "P(A | B) = ", round((freq12/tot), 4), "/", round((freq2/tot), 4), "\n")
-                  f <- ((freq12/tot)/(freq2/tot))
-                  text <- paste0(text, "P(A | B) = ", round(f, 4), "\n")
-                  text <- paste0(text, "P(A | B) = ", round(f*100, 2), ifelse(!is.nan(f), "%\n", ""))
-                } else {
-                  text <- "Nada a mostrar."
-                }
-                
-                
-                text
-              })
-              
-              output$selectProbCondVar <- renderUI({
-                tags <- NULL
-                if (sum(userData$shortLevels) >= 2) {
-                  req(input$condTabVar1, input$condTabVar2)
-                  req(input$condTabVar1 %in% colnames(userData$data)[userData$shortLevels])
-                  req(input$condTabVar2 %in% colnames(userData$data)[userData$shortLevels])
-                  tags <- tagList(
-                    #column(6, 
-                    selectInput("prob_cond1", "Probabilidade de: ", levels((userData$data[,colnames(userData$data) == input$condTabVar1]))),
-                    selectInput("prob_cond2", "dado que: ", levels((userData$data[,colnames(userData$data) == input$condTabVar2])))
-                    #)#,
-                    #column(6, 
-                    #align = "center", withMathJax("P(A | B) = $$\\frac{P(A ∩ B)}{P(B)} $$")
-                    #)
-                  )
-                }
-                tags
-                
-                
-              })
-              
-              
+             
               ######################################################################
               ####################---I N F E R Ê N C I A---#########################
               ######################################################################
@@ -2206,21 +1940,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 tab
               }, colnames = FALSE, striped = TRUE, bordered = TRUE, width = "100%", align = "c")
               
-              ######Glossário
-              
-              output$glossario_table <- renderDT({
-                datatable(glossario_tab1, options = list(dom = 't', autoWidth = TRUE), callback = JS("table.on('init.dt', function(){ 
-    $('table').addClass('custom-dt');
-  });"))
-              }, width = "90%")
-              
-              
-              observe({
-                # Se a URL possui um fragmento "glossario", então redirecione para a tab "glossario"
-                if (!is.null(input$url_fragment) && input$url_fragment == "glossario") {
-                  js$fakeClick("glossario")
-                }
-              })
+
               
               pergunta_atual <- reactiveVal(1)
               feedback <- reactiveVal(NULL)
@@ -2383,6 +2103,11 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 updateNavbarPage(session, "mainNav", selected = "tabTesteCorr")
               })
               '
+              ##################################################################
+              ##    PRATICA - PC
+              ##################################################################
+              ##################################################################
+              
               numero_do_exercicio <- reactiveVal(0)
               
               
@@ -2418,33 +2143,45 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
               #UI para exercício 1
               output$ex1 <- renderUI({
                 enunciado <- enunciados_pc_novo[[1]]
-
+                
                 fluidRow(
-                  column(4,
+                  column(9,
                          p(HTML(enunciado)),
-                         h3('Classificação de variáveis'),
+                         h3(''),
                          pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
-                                     choices = nomes_exibidos, multiple = TRUE),
+                                     choices = nomes_exibidos, multiple = TRUE)
+                         ),
+                  column(3, actionButton('verif_resp_ex1', 'Verificar')
+                         ),
+                
+                  column(9,
+                         h3(''),
                          pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
                                      choices = nomes_exibidos, multiple = TRUE)
-                  ),
-                  column(8,
-                         actionButton('verificando_respostas', 'Verificar')
                   )
                 )
               })
               
-<<<<<<< Updated upstream
-            
-              
-
-              #Validação das respostas
-              validar_respostas <- reactive({
-                mensagem_de_erro <- character(0)
+              #UI para exercício 2
+              output$ex2 <- renderUI({
+                enunciado <- enunciados_pc_novo[[2]]
                 
-                if (numero_do_exercicio() == 1) {
-                  resposta_esperada <- respostas_esperadas_pc[[paste0("ex", 1)]]
-=======
+                fluidRow(
+                  column(9,
+                         p(HTML(enunciado)),
+                         h3(''),
+                         pickerInput('variavel_ex2', 'Medidas-resumo',
+                                     choices = c('Média', 'Mediana', 
+                                                 'Porcentagem', 'Frequência absoluta',
+                                                 'Desvio-padrão', 'Frequência relativa'), 
+                                     multiple = TRUE)
+                  ),
+                  column(3,
+                         actionButton('verif_resp_ex2', 'Verificar')
+                  )
+                )
+              })
+              
               #UI para exercício 3
               output$ex3 <- renderUI({
                   enunciado <- enunciados_pc_novo[[3]]
@@ -2617,6 +2354,43 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   )
                   
               })
+              
+              #UI para exercício 10
+              
+              output$ex10 <- renderUI({
+                enunciado <- enunciados_pc_novo[[10]]
+                
+                fluidRow(
+                  column(6,
+                         wellPanel(
+                         p(HTML(enunciado)),
+                         ),
+                         pickerInput('variavel_ex10x', 'Eixo x',
+                                     choices = nomes_exibidos,
+                                     multiple = FALSE, align = 'center'),
+                         pickerInput('variavel_ex10y', 'Eixo y',
+                                     choices = nomes_exibidos,
+                                     multiple = FALSE, align = 'center'),
+                         pickerInput('variavel_ex10_graf', 'Tipo de gráfico',
+                                     choices = c('Barras', 'Boxplot', 'Dispersão', align = 'center')
+                         ),
+                         actionButton('graf_ex10', 'Gerar gráfico', align = 'center'),
+                         uiOutput('ex10_parteb', align = 'center'),
+                         uiOutput('ex10_partec', align = 'center')
+                         ),
+                         
+                         column(6, 
+                                plotOutput('plot_ex10'),
+                                h3(''),
+                                verbatimTextOutput('resultado_teste_ex10'),
+                                align = 'center')
+                         
+                  )
+                
+              })
+              
+                  
+              
           
               #Validação das respostas
               
@@ -2685,45 +2459,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                           return(plot)
                       })
                       
->>>>>>> Stashed changes
                   
-                  if (!identical(input$variavel_quali, resposta_esperada$variavel_quali)) {
-                    mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis qualitativas incorreta")
-                  }
                   
-<<<<<<< Updated upstream
-                  if (!identical(input$variavel_quanti, resposta_esperada$variavel_quanti)) {
-                    mensagem_de_erro <- c(mensagem_de_erro, "Seleção de variáveis quantitativas incorreta")
-                  }
-                  
-                  if (input$medidas_resumo_quali != resposta_esperada$medidas_resumo_quali) {
-                    mensagem_de_erro <- c(mensagem_de_erro, "Medida resumo para variáveis qualitativas incorreta")
-                  }
-                  
-                  if (input$medidas_resumo_quanti != resposta_esperada$medidas_resumo_quanti) {
-                    mensagem_de_erro <- c(mensagem_de_erro, "Medida resumo para variáveis quantitativas incorreta")
-                  }
-                }
-                
-                return(mensagem_de_erro)
-              })
-              
-             
-              #Exibe mensagem de erro
-              observeEvent(input$verificando_respostas, {
-                mensagens_erro <- validar_respostas()
-                if (length(mensagens_erro) > 0) {
-                  shinyalert(title = "Erro!", text = mensagens_erro, type = "error")
-                }
-              })
-               
-
-
-              
-            }
-             
-             
-=======
                   mensagem <- reactive({
                       if (is.null(input$variavel_ex4x) && is.null(input$variavel_ex4y) && is.null(input$variavel_ex4_graf)) {
                           return("Você não selecionou as respostas!")}
@@ -3052,9 +2789,117 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
                  )
              })
+             
+             
+             
+             ##############
+             
+             #Ex10
+             observeEvent(input$graf_ex10, {
+               output$plot_ex10 <- renderPlot({
+                 req(input$variavel_ex10x == 'td_liquido' && input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf == 'Dispersão')
+                 plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex10x, y = input$variavel_ex10y))+
+                   geom_point()
+                 return(plot)
+               })
+               
+               
+               
+               mensagem <- reactive({
+                 if (is.null(input$variavel_ex10x) && is.null(input$variavel_ex10y) && is.null(input$variavel_ex10_graf)) {
+                   return("Você não selecionou as respostas!")}
+                 else {
+                   if (identical(input$variavel_ex10x, 'td_liquido') && identical(input$variavel_ex10y, 'td_solido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
+                     return("Resposta correta.")}
+                   else {
+                     return("Há algo errado com sua seleção.")}}
+               })
+               
+               shinyalert(
+                 title = "",
+                 text = mensagem(),
+                 type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+               )},
+               ignoreNULL = T)
+             
+             output$ex10_parteb <- renderUI({
+               req(input$variavel_ex10x == 'td_liquido')
+               req(input$variavel_ex10y == 'td_solido')
+               req(input$variavel_ex10_graf == 'Dispersão')
+               req(input$graf_ex10)
+               if(input$variavel_ex10x =='td_liquido' && input$variavel_ex10y =='td_solido' && input$variavel_ex10_graf =='Dispersão'){
+                 fluidRow(
+                   pickerInput('teste_ex10', 'Qual é o teste mais adequado?',
+                               choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
+                   actionButton('verificar_teste_ex10', 'Verificar')
+                 )
+                 
+                 
+                 
+               }
+               
+             })
+             
+             observeEvent(input$verificar_teste_ex10, {
+               
+               if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
+                 output$resultado_teste_ex10 <- renderPrint(
+                   cor.test(dados_paralisia$td_liquido, dados_paralisia$td_solido,
+                            exact = F, method = 'spearman')
+
+                 )
+               }
+               
+               
+               
+               mensagem <- reactive({
+                 if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
+                   return('Resposta correta.')
+                 }
+                 else{
+                   if(is.null(input$teste_ex10)){
+                     return('Você não selecionou as respostas')}
+                   else{
+                     return('Há algo errado com sua seleção.')}
+                 }
+               })
+               shinyalert(
+                 title = '',
+                 text = mensagem(),
+                 type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+               )}
+               
+             )
+             
+             output$ex10_partec <- renderUI({
+               req(input$verificar_teste_ex10)
+               if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
+                 fluidRow(
+                   pickerInput('relacao_ex10', 'As variáveis estão associadas?',
+                               choices = c('Sim', 'Não')),
+                   actionButton('verificar_relacao_ex10', 'Verificar')
+                   
+                 )
+               }
+             })
+             
+             observeEvent(input$verificar_relacao_ex10, {
+               mensagem <- reactive({
+                 if(input$relacao_ex10 == 'Sim'){
+                   return('Resposta correta.')
+                 }
+                 else{
+                   return('Há algo errado com sua seleção')
+                 }
+               })
+               shinyalert(
+                 title = '',
+                 text = mensagem(),
+                 type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+               )
+             })
                          
                
              
 
             }
->>>>>>> Stashed changes

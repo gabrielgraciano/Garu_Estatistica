@@ -20,7 +20,7 @@ paralisia <-
              <br>
              <p>Existem 9 variáveis tratadas besse banco de dados, sendo elas:
              <br>
-             <p><b>Sexo<b>: menino ou menina
+             <p><b>Sexo: menino ou menina
              <p>Idade: idade em anos completos
              <p>Grupo: grupo das crianças por condição de saúde (SAN ou PC)
              <p>Perda auditiva: existência ou não de perda auditiva
@@ -29,7 +29,8 @@ paralisia <-
              <p>Tempo líquido: tempo, em segundos, para deglutição de 100 ml de suco de laranja
              <p>Tempo pastoso: tempo, em segundos, para deglutição de 140 g de iogurte de morango homogêneo
              e sem pedaços de fruta
-             <p>Tempo sólido: tempo, em segundos, para deglutição de 12 g de bolacha recheada de chocolate"
+             <p>Tempo sólido: tempo, em segundos, para deglutição de 12 g de bolacha recheada de chocolate
+                             </b>"
                         )
                         
                         
@@ -37,7 +38,7 @@ paralisia <-
             ),
             
             
-            mainPanel(
+            
               tabsetPanel(
                 tabPanel('Ex1', uiOutput('ex1')),
                 tabPanel("Ex2", uiOutput('ex2')),
@@ -49,9 +50,9 @@ paralisia <-
                 tabPanel('Ex8', uiOutput('ex8')),
                 tabPanel('Ex9', uiOutput('ex9')),
                 tabPanel('Ex10', uiOutput('ex10'))
-              ),
+              )
               
-            )
+            
             
             
             

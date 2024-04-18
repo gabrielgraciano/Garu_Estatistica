@@ -2145,20 +2145,21 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 enunciado <- enunciados_pc_novo[[1]]
                 
                 fluidRow(
-                  column(9,
-                         p(HTML(enunciado)),
-                         h3(''),
+                  h3(''),
+                  column(6,
+                         wellPanel(
+                         p(HTML(enunciado))
+                         ),
+                         column(12,
                          pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
-                                     choices = nomes_exibidos, multiple = TRUE)
-                         ),
-                  column(3, actionButton('verif_resp_ex1', 'Verificar')
-                         ),
-                
-                  column(9,
-                         h3(''),
+                                     choices = nomes_exibidos, multiple = TRUE),
                          pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
-                                     choices = nomes_exibidos, multiple = TRUE)
+                                     choices = nomes_exibidos, multiple = TRUE),
+                         actionButton('verif_resp_ex1', 'Verificar'),
+                         align = 'center'
+                         )
                   )
+ 
                 )
               })
               
@@ -2167,17 +2168,20 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 enunciado <- enunciados_pc_novo[[2]]
                 
                 fluidRow(
-                  column(9,
-                         p(HTML(enunciado)),
-                         h3(''),
-                         pickerInput('variavel_ex2', 'Medidas-resumo',
-                                     choices = c('Média', 'Mediana', 
-                                                 'Porcentagem', 'Frequência absoluta',
-                                                 'Desvio-padrão', 'Frequência relativa'), 
-                                     multiple = TRUE)
-                  ),
-                  column(3,
-                         actionButton('verif_resp_ex2', 'Verificar')
+                  h3(''),
+                  column(6,
+                         wellPanel(
+                         p(HTML(enunciado))
+                         ),
+                         column(12,
+                                pickerInput('variavel_ex2', 'Medidas-resumo',
+                                            choices = c('Média', 'Mediana', 
+                                                        'Porcentagem', 'Frequência absoluta',
+                                                        'Desvio-padrão', 'Frequência relativa'), 
+                                            multiple = TRUE),
+                                actionButton('verif_resp_ex2', 'Verificar'),
+                                align = 'center'
+                                )
                   )
                 )
               })
@@ -2187,17 +2191,21 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[3]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             h3(''),
-                             pickerInput('variavel_ex3', 'Medidas-resumo',
-                                         choices = c('Média', 'Mediana', 'Porcentagem',
-                                                     'Frequência absoluta', 'Desvio-padrão',
-                                                     'Frequência relativa'),
-                                         multiple = TRUE)
+                    h3(''),
+                      column(6,
+                             wellPanel(
+                             p(HTML(enunciado))
                              ),
-                      column(3,
-                             actionButton('verif_resp_ex3', 'Verificar'))
+                             column(12,
+                                    pickerInput('variavel_ex3', 'Medidas-resumo',
+                                                choices = c('Média', 'Mediana', 'Porcentagem',
+                                                            'Frequência absoluta', 'Desvio-padrão',
+                                                            'Frequência relativa'),
+                                                multiple = TRUE),
+                                    actionButton('verif_resp_ex3', 'Verificar'),
+                                    align = 'center')
+                                    
+                                    )
                   )
               })
               
@@ -2206,25 +2214,27 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[4]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             h3(''),
-                             pickerInput('variavel_ex4x', 'Eixo x',
-                                         choices = nomes_exibidos,
-                                         multiple = TRUE),
-                             pickerInput('variavel_ex4y', 'Eixo y',
-                                         choices = c('Não se aplica', nomes_exibidos)),
-                             pickerInput('variavel_ex4_graf', 'Tipo de gráfico',
-                                         choices = c('Barras', 'Boxplot', 'Dispersão')
-                             ),
-                      
-                      
-                      column(3,
-                             actionButton('graf_ex4', 'Gerar gráfico')),
+                    h3(''),
                       column(6,
-                             plotOutput('plot_ex4'))
-                             
-                  )
+                             wellPanel(
+                             p(HTML(enunciado))
+                             ),
+                             column(12,
+                                    pickerInput('variavel_ex4x', 'Eixo x',
+                                                choices = nomes_exibidos,
+                                                multiple = TRUE),
+                                    pickerInput('variavel_ex4y', 'Eixo y',
+                                                choices = c('Não se aplica', nomes_exibidos)),
+                                    pickerInput('variavel_ex4_graf', 'Tipo de gráfico',
+                                                choices = c('Barras', 'Boxplot', 'Dispersão')),
+                                    actionButton('graf_ex4', 'Gerar gráfico'),
+                                    align = 'center'
+                             )
+                             ),
+                    column(6,
+                           plotOutput('plot_ex4'),
+                           align = 'center')
+            
                   )
               })
               
@@ -2233,26 +2243,29 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[5]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             h3(''),
-                             pickerInput('variavel_ex5x', 'Eixo x',
-                                         choices = nomes_exibidos,
-                                         multiple = TRUE),
-                             pickerInput('variavel_ex5y', 'Eixo y',
-                                         choices = c('Não se aplica', nomes_exibidos)),
-                             pickerInput('variavel_ex5_graf', 'Tipo de gráfico',
-                                         choices = c('Barras', 'Boxplot', 'Dispersão')
+                    h3(''),
+                      column(6,
+                             wellPanel(
+                             p(HTML(enunciado))
                              ),
-                             
-                             
-                             column(3,
-                                    actionButton('graf_ex5', 'Gerar gráfico')),
+                             column(12,
+                                    pickerInput('variavel_ex5x', 'Eixo x',
+                                                choices = nomes_exibidos,
+                                                multiple = TRUE),
+                                    pickerInput('variavel_ex5y', 'Eixo y',
+                                                choices = c('Não se aplica', nomes_exibidos)),
+                                    pickerInput('variavel_ex5_graf', 'Tipo de gráfico',
+                                                choices = c('Barras', 'Boxplot', 'Dispersão')
+                                    ),
+                                    actionButton('graf_ex5', 'Gerar gráfico'),
+                                    align = 'center'
+                             )
+                             ),
                              column(6,
-                                    plotOutput('plot_ex5'))
+                                    plotOutput('plot_ex5'),
+                                    align = 'center')
                              
                       )
-                  )
               })
               
               #UI para exercício 6
@@ -2260,25 +2273,27 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[6]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             h3(''),
-                             pickerInput('variavel_ex6x', 'Eixo x',
-                                         choices = nomes_exibidos,
-                                         multiple = TRUE),
-                             pickerInput('variavel_ex6y', 'Eixo y',
-                                         choices = c('Não se aplica', nomes_exibidos)),
-                             pickerInput('variavel_ex6_graf', 'Tipo de gráfico',
-                                         choices = c('Barras', 'Boxplot', 'Dispersão')
-                             ),
+                    h3(''),
+                    column(6,
+                           wellPanel(
+                             p(HTML(enunciado))
+                           ),
+                           column(12,
+                                  pickerInput('variavel_ex6x', 'Eixo x',
+                                              choices = nomes_exibidos,
+                                              multiple = TRUE),
+                                  pickerInput('variavel_ex6y', 'Eixo y',
+                                              choices = c('Não se aplica', nomes_exibidos)),
+                                  pickerInput('variavel_ex6_graf', 'Tipo de gráfico',
+                                              choices = c('Barras', 'Boxplot', 'Dispersão')
+                                  ),
+                                  actionButton('graf_ex6', 'Gerar gráfico'),
+                                  align = 'center')
+                    ),
+                    column(6,
+                           plotOutput('plot_ex6'))
                              
-                             
-                             column(3,
-                                    actionButton('graf_ex6', 'Gerar gráfico')),
-                             column(6,
-                                    plotOutput('plot_ex6'))
-                             
-                      )
+    
                   )
               })
               
@@ -2287,18 +2302,23 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[7]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             gt_output(outputId = 'tabela_pc'),
-                             h3(''),
-                             pickerInput('teste_ex7', 'Qual é o teste mais adequado?',
-                                         choices = c('Fisher', 'Qui-Quadrado', 't de Student'))
-                  ),
-                  column(9,
-                         actionButton('botao_teste_ex7', 'Verificar'),
-                         verbatimTextOutput('resultado_teste_ex7'),
-                         uiOutput('ex7_parteb'))
-                  
+                    h3(''),
+                      column(6,
+                             wellPanel(
+                             p(HTML(enunciado))
+                             ),
+                             column(12,
+                                    gt_output(outputId = 'tabela_pc'),
+                                    h3(''),
+                                    pickerInput('teste_ex7', 'Qual é o teste mais adequado?',
+                                                choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
+                                    actionButton('botao_teste_ex7', 'Verificar'),
+                                    verbatimTextOutput('resultado_teste_ex7'),
+                                    uiOutput('ex7_parteb'),
+                                    align = 'center'
+                                    )
+                      )
+                    
                   )
               })
               
@@ -2307,52 +2327,59 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[8]]
                   
                   fluidRow(
-                      column(9,
-                             p(HTML(enunciado)),
-                             gt_output(outputId = 'tabela_ex8_pc'),
-                             h3(''),
-                             pickerInput('teste_ex8', 'Qual é o teste mais adequado?',
-                                         choices = c('Fisher', 'Qui-Quadrado', 't de Student'))
-                      ),
-                      column(9,
-                             actionButton('botao_teste_ex8', 'Verificar'),
-                             verbatimTextOutput('resultado_teste_ex8'),
-                             uiOutput('ex8_parteb'))
+                    H3(''),
+                      column(6,
+                             wellPanel(
+                             p(HTML(enunciado))
+                             ),
+                             column(12,
+                                    gt_output(outputId = 'tabela_ex8_pc'),
+                                    h3(''),
+                                    pickerInput('teste_ex8', 'Qual é o teste mais adequado?',
+                                                choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
+                                    actionButton('botao_teste_ex8', 'Verificar'),
+                                    verbatimTextOutput('resultado_teste_ex8'),
+                                    uiOutput('ex8_parteb'),
+                                    align = 'center')
+                      )
                   )
               })
               
               #UI para exercício 9
               output$ex9 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[9]]
+                enunciado <- enunciados_pc_novo[[9]]
+                
+                fluidRow(
+                  h3(''),
+                  column(6,
+                         wellPanel(
+                           p(HTML(enunciado)),
+                         ),
+                         column(12,
+                                pickerInput('variavel_ex9x', 'Eixo x',
+                                            choices = nomes_exibidos,
+                                            multiple = FALSE),
+                                pickerInput('variavel_ex9y', 'Eixo y',
+                                            choices = nomes_exibidos,
+                                            multiple = FALSE),
+                                pickerInput('variavel_ex9_graf', 'Tipo de gráfico',
+                                            choices = c('Barras', 'Boxplot', 'Dispersão')
+                                ),
+                                actionButton('graf_ex9', 'Gerar gráfico'),
+                                uiOutput('ex9_parteb'),
+                                uiOutput('ex9_partec'),
+                                align = 'center')
+                  ),
                   
-                  fluidRow(
-                      fluidRow(
-                          column(9,
-                                 p(HTML(enunciado)),
-                                 h3(''),
-                                 pickerInput('variavel_ex9x', 'Eixo x',
-                                             choices = nomes_exibidos,
-                                             multiple = FALSE),
-                                 pickerInput('variavel_ex9y', 'Eixo y',
-                                             choices = nomes_exibidos),
-                                 pickerInput('variavel_ex9_graf', 'Tipo de gráfico',
-                                             choices = c('Barras', 'Boxplot', 'Dispersão')
-                                 ),
-                                 
-                                 
-                                 column(3,
-                                        actionButton('graf_ex9', 'Gerar gráfico')),
-                                 column(6,
-                                        plotOutput('plot_ex9')),
-                                 column(9,
-                                        uiOutput('ex9_parteb'),
-                                        verbatimTextOutput('resultado_teste_ex9'),
-                                        uiOutput('ex9_partec'))
-                                 
-                          )
-                      )
-                  )
                   
+                  column(6, 
+                         plotOutput('plot_ex9'),
+                         h3(''),
+                         verbatimTextOutput('resultado_teste_ex9'),
+                         align = 'center')
+                  
+                )
+                
               })
               
               #UI para exercício 10
@@ -2361,23 +2388,27 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 enunciado <- enunciados_pc_novo[[10]]
                 
                 fluidRow(
+                  h3(''),
                   column(6,
                          wellPanel(
                          p(HTML(enunciado)),
                          ),
-                         pickerInput('variavel_ex10x', 'Eixo x',
-                                     choices = nomes_exibidos,
-                                     multiple = FALSE, align = 'center'),
-                         pickerInput('variavel_ex10y', 'Eixo y',
-                                     choices = nomes_exibidos,
-                                     multiple = FALSE, align = 'center'),
-                         pickerInput('variavel_ex10_graf', 'Tipo de gráfico',
-                                     choices = c('Barras', 'Boxplot', 'Dispersão', align = 'center')
-                         ),
-                         actionButton('graf_ex10', 'Gerar gráfico', align = 'center'),
-                         uiOutput('ex10_parteb', align = 'center'),
-                         uiOutput('ex10_partec', align = 'center')
-                         ),
+                         column(12,
+                                pickerInput('variavel_ex10x', 'Eixo x',
+                                            choices = nomes_exibidos,
+                                            multiple = FALSE),
+                                pickerInput('variavel_ex10y', 'Eixo y',
+                                            choices = nomes_exibidos,
+                                            multiple = FALSE),
+                                pickerInput('variavel_ex10_graf', 'Tipo de gráfico',
+                                            choices = c('Barras', 'Boxplot', 'Dispersão')
+                                ),
+                                actionButton('graf_ex10', 'Gerar gráfico'),
+                                uiOutput('ex10_parteb'),
+                                uiOutput('ex10_partec'),
+                                align = 'center')
+                  ),
+                         
                          
                          column(6, 
                                 plotOutput('plot_ex10'),
@@ -2509,8 +2540,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
               #Ex6
               observeEvent(input$graf_ex6, {
                   output$plot_ex6 <- renderPlot({
-                      req(input$variavel_ex6x == 'grupo' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex6x, y = input$variavel_ex6y))+
+                      req(input$variavel_ex6x == 'Não se aplica' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
+                      plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y))+
                           geom_boxplot()
                       return(plot)
                   })
@@ -2521,7 +2552,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                       if (is.null(input$variavel_ex6x) && is.null(input$variavel_ex6y) && is.null(input$variavel_ex6_graf)) {
                           return("Você não selecionou as respostas!")}
                       else {
-                          if (identical(input$variavel_ex6x, 'grupo') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
+                          if (identical(input$variavel_ex6x, 'Não se aploca') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
                               return("Resposta correta.")}
                           else {
                               return("Há algo errado com sua seleção.")}}

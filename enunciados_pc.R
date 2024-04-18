@@ -81,71 +81,97 @@ library(tidyverse)
 # Esses são os enunciados novos
 
 enunciados_pc_novo <- list(
-  "1" = "Utilize as caixas de seleção “Classificação de variáveis” 
-  para agrupar as variáveis em qualitativas e quantitativas.",
+  "1" = "<left>
+  <p><b>1)</b> Utilize as caixas de seleção “Classificação de variáveis” 
+  para agrupar as variáveis em <b>qualitativas e quantitativas</b>.<p>
+  </left>",
   
-  "2" = "Utilize a caixa de seleção “Medidas-resumo” para selecionar todas as medidas-resumo
-  adequadas aos tempos de deglutição de alimentos (líquidos, pastosos e sólidos).",
+  "2" = "<left>
+  <p><b>2)</b> Utilize a caixa de seleção “Medidas-resumo” para selecionar <b>todas</b> as medidas-resumo
+  adequadas aos <b>tempos de deglutição de alimentos (líquidos, pastosos e sólidos)</b>.<p>
+  </left>",
   
-  "3" = "Utilize a caixa de seleção “Medidas-resumo”
-  para selecionar todas  as medidas-resumo adequadas ao distúrbio de comunicação.",
+  "3" = "<left>
+  <p><b>3)</b> Utilize a caixa de seleção “Medidas-resumo”
+  para selecionar <b>todas</b>  as medidas-resumo adequadas ao <b>distúrbio de comunicação</b>.<p>
+  </left>",
   
-  "4" = "Utilize as caixas de seleção para construir
-  um gráfico adequado para visualizar o grau de disfunção motora oral (DMO).",
+  "4" = "<left>
+  <p><b>4)</b> Utilize as caixas de seleção para construir
+  um gráfico adequado para visualizar o <b>grau de disfunção motora oral (DMO)</b>.<p>
+  </left>",
   
-  "5" = "Utilize a caixa de seleção “Elementos gráficos” para construir um gráfico
-  adequado para visualizar os distúrbios de comunicação.",
+  "5" = "<left>
+  <p><b>5)</b> Utilize a caixa de seleção “Elementos gráficos” para construir um gráfico
+  adequado para visualizar os <b>distúrbios de comunicação</b>.<p>
+  </left>",
   
-  "6" = "Utilize a caixa de seleção “Elementos gráficos” 
-  para construir um gráfico adequado para visualizar o tempo de deglutição
-  de alimentos líquidos.",
+  "6" = "<left>
+  <p><b>6)</b> Utilize a caixa de seleção “Elementos gráficos” 
+  para construir um gráfico adequado para visualizar o <b>tempo de deglutição
+  de alimentos líquidos</b>.<p>
+  </left>",
   
-  "7" = "A tabela abaixo apresenta a distribuição de perda auditiva pelos grupos de crianças SAN e PC.
-  Para você, há indícios de que a perda auditiva esteja associada à PC? Utilize a caixa de seleção
-  “Selecione suas respostas” para verificar sua intuição:
+  "7" = "<left>
+  <p><b>7)</b> A tabela abaixo apresenta a distribuição de perda auditiva pelos grupos de crianças SAN e PC.<p>
+  
+  <p>Para você, <b>há indícios de que a perda auditiva esteja associada à PC?</b> Utilize a caixa de seleção
+  “Selecione suas respostas” para verificar sua intuição:<p>
   <br>
-  a) Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
+  <b>a)</b> Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
   para verificar se há associação estatisticamente significante entre essas variáveis?
   <br>
-  b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão 
-  associadas ao nível de significância de 5%?",
-  
-  "8" = "A tabela abaixo apresenta os distúrbios de comunicação pelos grupos de
-   crianças SAN e PC. Para você, há indícios de que os distúrbios de comunicação estejam
-  associados à PC? Utilize a caixa de seleção “Selecione suas respostas” para verificar
-  sua intuição:
   <br>
-  a) Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
+  <b>b)</b> De acordo com o resultado do teste, é correto afirmar que as variáveis estão 
+  associadas ao nível de significância de 5%?
+  </left>",
+  
+  "8" = "<left>
+  <p><b>8)</b> A tabela abaixo apresenta os distúrbios de comunicação pelos grupos de
+   crianças SAN e PC.<p>
+  <p>Para você, <b>há indícios de que os distúrbios de comunicação estejam
+  associados à PC?</b> Utilize a caixa de seleção “Selecione suas respostas” para verificar
+  sua intuição:<p>
+  <br>
+  <b>a)</b> Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
   para verificar se há associação estatisticamente significante entre essas variáveis?
   <br>
-  b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão
-  associadas ao nível de significância de 5%?",
+  <br>
+  <b>b)</b> De acordo com o resultado do teste, é correto afirmar que as variáveis estão
+  associadas ao nível de significância de 5%?
+  </left>",
   
-  "9" = "Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
-  para a relação do tempo de deglutição de alimentos líquidos pelos grupos de crianças 
-  PC e SAN. Para você, há indícios de que o tempo de deglutição de alimentos líquidos
+  "9" = "<left>
+  <p><b>9)</b> Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
+  para a relação do <b>tempo de deglutição de alimentos líquidos pelos grupos de crianças 
+  PC e SAN</b>.<p>
+  <p>Para você, há indícios de que o tempo de deglutição de alimentos líquidos
   esteja associado à PC? Utilize a caixa de seleção “Selecione suas respostas” para verificar
-  sua intuição:
+  sua intuição:<p>
   <br>
-  a) Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
-  para verificar se há associação estatisticamente significante entre essas variáveis?
+  <b>a)</b> Sabendo que um dos grupos (PC) <b>não possui tempo de deglutição de alimentos líquidos com distribuição normal</b>, qual é o teste estatístico mais apropriado
+  para verificar se há associação estatisticamente significante entre essas variáveis a um nível de 5%?
   <br>
-  b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão
-  associadas ao nível de significância de 5%?",
+  <br>
+  <b>b)</b> De acordo com o resultado do teste, é correto afirmar que as variáveis estão
+  associadas ao nível de significância de 5%?
+  </left>",
   
-  "10" = "<p>Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
-  para a relação do tempo de deglutição de alimentos líquidos com o tempo de deglutição
-  de alimentos sólidos.<p>
+  "10" = "<left>
+  <p><b>10)</b> Utilize a caixa de seleção “Elementos gráficos” para construir uma visualização
+  para a relação do <b>tempo de deglutição de alimentos líquidos com o tempo de deglutição
+  de alimentos sólidos.</b><p>
   
   <p>Para você, há indícios de que esses tempos estão relacionados?
   Utilize a caixa de seleção “Selecione suas respostas” para verificar sua intuição:<p>
   
-  a) Com um nível de significância de 5%, qual é o teste estatístico mais apropriado
-  para verificar se há relação estatisticamente significante entre essas variáveis?
+  <b>a)</b> Sabendo que <b>ambas as variáveis não possuem distribuição normal</b>, qual é o teste estatístico mais apropriado
+  para verificar se há relação estatisticamente significante entre elas a um nível de 5%?
   <br> 
   <br>
-  b) De acordo com o resultado do teste, é correto afirmar que as variáveis estão
-  relacionadas ao nível de significância de 5%?"
+  <b>b)</b> De acordo com o resultado do teste, é correto afirmar que as variáveis estão
+  relacionadas ao nível de significância de 5%?
+  </left>"
 )
 
 

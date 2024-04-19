@@ -26,11 +26,39 @@ medidas_resumo <-
               ),
               column(6,
                      fluidRow(
+                         column(6, wellPanel(htmlOutput("minimoTitle"),
+                                             actionLink("minimoMostrarMais", "Mostrar mais"),
+                                             hidden(actionLink("minimoMostrarMenos", "Mostrar menos")),
+                                             hidden(p("Observação de menor valor.", id = "minimoTexto")),
+                                             hidden(helpText(id="htMinimo", "Exemplo com os elementos gerados:"),
+                                                    verbatimTextOutput("exMinimo"))
+                         )),
+                       column(6, 
+                              wellPanel(htmlOutput("maximoTitle"),
+                                        actionLink("maximoMostrarMais", "Mostrar mais"),
+                                        hidden(actionLink("maximoMostrarMenos", "Mostrar menos")),
+                                        hidden(p("Observação de maior valor.", id = "maximoTexto")),
+                                        hidden(helpText(id="htMaximo", "Exemplo com os elementos gerados:"),
+                                               verbatimTextOutput("exMaximo"))
+                              ))
+                       ),
+                     fluidRow(
+                       #column(6, 
+                       #      wellPanel(htmlOutput("modaTitle"),
+                       #                 actionLink("modaMostrarMais", "Mostrar mais"),
+                       #                hidden(actionLink("modaMostrarMenos", "Mostrar menos")),
+                       #                 hidden(p("A moda é representada pela observação mais frequente do conjunto da dados. Ou 
+                       #               seja, o valor que aparece mais vezes. Em alguns casos, pode-se ter mais 
+                       #                de uma moda, ou nenhuma.", id = "modaTexto")),
+                       #                hidden(helpText(id="htModa", "Exemplo com os elementos gerados:"),
+                       #                        verbatimTextOutput("exModa"))
+                       #      )),
+
                        column(6, 
                               wellPanel(htmlOutput("mediaTitle"),
                                         actionLink("mediaMostrarMais", "Mostrar mais"),
                                         hidden(actionLink("mediaMostrarMenos", "Mostrar menos")),
-                                        hidden(p("A média aritmética, medida mais familiar, é a soma dos valores das 
+                                        hidden(p("A média aritmética é a soma dos valores das 
                                       observações dividido pela quantidade de observações.", id = "mediaTexto")),
                                         hidden(uiOutput("mediaExplain")),
                                         hidden(helpText(id="htMedia", "Exemplo com os elementos gerados:"),
@@ -48,35 +76,25 @@ medidas_resumo <-
                                            hidden(helpText(id="htMediana", "Exemplo com os elementos gerados:"),
                                                   verbatimTextOutput("exMediana"))
                        ))
+                       
                      ),
                      fluidRow(
-                       column(6, 
-                              wellPanel(htmlOutput("modaTitle"),
-                                        actionLink("modaMostrarMais", "Mostrar mais"),
-                                        hidden(actionLink("modaMostrarMenos", "Mostrar menos")),
-                                        hidden(p("A moda é representada pela observação mais frequente do conjunto. Ou 
-                                       seja, o valor que aparece mais vezes. Em alguns casos, pode-se ter mais 
-                                       de uma moda.", id = "modaTexto")),
-                                        hidden(helpText(id="htModa", "Exemplo com os elementos gerados:"),
-                                               verbatimTextOutput("exModa"))
-                              )),
-                       column(6, wellPanel(htmlOutput("minimoTitle"),
-                                           actionLink("minimoMostrarMais", "Mostrar mais"),
-                                           hidden(actionLink("minimoMostrarMenos", "Mostrar menos")),
-                                           hidden(p("Observação de menor valor.", id = "minimoTexto")),
-                                           hidden(helpText(id="htMinimo", "Exemplo com os elementos gerados:"),
-                                                  verbatimTextOutput("exMinimo"))
-                       ))
+                         column(6, 
+                                wellPanel(htmlOutput("quantilTitle"),
+                                          actionLink("quantilMostrarMais", "Mostrar mais"),
+                                          hidden(actionLink("quantilMostrarMenos", "Mostrar menos")),
+                                          hidden(p(" Os quartis dividem o conjunto de obersvações em quatro partes iguais.
+                                        A mediana, corresponde ao segundo quartil, pois divide o conjunto de dados ordenado em dois.
+                                        A observação que deixa 25% dos dados abaixo dela, é chamada de primeiro quartil.
+                                        Já a observação que deixa 75% dos dados abaixo dela, é denominada de terceiro quartil.",
+                                                   id = "quantilTexto")),
+                                          hidden(uiOutput("quantilExplain")),
+                                          hidden(helpText(id="htQuantil", "Exemplo com os elementos gerados:"),
+                                                 verbatimTextOutput("exQuantil"))
+                                ))
                      ),
                      fluidRow(
-                       column(6, 
-                              wellPanel(htmlOutput("maximoTitle"),
-                                        actionLink("maximoMostrarMais", "Mostrar mais"),
-                                        hidden(actionLink("maximoMostrarMenos", "Mostrar menos")),
-                                        hidden(p("Observação de maior valor.", id = "maximoTexto")),
-                                        hidden(helpText(id="htMaximo", "Exemplo com os elementos gerados:"),
-                                               verbatimTextOutput("exMaximo"))
-                              )),
+                         
                        column(6, wellPanel(htmlOutput("varianciaTitle"),
                                            actionLink("varianciaMostrarMais", "Mostrar mais"),
                                            hidden(actionLink("varianciaMostrarMenos", "Mostrar menos")),
@@ -84,15 +102,14 @@ medidas_resumo <-
                                         informações suficientes sobre o conjunto de observações. Afinal,
                                         as medidas anteriores são <strong>medidas de posição</strong>. É interessente
                                         analisarmos <strong>medidas de dispersão</strong>, como a variância. Esta representa
-                                        o quão desviados os dados estão de sua média. Para isso, precisamos
+                                        o quão distantes os dados estão de sua média. Para isso, precisamos
                                         calcular a distância de cada elemento da média, somar o quadrado dessas
                                         distâncias e dividir pelo número de observações. </p>"),
                                            hidden(uiOutput("varianciaExplain")),
                                            hidden(helpText(id="htVariancia", "Exemplo com os elementos gerados:"),
                                                   verbatimTextOutput("exVariancia"))
-                       ))
-                     ),
-                     fluidRow(
+                       )),
+                     
                        column(6, 
                               wellPanel(htmlOutput("dpTitle"),
                                         actionLink("dpMostrarMais", "Mostrar mais"),
@@ -105,33 +122,22 @@ medidas_resumo <-
                                         hidden(uiOutput("dpExplain")),
                                         hidden(helpText(id="htDp", "Exemplo com os elementos gerados:"),
                                                verbatimTextOutput("exDp"))
-                              )),
-                       column(6, wellPanel(htmlOutput("epTitle"),
-                                           actionLink("epMostrarMais", "Mostrar mais"),
-                                           hidden(actionLink("epMostrarMenos", "Mostrar menos")),
-                                           hidden(p("Quando tratamos de população e amostras, o erro padrão é utilizado 
-                                          como uma medida de variação entre a média da amostra e a média da 
-                                          população. Ou seja, é uma medida que ajuda a calcular a confiabilidade 
-                                          da amostra e da média amostral calculada. Para obtê-lo, basta dividir o 
-                                          desvio padrão pela raiz quadrada do tamanho amostral.", id = "epTexto")),
-                                           hidden(uiOutput("epExplain")),
-                                           hidden(helpText(id="htEp", "Exemplo com os elementos gerados:"),
-                                                  verbatimTextOutput("exEp"))
-                       ))
-                     ),
+                              ))
+                       #column(6, wellPanel(htmlOutput("epTitle"),
+                    #                       actionLink("epMostrarMais", "Mostrar mais"),
+                     #                      hidden(actionLink("epMostrarMenos", "Mostrar menos")),
+                     #                      hidden(p("Quando tratamos de população e amostras, o erro padrão é utilizado 
+                     #                     como uma medida de variação entre a média da amostra e a média da 
+                     #                     população. Ou seja, é uma medida que ajuda a calcular a confiabilidade 
+                     #                     da amostra e da média amostral calculada. Para obtê-lo, basta dividir o 
+                     #                     desvio padrão pela raiz quadrada do tamanho amostral.", id = "epTexto")),
+                     #                      hidden(uiOutput("epExplain")),
+                     #                     hidden(helpText(id="htEp", "Exemplo com os elementos gerados:"),
+                     #                            verbatimTextOutput("exEp"))
+                     #  ))
+                      ),
                      fluidRow(
-                       column(6, 
-                              wellPanel(htmlOutput("quantilTitle"),
-                                        actionLink("quantilMostrarMais", "Mostrar mais"),
-                                        hidden(actionLink("quantilMostrarMenos", "Mostrar menos")),
-                                        hidden(p("Foi dito acima que a mediana é a medida que divide os valores do conjunto, 
-                                       deixando metade deles abaixo e metade acima. Um quantil é uma generalização dessa 
-                                       ideia, onde define-se uma proporção p, 0 < p < 1, cujo p-quantil divide o conjunto 
-                                       deixando 100p% das observações abaixo dele.", id = "quantilTexto")),
-                                        hidden(uiOutput("quantilExplain")),
-                                        hidden(helpText(id="htQuantil", "Exemplo com os elementos gerados:"),
-                                               verbatimTextOutput("exQuantil"))
-                              )),
+                       
                        column(6, 
                               helpText("Fonte: Morettin, P. and Bussab, W. (2000). Estatística Básica (7a. ed.). Editora Saraiva."))
                      )

@@ -52,8 +52,8 @@ example_dataframe <- as.data.frame(rbind(
   c("Ano letivo", "1, 2, 3, 4...", "Quantitativa Discreta"),
   c("Peso (kg)", "61,2; 85; 119,3; ...", "Quantitativa Contínua"),
   c("Altura (m)", "1,75; 1,67; 1,68; ...", "Quantitativa Contínua"),
-  c("Idade (anos)", "17, 21, 20,...", "Quantitativa Contínua"),
-  c("Trabalho", "'Tempo Integral', 'Meio Período', 'Não trabalha'", "Qualitativa Nominal"),
+  c("Idade (anos)", "17, 21, 20,...", "Quantitativa Discreta"),
+  c("Trabalho", "'Tempo Integral', 'Meio Período', 'Não trabalha'", "Qualitativa Ordinal"),
   c("Relacionamento", "'Solteiro', 'Em um relacionamento', 'Morando junto', ...", "Qualitativa Nominal"),
   c("Cozinha", "'Sempre', 'Quase todo dia', 'Nunca', ...", "Qualitativa Ordinal"),
   c("Come Fora", "'Sempre', 'Quase todo dia', 'Nunca', ...", "Qualitativa Ordinal"),
@@ -70,21 +70,43 @@ example_dataframe <- as.data.frame(rbind(
 
 colnames(example_dataframe) <- c("Variável", "Possíveis Valores", "Tipo de Variável")
 
-tab_frequencia_relacionamento <- as.data.frame(table(data$Relacionamento))
-tab_frequencia_relacionamento$prop <- round(tab_frequencia_relacionamento$Freq/sum(tab_frequencia_relacionamento$Freq), digits = 4)
-tab_frequencia_relacionamento$porc <- scales::percent(tab_frequencia_relacionamento$prop)
-colnames(tab_frequencia_relacionamento) <- c("Relacionamento", "Frequência", "Proporção", "Porcentagem")
+## Tabela de frequencias Exemplo 1
 
+tab_frequencia_relacionamento <- as.data.frame(table(data$Relacionamento))
+tab_frequencia_relacionamento$prop <- round(tab_frequencia_relacionamento$Freq/sum(tab_frequencia_relacionamento$Freq), digits = 3)
+tab_frequencia_relacionamento$porc <- scales::percent(tab_frequencia_relacionamento$prop)
+colnames(tab_frequencia_relacionamento) <- c("Relacionamento", "Frequência Absoluta", "Proporção", "Porcentagem")
+tab_frequencia_relacionamento$Relacionamento <- as.character(tab_frequencia_relacionamento$Relacionamento)
+tab_frequencia_relacionamento[4,] <- c(
+    "Total", sum(tab_frequencia_relacionamento[,2]), "1.000", "1.0%"
+)
+
+
+##Tabela de frequencias Exemplo 3
 freq_peso <- cut(data$Peso, breaks = c(45, 60, 75, 90, 105, 120))
-tab_frequencia_peso <- as.data.frame(with(data, table(freq_peso, useNA = 'ifany')))
-tab_frequencia_peso$prop <- round(tab_frequencia_peso$Freq/sum(tab_frequencia_peso$Freq), digits = 4)
+tab_frequencia_peso <- as.data.frame(with(data, table(freq_peso, useNA = 'no')))
+tab_frequencia_peso$prop <- round(tab_frequencia_peso$Freq/sum(tab_frequencia_peso$Freq), digits = 3)
 tab_frequencia_peso$porc<- scales::percent(tab_frequencia_peso$prop) 
 colnames(tab_frequencia_peso) <- c("Faixa de peso", "Frequência", "Proporção", "Porcentagem")
+tab_frequencia_peso$`Faixa de peso` <- as.character(tab_frequencia_peso$`Faixa de peso`)
+tab_frequencia_peso[dim(tab_frequencia_peso)[1]+1,] <- c(
+    "Total", sum(tab_frequencia_peso[,2]), "1.000", "1.0%"
+)
+
+
+### Tabela de frequencias Exemplo 2
 
 tab_frequencia_ano_letivo <- as.data.frame(table(data$`Ano letivo`))
-tab_frequencia_ano_letivo$prop <- round(tab_frequencia_ano_letivo$Freq/sum(tab_frequencia_ano_letivo$Freq), digits = 4)
+tab_frequencia_ano_letivo$prop <- round(tab_frequencia_ano_letivo$Freq/sum(tab_frequencia_ano_letivo$Freq), digits = 3)
 tab_frequencia_ano_letivo$porc <- scales::percent(tab_frequencia_ano_letivo$prop)
 colnames(tab_frequencia_ano_letivo) <- c("Ano Letivo", "Frequência", "Proporção", "Porcentagem")
+tab_frequencia_ano_letivo$`Ano Letivo` <- 
+    as.character(tab_frequencia_ano_letivo$`Ano Letivo`)
+tab_frequencia_ano_letivo[5,] <- c(
+    "Total", sum(tab_frequencia_ano_letivo[,2]), "1.000", "1.0%"
+)
+
+
 
 #tabela culinária sexo (DEPRECATED)
 
@@ -121,3 +143,4 @@ native_numbers <- sapply(data, is.numeric) | sapply(data, is.integer)
 native_shortLevels <- sapply(data, nlevels) < 6 & sapply(data, is.factor)
 native_continuous <- sapply(data, is.numeric)
 print(native_shortLevels)
+

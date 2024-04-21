@@ -221,11 +221,11 @@ medium_cyan <- '#3db9bf'
               }, deleteFile = FALSE)
               
               output$calcFrequencia <- renderText({
-                "Frequência: Número de ocorrências de determinado valor"
+                "Frequência absoluta: Número de ocorrências de determinada categoria"
               })
               
               output$calcProporcao <- renderText({
-                "Proporção: Frequência dividida pelo número total de ocorrências"
+                "Proporção: Frequência absoluta dividida pelo número total de ocorrências"
               })
               
               output$tabelaFreqRelacionamento <- renderTable(tab_frequencia_relacionamento,
@@ -575,7 +575,7 @@ medium_cyan <- '#3db9bf'
               })
               
               output$quantilTitle <- renderText({
-                paste0("<h4> Quantis </h4>")
+                paste0("<h4> Quartis </h4>")
               })
               
               output$exQuantil <- renderText({
@@ -585,20 +585,20 @@ medium_cyan <- '#3db9bf'
                 
                 if (isEven) {
                   text <- paste0(text, 
-                                 paste0("0.25 quantil = ", elementos[ceiling(0.25*length(elementos))], ", o "),
+                                 paste0("0.25 quartil = ", elementos[ceiling(0.25*length(elementos))], ", o "),
                                  ceiling(0.25*length(elementos)), "º elemento, pois divide 25% dos elementos abaixo dele.\n",
-                                 "0.5 quantil (mediana) = (", elementos[length(elementos)/2] , " + ", elementos[(length(elementos)/2) + 1], 
+                                 "0.5 quartil (mediana) = (", elementos[length(elementos)/2] , " + ", elementos[(length(elementos)/2) + 1], 
                                  ")/2 = ", median(elementos), "\n",
-                                 "0.75 quantil = ", elementos[ceiling(0.75*length(elementos))], ", o ",
+                                 "0.75 quartil = ", elementos[ceiling(0.75*length(elementos))], ", o ",
                                  ceiling(0.75*length(elementos)), "º elemento, pois divide 75% dos elementos abaixo dele.\n"
                   )
                 } else {
                   text <- paste0(text, 
-                                 "0.25 quantil = (",  elementos[floor(0.25*length(elementos))] , " + ", elementos[ceiling(0.25*length(elementos))], 
+                                 "0.25 quartil = (",  elementos[floor(0.25*length(elementos))] , " + ", elementos[ceiling(0.25*length(elementos))], 
                                  ")/2 = ", as.vector(quantile(elementos))[2], "\n",
-                                 "0.5 quantil (mediana) = ", elementos[ceiling(0.5*length(elementos))], ", o ",
+                                 "0.5 quartil (mediana) = ", elementos[ceiling(0.5*length(elementos))], ", o ",
                                  ceiling(0.5*length(elementos)), "º elemento, pois divide metade dos elementos abaixo dele.\n",
-                                 "0.75 quantil = (",  elementos[floor(0.75*length(elementos))] , " + ", elementos[ceiling(0.75*length(elementos))],
+                                 "0.75 quartil = (",  elementos[floor(0.75*length(elementos))] , " + ", elementos[ceiling(0.75*length(elementos))],
                                  ")/2 = ", as.vector(quantile(elementos))[4], "\n"
                   )
                 }
@@ -642,7 +642,7 @@ medium_cyan <- '#3db9bf'
               output$uiGrafQual <- renderUI({
                 tags <- tagList(h3(strong("Gráficos para variáveis qualitativas")))
                 if (sum(userData$shortLevels) >= 1) {
-                  tags <- tagList(tags, selectInput("varGrafQual", "Variável", choices = colnames(userData$data)[userData$shortLevels]))
+                  tags <- tagList(tags, selectInput("varGrafQual", "Variável", choices = colnames(data)[userData$shortLevels]))
                 }
                 tags <- tagList(
                   tags,
@@ -714,9 +714,9 @@ medium_cyan <- '#3db9bf'
                     if (input$varGrafQual %in% c( "Trabalha")) {
                       tags <- tagList(
                         h4(strong("Gráfico de Barras")),
-                               plotOutput("grafBarras"))
+                        plotOutput("grafBarras"))
                     }
-                      
+                    
                     else {
                       tags <- tagList(
                         h4(strong("Gráfico de Barras")),
@@ -1533,7 +1533,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 g
               })
               
-             
+              
               ######################################################################
               ####################---I N F E R Ê N C I A---#########################
               ######################################################################
@@ -2817,7 +2817,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              
              output$ex9_partec <- renderUI({
                  req(input$verificar_teste_ex9)
-                 if(input$teste_ex9 == 't de Student'){
+                 if(input$teste_ex9 == 'Mann-Whitney'){
                      fluidRow(
                          pickerInput('relacao_ex9', 'As variáveis estão associadas?',
                                      choices = c('Sim', 'Não')),

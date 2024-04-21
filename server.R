@@ -2754,8 +2754,10 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                  req(input$graf_ex9)
                  if(input$variavel_ex9x =='grupo' && input$variavel_ex9y =='td_liquido' && input$variavel_ex9_graf =='Boxplot'){
                      fluidRow(
+                       
+                       verbatimTextOutput('resultado_teste_norm_ex9'),
                          pickerInput('teste_ex9', 'Qual é o teste mais adequado?',
-                                     choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
+                                     choices = c('Mann-Whitney', 'Qui-Quadrado', 't de Student')),
                          actionButton('verificar_teste_ex9', 'Verificar')
                      )
                      
@@ -2765,17 +2767,37 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                  
              })
              
+             observeEvent(input$graf_ex9, {
+               if(input$variavel_ex9x =='grupo' && input$variavel_ex9y =='td_liquido' && input$variavel_ex9_graf =='Boxplot'){
+                 output$resultado_teste_norm_ex9 <- renderPrint({
+                   c(
+                   shapiro.test(SAN$td_liquido),
+                   shapiro.test(PC$td_liquido)
+                   )
+                 })
+               }
+             })
+             
+             SAN <- filter(dados_paralisia, grupo == 'SAN')
+             PC <- filter(dados_paralisia, grupo == 'PC')
+              
+             
+             
+                 
+             
+             
              observeEvent(input$verificar_teste_ex9, {
                  
-                 if(input$teste_ex9 == 't de Student'){
+                 if(input$teste_ex9 == 'Mann-Whitney'){
                      output$resultado_teste_ex9 <- renderPrint(
-                         t.test(td_liquido ~ grupo, data = dados_paralisia)
+                         wilcox.test(td_liquido ~ grupo, alternative = 'two.sided',
+                                     conf.level = 0.95, data = dados_paralisia)
 
                      )
                  }
                  
                  mensagem <- reactive({
-                     if(input$teste_ex9 == 't de Student'){
+                     if(input$teste_ex9 == 'Mann-Whitney'){
                          return('Resposta correta.')
                          }
                      else{
@@ -2823,6 +2845,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              
              
              
+             
              ##############
              
              #Ex10
@@ -2860,6 +2883,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                req(input$graf_ex10)
                if(input$variavel_ex10x =='td_liquido' && input$variavel_ex10y =='td_solido' && input$variavel_ex10_graf =='Dispersão'){
                  fluidRow(
+                   verbatimTextOutput('resultado_teste_norm_ex10'),
                    pickerInput('teste_ex10', 'Qual é o teste mais adequado?',
                                choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
                    actionButton('verificar_teste_ex10', 'Verificar')
@@ -2869,6 +2893,15 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                  
                }
                
+             })
+             
+             observeEvent(input$graf_ex10, {
+               if(input$variavel_ex10x =='td_liquido' && input$variavel_ex10y =='td_solido' && input$variavel_ex10_graf =='Dispersão'){
+                 output$resultado_teste_norm_ex10 <- renderPrint({
+                   c(shapiro.test(dados_paralisia$td_liquido),
+                     shapiro.test(dados_paralisia$td_solido))
+                 })
+               }
              })
              
              observeEvent(input$verificar_teste_ex10, {

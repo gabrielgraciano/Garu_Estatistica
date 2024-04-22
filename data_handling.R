@@ -16,6 +16,17 @@ data$Relacionamento <- revalue(data$Relacionamento, c("Solteirx" = "Solteiro",
                                                       "Casadx" = "Casado"))
 data$Altura <- as.numeric(unlist(altura))
 
+
+
+#Alterações - Gabriel
+data$Sexo <- factor(data$Sexo)
+data$`Pratica esportes` <- factor(data$`Pratica esportes`)
+data$`Culinária favorita` <- factor(data$`Culinária favorita`)
+data$`Toma vitaminas` <- factor(data$`Toma vitaminas`)
+
+#Fim das alterações - Gabriel
+
+
 data$Idade <- idade$Idade
 data <- cbind(data, labs)
 colnames(data)[c(16:21)] <- c("HDL", "LDL", "Triglicérides", "Álcool: Consumo mensal", 
@@ -125,13 +136,15 @@ tab_frequencia_ano_letivo[5,] <- c(
 #handling NA
 #sapply(data, function(x) sum(is.na(x)))
 
+
+
+
+
 data[is.na(data$Peso),]$Peso <- mean(data$Peso, na.rm = TRUE)
 data[is.na(data$Trabalha),]$Trabalha <- "Não trabalha"
 data[is.na(data$Relacionamento),]$Relacionamento <- "Solteiro"
 data[is.na(data$Cozinha),]$Cozinha <- "Às vezes"
-data$`Culinária favorita` <- as.character(data$`Culinária favorita`)
-data$`Culinária favorita`[is.na(data$`Culinária favorita`)] <- "Nenhuma"
-data$`Culinária favorita` <- as.factor(data$`Culinária favorita`)
+#Gabriel: retirei o comando que trocava NA por nenhuma
 data$`Pratica esportes`[is.na(data$`Pratica esportes`)] <- "Não"
 data$Peso <- round(data$Peso)
 

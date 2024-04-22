@@ -53,6 +53,7 @@ userData <- reactiveValues(data=data, custom=FALSE, factors=native_factors,
                            numbers = native_numbers, shortLevels = native_shortLevels,
                            continuous = native_continuous, uploaded = FALSE)
 
+
 loaded <- reactiveValues()
 
 
@@ -642,7 +643,7 @@ medium_cyan <- '#3db9bf'
               output$uiGrafQual <- renderUI({
                 tags <- tagList(h3(strong("Gráficos para variáveis qualitativas")))
                 if (sum(userData$shortLevels) >= 1) {
-                  tags <- tagList(tags, selectInput("varGrafQual", "Variável", choices = colnames(data)[userData$shortLevels]))
+                  tags <- tagList(tags, selectInput("varGrafQual", "Variável", choices = colnames(userData$data)[userData$shortLevels]))
                 }
                 tags <- tagList(
                   tags,
@@ -710,14 +711,7 @@ medium_cyan <- '#3db9bf'
                                plotOutput("grafBarras")),
                         column(6, h4(strong("Gráfico de Pizza")),
                                plotOutput("grafPizza")))
-                    }
-                    if (input$varGrafQual %in% c( "Trabalha")) {
-                      tags <- tagList(
-                        h4(strong("Gráfico de Barras")),
-                        plotOutput("grafBarras"))
-                    }
-                    
-                    else {
+                    } else {
                       tags <- tagList(
                         h4(strong("Gráfico de Barras")),
                         plotOutput("grafBarras"),
@@ -801,6 +795,8 @@ medium_cyan <- '#3db9bf'
                 
                 g
               })
+              
+              
               
               output$grafPizza <- renderPlot({
                 selData <- getQualPlotData()
@@ -1930,12 +1926,15 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                              c("Cozinha", "Frequência em que o aluno costuma cozinhar, de nunca até sempre."),
                              c("Come fora", "Frequência em que o aluno come fora de casa, em algum restaurante."),
                              c("Percepção de saúde", "Como o aluno classifica, de 1 a 10, sua saúde, sendo 1 péssima e 10 excelente."), 
-                             c("Culinária favorita", "Tipo de culinária preferida do aluno"),
+                          #Retirei culinária favorita - Gabriel
                              c("Vegetais nas refeições", "Frequência em que o aluno tem vegetais como parte de suas refeições"),
                              c("Pratica exercícios", "Frequência em que o aluno se exercita."),
                              c("Pratica esportes", "Se o aluno participa de algum esporte ou não."),
                              c("Toma vitaminas", "Se o aluno toma vitaminas."),
-                             c("Altura", "Altura do aluno, em metros."))
+                             c("Altura", "Altura do aluno, em metros."),
+                          c('Álcool: consumo mensal', 'Frequência de consumo de álcool por mês.'),
+                          c('Álcool: dose', 'Dose de álcool por consumo.'),
+                          c('Consumo tabaco', 'Quantos cigarros o aluno consome em um dia.'))#Não tenho certeza desse período - Gabriel
                 tab <- as.data.frame(tab)
                 tab
               }, colnames = FALSE, striped = TRUE, bordered = TRUE, width = "100%", align = "c")

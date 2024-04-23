@@ -27,6 +27,7 @@ source('questionario.R')
 source('perguntaspibiti.R')
 source('expraticos.R')
 source('enunciados_pc.R')
+source('data_cleaning_paralisia.R')
 
 useShinyalert(force=TRUE)
 

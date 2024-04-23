@@ -750,7 +750,7 @@ medium_cyan <- '#3db9bf'
                     ),
                     column(6, h4(strong("Boxplot")),
                            plotOutput("boxplot"))),
-                    fluidRow(column(6,
+                    fluidRow(column(8,
                                     uiOutput("histAlt")))
                   )
                 } else {
@@ -841,7 +841,9 @@ medium_cyan <- '#3db9bf'
                     guides(fill=FALSE) +
                     scale_x_discrete(name = input$varGrafQuant) +
                     scale_y_continuous(name = "Frequência absoluta", limits = c(0, max(gd$ymax) + 5))
-                } else {
+                } 
+
+                else {
                   selData <- data.frame(userData$data[,colnames(userData$data) == input$varGrafQuant])
                   colnames(selData) <- c("Var")
                   #N <- ifelse(input$varGrafQuant == "Altura", 0.05, 5)
@@ -853,14 +855,16 @@ medium_cyan <- '#3db9bf'
                   seq <- (x_breaks + (gap/2))[-length(x_breaks)]
                   freqdata <- data.frame(seq, freq)
                   print(freqdata)
-                  g <- ggplot(data=freqdata, aes(x=seq, y=freq)) + 
+                  
+                  g <- ggplot(data=freqdata, aes(x=seq, y=freq)) +
                     geom_bar(stat="identity", colour="black", fill = "#4cA6AA", width = gap) + 
                     theme_classic() +
                     scale_x_continuous(breaks = x_breaks, labels = round(x_breaks, ifelse(amplitude < 10, abs(floor(log10(amplitude))) + 1, 0))) + 
                     ylab("Frequência Relativa") +
                     xlab(input$varGrafQuant) + 
                     geom_text(data=freqdata,
-                              aes(x=seq, y=freq + 0.008, label=scales::percent(freq)), size = 3.8)
+                              aes(x=seq, y=freq + 0.008, label=scales::percent(freq)), size = 3.0)
+
                   
                 }
                 g
@@ -926,6 +930,7 @@ medium_cyan <- '#3db9bf'
                     geom_bar(stat="identity", colour = "black", fill = "#4cA6AA") +
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
+                    scale_x_discrete(expand = expansion(add = .01)) +
                     theme_classic() + 
                     ylab("Frequência Relativa") + 
                     xlab(input$varGrafQuant)
@@ -939,13 +944,13 @@ medium_cyan <- '#3db9bf'
                 req(input$varGrafQuant %in% colnames(userData$data))
                 if (!userData$custom && input$varGrafQuant %in% c("Ano letivo", "Percepção de Saúde")) {
                   tags <- tagList(fluidRow(
-                    column(6, 
+                    column(8, 
                            h4(strong(("Histograma")),
                               plotOutput("histogramaAlt"),
                               helpText("Mesmo sendo uma variável quantitativa discreta, pode-se utilizar o 
                                histograma além do gráfico de barras."))
                     ), 
-                    column(6,
+                    column(8,
                            p("Separação de valores em intervalos"),
                            tableOutput("tabHist")
                     )

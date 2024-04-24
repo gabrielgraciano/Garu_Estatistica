@@ -28,6 +28,7 @@ source('perguntaspibiti.R')
 source('expraticos.R')
 source('enunciados_pc.R')
 source('data_cleaning_paralisia.R')
+source('conjunto_dados.R')
 
 useShinyalert(force=TRUE)
 
@@ -42,6 +43,8 @@ dashboardPage(
     sidebarMenu(
       menuItem('Início', tabName = 'inicio', icon = icon("home", lib = "font-awesome")),
       
+      menuItem('Dados', tabName = 'conjunto_dados', icon = icon('dice', lib = 'font-awesome')),
+      
       menuItem('Descritiva', icon = icon("table", lib = "font-awesome"),
                menuSubItem('Tipos de Variáveis', tabName = 'tipos_variaveis'),
                menuSubItem('Tabela de Frequências', tabName = 'tabela_frequencias'),
@@ -53,7 +56,7 @@ dashboardPage(
                menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
       
       
-      menuItem('Glossário', tabName = 'glossario', icon = icon("font", lib = "font-awesome")),
+     # menuItem('Glossário', tabName = 'glossario', icon = icon("font", lib = "font-awesome")),
                
       
       menuItem('Exercícios', tabName = 'questionario', icon = icon("pencil", lib="font-awesome")),
@@ -79,13 +82,14 @@ dashboardPage(
     '))),
     tabItems(
       inicio,
+      conjunto_dados,
       tipos_variaveis,
       tabela_frequencias,
       medidas_resumo,
       graf_quantitativa,
       graf_qualitativa,
       graf_bidimensional,
-      glossario,
+    #  glossario,
       questionario,
       paralisia
     )

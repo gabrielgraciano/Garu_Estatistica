@@ -1939,7 +1939,15 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                              c("Altura", "Altura do aluno, em metros."),
                           c('Álcool: consumo mensal', 'Frequência de consumo de álcool por mês.'),
                           c('Álcool: dose', 'Dose de álcool por consumo.'),
-                          c('Consumo tabaco', 'Quantos cigarros o aluno consome em um dia.'))#Não tenho certeza desse período - Gabriel
+                          #Não tenho certeza desse período - Gabriel
+                          c('Consumo tabaco', 'Quantos cigarros o aluno consome em um dia.'),
+                          c('Idade', 'Idade em anos completos.'),
+                          c('HDL', 'Concentração de HDL em mg/dL.'),
+                          c('LDL', 'Concentração de LDL em mg/dL.'),
+                          c('Triglicérides', 'Concentração de triglicérides em mg/dL.')
+
+                          )
+                
                 tab <- as.data.frame(tab)
                 tab
               }, colnames = FALSE, striped = TRUE, bordered = TRUE, width = "100%", align = "c")
@@ -1961,7 +1969,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   pergunta <- perguntas_respostas[[pergunta_atual()]]
                   HTML(paste('<h4>Questão', pergunta_atual(), ':', pergunta$pergunta, '</p>'))
                 } else {
-                  HTML('<h3>Erro: Imagem não encontrada.</h3>')
+                  HTML('<h3>Questionário finalizado.</h3>')
                 }
               })
               
@@ -2022,7 +2030,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 
                 data %>%
                   gt() %>%
-                  tab_header(title = "Score")
+                  tab_header(title = "Pontuação")
               })
               
             
@@ -2331,7 +2339,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   enunciado <- enunciados_pc_novo[[8]]
                   
                   fluidRow(
-                    H3(''),
+                    h3(''),
                       column(6,
                              wellPanel(
                              p(HTML(enunciado))

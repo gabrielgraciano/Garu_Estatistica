@@ -607,6 +607,53 @@ medium_cyan <- '#3db9bf'
                 text
               })
               
+              #Distância interquartílica
+              
+              observeEvent(input$dist_quantilMostrarMais, {
+                shinyjs::hide("dist_quantilMostrarMais")
+                shinyjs::show("dist_quantilMostrarMenos")
+                shinyjs::show("dist_quantilTexto")
+                shinyjs::show("dist_quantilExplain")
+                shinyjs::show("dist_htQuantil")
+                shinyjs::show("dist_exQuantil")
+              })
+              
+              observeEvent(input$dist_quantilMostrarMenos, {
+                shinyjs::hide("dist_quantilMostrarMenos")
+                shinyjs::show("dist_quantilMostrarMais")
+                shinyjs::hide("dist_quantilTexto")
+                shinyjs::hide("dist_quantilExplain")
+                shinyjs::hide("dist_htQuantil")
+                shinyjs::hide("dist_exQuantil")
+              })
+              
+              output$dist_quantilTitle <- renderText({
+                input$gerarElementos
+                paste0("<h4> Distância Interquartílica: não está atualizando <strong>", round(median(elementos) - as.vector(quantile(elementos))[2], 2), "</strong> </h4>")
+              })
+              
+
+              output$dist_exQuantil <- renderText({
+                input$geraElementos
+                isEven <- (length(elementos)%%2 == 0)
+                text <- paste0("Temos: ", vectorToString(elementos), "\n")
+                
+                if (isEven) {
+                  text <- paste0(text, 
+                                 paste0("0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', elementos[ceiling(0.25*length(elementos))], ' = ', 
+                                        median(elementos) - elementos[ceiling(0.25*length(elementos))], '\n')
+                                 
+                  )
+                } else {
+                  text <- paste0(text,
+                                 "0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', as.vector(quantile(elementos))[2], ' = ',
+                                 median(elementos) - as.vector(quantile(elementos))[2], '. \n'
+                                 
+                  )
+                }
+                
+                text
+              })
               
               
               
@@ -920,14 +967,14 @@ medium_cyan <- '#3db9bf'
                     ylab("Frequência Relativa") + 
                     xlab(input$varGrafQuant)
                 } else {
-                  selData$Var <- cut(selData$Var, breaks=c(-Inf, 2, 4, 6, 8, Inf), labels = c("Muito ruim", "Ruim", "Regular", "Bom", "Muito bom"))
+                  selData$Var <- cut(selData$Var, breaks=c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), labels = c('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'))
                   selData <- as.data.frame(table(selData))
                   colnames(selData) <- c("Var", "Freq")
                   selData$Freq <- selData$Freq/nrow(selData)
                   selData$Freq <- selData$Freq/sum(selData$Freq)
                   print(selData)
                   g <- ggplot(selData, aes(x=Var, y=Freq)) + 
-                    geom_bar(stat="identity", colour = "black", fill = "#4cA6AA") +
+                    geom_bar(stat="identity", colour = "black", fill = "#4cA6AA", width = 1) +
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
                     scale_x_discrete(expand = expansion(add = .01)) +
@@ -1050,11 +1097,11 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 
                 tags <- tagList(
                   h3(strong("Gráficos Bivariados")),
-                  fluidRow(column(4, 
+                  fluidRow(column(12, 
                                   part1),
-                           column(4, 
+                           column(12, 
                                   part2),
-                           column(4,
+                           column(12,
                                   part3))
                 )
                 
@@ -1636,7 +1683,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
               })
               
               output$testeT2Table <- renderTable({
-                tab <- as.data.frame(rbind(testeT2_params$p1, testeT2_params$p2, testeT2_params$D))
+                tab <- as.data.frame(rbind(testeT2_params$p1[1:10], testeT2_params$p2[1:10], testeT2_params$D[1:10]))
                 tab <- round(tab, 2)
                 rownames(tab) <- c("Amostra A1 de P1", "Amostra A2 de P2", "Diferença (A1 - A2)")
                 tab

@@ -75,7 +75,7 @@ medidas_resumo <-
                                            hidden(uiOutput("medianaExplain")),
                                            hidden(helpText(id="htMediana", "Exemplo com os elementos gerados:"),
                                                   verbatimTextOutput("exMediana"))
-                       ))
+                       )),
                        
                      ),
                      fluidRow(
@@ -83,7 +83,7 @@ medidas_resumo <-
                               wellPanel(htmlOutput("quantilTitle"),
                                         actionLink("quantilMostrarMais", "Mostrar mais"),
                                         hidden(actionLink("quantilMostrarMenos", "Mostrar menos")),
-                                        hidden(p(" Os quartis dividem o conjunto de obersvações em quatro partes iguais.
+                                        hidden(p(" Os quartis dividem o conjunto de observações em quatro partes iguais.
                                         A mediana, corresponde ao segundo quartil, pois divide o conjunto de dados ordenado em dois.
                                         A observação que deixa 25% dos dados abaixo dela, é chamada de primeiro quartil.
                                         Já a observação que deixa 75% dos dados abaixo dela, é denominada de terceiro quartil.",
@@ -91,6 +91,19 @@ medidas_resumo <-
                                         hidden(uiOutput("quantilExplain")),
                                         hidden(helpText(id="htQuantil", "Exemplo com os elementos gerados:"),
                                                verbatimTextOutput("exQuantil"))
+                              )),
+                       
+                       #Distância interquartílica - adicionado por Gabriel
+                       column(6, 
+                              wellPanel(htmlOutput("dist_quantilTitle"),
+                                        actionLink("dist_quantilMostrarMais", "Mostrar mais"),
+                                        hidden(actionLink("dist_quantilMostrarMenos", "Mostrar menos")),
+                                        hidden(p("Como os quartis são divididos em quatro partes iguais, a distância entre qualquer quartil e seu sucessor ou antecessor terá o mesmo valor
+                                                 absoluto. Por exemplo: q2 - q1 = q3 - q2 (a distância entre o segundo quartil e o primeiro é a mesma que entre o terceiro quartil e o segundo.",
+                                                 id = "dist_quantilTexto")),
+                                        hidden(uiOutput("dist_quantilExplain")),
+                                        hidden(helpText(id="dist_htQuantil", "Exemplo com os elementos gerados:"),
+                                               verbatimTextOutput("dist_exQuantil"))
                               ))
                      ),
                      fluidRow(

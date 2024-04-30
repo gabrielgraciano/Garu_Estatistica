@@ -55,6 +55,12 @@ dashboardPage(
                menuSubItem('Variáveis Quantitativas', tabName = 'graf_quantitativa'),
                menuSubItem('Gráficos Bidimensionais', tabName = 'graf_bidimensional')),
       
+      menuItem('Inferência', icon = icon('chart-area', lib= 'font-awesome'),
+               menuSubItem('Teste T para uma amostra', tabName = 'teste_t_1'),
+               menuSubItem('Teste T para duas amotras', tabName = 'teste_t_2'),
+               menuSubItem('Teste qui quadrado', tabName = 'teste_qui'),
+               menuSubItem('Teste de Correlação', tabName= 'teste_corr')),
+      
       
      # menuItem('Glossário', tabName = 'glossario', icon = icon("font", lib = "font-awesome")),
                
@@ -89,6 +95,10 @@ dashboardPage(
       graf_quantitativa,
       graf_qualitativa,
       graf_bidimensional,
+      teste_t_1,
+      teste_t_2,
+      teste_qui,
+      teste_corr,
     #  glossario,
       questionario,
       paralisia

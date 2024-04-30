@@ -40,7 +40,7 @@ teste_t_2 <-
       os mesmos carros testando gasolinas diferentes, etc. Dessa forma, se houver diferença entre os dois grupos, a diferença 
       é realmente devido ao método."),
               column(4,
-                     fluidRow(sliderInput("testeT2TamanhoA", "Tamanho das amostras", min = 5, max = 30, value = 12, step = 1)),
+                     fluidRow(sliderInput("testeT2TamanhoA", "Tamanho das amostras", min = 10, max = 100, value = 12, step = 1)),
                      fluidRow(actionButton("testeT2Refresh", "Atualizar", icon = icon("refresh")))
               ),
               column(8, 

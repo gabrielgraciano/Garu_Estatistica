@@ -674,7 +674,7 @@ medium_cyan <- '#3db9bf'
                   geom_label(aes(x=mean, y=max(tab$Freq) + 0.5, label = paste0("Média = ", mean))) +
                   annotate("text", x = mode, y = 0.5, label = "Moda" , color="black", size=4 , angle=0) +
                   #geom_label(aes(x=mode, y=0, label = paste0("Moda"))) +
-                  theme_classic() +
+                  theme_minimal()+
                   scale_fill_manual(values = c("steelblue", "red"),
                                     labels = c("", "Moda")) +
                   scale_x_continuous(breaks = round(seq(min(tab$elementos), max(tab$elementos), by = 1))) +
@@ -834,7 +834,7 @@ medium_cyan <- '#3db9bf'
                   geom_text(aes(x = cat, y = freq, label = round(freq, 2)), colour = "black", vjust = -2) +
                   scale_fill_manual(values=colorful) +
                   guides(fill=FALSE) +
-                  theme_classic() +
+                  theme_minimal() +
                   scale_x_discrete(name = input$varGrafQual) +
                   scale_y_continuous(name = "Frequência relativa", limits = c(0, max(selData$freq) + 0.05)) +
                   theme(axis.title.y = element_text(size = 16),
@@ -856,7 +856,7 @@ medium_cyan <- '#3db9bf'
                   scale_fill_manual(values = colorful, name = input$varGrafQual) + 
                   xlab(" ") +
                   ylab(" ") + 
-                  theme_classic() + 
+                  theme_minimal() + 
                   theme(
                     axis.ticks = element_blank(),
                     axis.text.x=element_blank()
@@ -884,7 +884,7 @@ medium_cyan <- '#3db9bf'
                   g <- g + geom_text(data=gd,
                                      aes(x=x, y=ymax, label=count),
                                      colour = "black", vjust = -2) +
-                    theme_classic() +
+                    theme_minimal() +
                     guides(fill=FALSE) +
                     scale_x_discrete(name = input$varGrafQuant) +
                     scale_y_continuous(name = "Frequência absoluta", limits = c(0, max(gd$ymax) + 5))
@@ -905,7 +905,7 @@ medium_cyan <- '#3db9bf'
                   
                   g <- ggplot(data=freqdata, aes(x=seq, y=freq)) +
                     geom_bar(stat="identity", colour="black", fill = "#4cA6AA", width = gap) + 
-                    theme_classic() +
+                    theme_minimal() +
                     scale_x_continuous(breaks = x_breaks, labels = round(x_breaks, ifelse(amplitude < 10, abs(floor(log10(amplitude))) + 1, 0))) + 
                     ylab("Frequência Relativa") +
                     xlab(input$varGrafQuant) + 
@@ -942,7 +942,8 @@ medium_cyan <- '#3db9bf'
                 p <- ggplot(selData, aes(x="",y=cat)) + 
                   geom_boxplot(fill = "#4CA6AA", colour = "black") + 
                   xlab("") +
-                  ylab(input$varGrafQuant)
+                  ylab(input$varGrafQuant)+
+                  theme_minimal()
                 p
               })
               
@@ -963,7 +964,7 @@ medium_cyan <- '#3db9bf'
                     geom_bar(stat="identity", colour = "black", fill = "#4cA6AA") +
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
-                    theme_classic() + 
+                    theme_minimal() + 
                     ylab("Frequência Relativa") + 
                     xlab(input$varGrafQuant)
                 } else {
@@ -978,7 +979,7 @@ medium_cyan <- '#3db9bf'
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
                     scale_x_discrete(expand = expansion(add = .01)) +
-                    theme_classic() + 
+                    theme_minimal() + 
                     ylab("Frequência Relativa") + 
                     xlab(input$varGrafQuant)
                 }
@@ -1203,7 +1204,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   geom_text(data=pos, aes(y=y_pos, label = ifelse(value>=0.01, scales::percent(value, digits = 2), ""), group = as.factor(Var1))) +
                   labs(x=input$varGrafBiQual1, y="Frequência absoluta") + 
                   scale_fill_discrete(name=input$varGrafBiQual2) + 
-                  theme_classic()
+                  theme_minimal()
                 g
                 
                 
@@ -1217,7 +1218,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 colnames(selData) <- c("Var1", "Var2")
                 g <- ggplot(selData, aes(x=Var1, y=Var2)) + 
                   geom_point(color = "#5497A7", size = 3L) +
-                  theme_classic() + 
+                  theme_minimal() + 
                   labs(x=input$varGrafBiQuant1, y=input$varGrafBiQuant2)
                 g
               })
@@ -1237,7 +1238,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 #print(selData)
                 g <- ggplot(selData, aes(x=Var1, y=Var2, fill=Var1)) + 
                   geom_boxplot() + 
-                  theme_classic() + 
+                  theme_minimal() + 
                   labs(x="", y = input$varQualBoxplot2) + 
                   scale_fill_discrete(name = input$varQualBoxplot1)
                 g
@@ -1630,7 +1631,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   geom_segment(aes(x=u, xend=u, y=0, yend=dnorm(u, u, S)), color = "gray", linetype=2, alpha=0.6) + 
                   annotate(geom="text", x=u, y=1.1*dnorm(u,u,S), label=paste0("μ = ", u), size=5, color=dark_cyan) + 
                   geom_point(data=point, aes(x=x, y=y), 
-                             color = ifelse(accept, "green", "red"), size = 8, shape = 8)
+                             color = ifelse(accept, "green", "red"), size = 8, shape = 8)+
+                  theme_minimal()
                 g
               })
               
@@ -1707,7 +1709,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   scale_x_continuous(limits = c(min(u1 - 4*dp1, u2 - 4*dp2), max(u1 + 4*dp1, u2 + 4*dp2))) + 
                   scale_color_discrete(name="População") + 
                   xlab(" ") +
-                  ylab("Densidade")
+                  ylab("Densidade")+
+                  theme_minimal()
                 g
                 
               })
@@ -1724,7 +1727,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   geom_density() + 
                   scale_x_continuous(limits = c(min(u1 - u2, u2 - u1) - 4*(max(dp1, dp2)), max(u1 - u2, u2 - u1) + 4*max(dp1, dp2))) + 
                   xlab("Diferença") + 
-                  ylab("Densidade")
+                  ylab("Densidade")+
+                  theme_minimal()
                 g
                 
                 
@@ -1785,8 +1789,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   geom_point(data=point, aes(x=x, y=y), 
                              color = ifelse(accept, "green", "red"), size = 8, shape = 8) + 
                   scale_x_continuous(limits = c(-6, 6)) + 
-                  ylab("f(x)")
-                ggtitle(paste0("Distribuição T de Student com ", n-1, " graus de liberdade"))
+                  ylab("f(x)")+
+                ggtitle(paste0("Distribuição T de Student com ", n-1, " graus de liberdade"))+
+                  theme_minimal()
                 g
                 
                 
@@ -1873,7 +1878,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   scale_x_continuous(limits = c(0, max(7, 1.2*chi))) + 
                   xlab("x") +
                   ylab("f(x)") + 
-                  ggtitle("Distribuição Qui-quadrado com 1 grau de liberdade")
+                  ggtitle("Distribuição Qui-quadrado com 1 grau de liberdade")+
+                  theme_minimal()
                 
                 g
               })
@@ -1956,7 +1962,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   geom_smooth(method=lm) + 
                   xlab(input$testeCorrVar1) + 
                   ylab(input$testeCorrVar2) + 
-                  theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size = 12))
+                  theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size = 12))+
+                  theme_minimal()
+                
                 g
               })
               
@@ -2545,7 +2553,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                       output$plot_ex4 <- renderPlot({
                           req(input$variavel_ex4x == 'dmo' && input$variavel_ex4y == 'Não se aplica' && input$variavel_ex4_graf == 'Barras')
                           plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = input$variavel_ex4x))+
-                               geom_bar(stat = 'count')
+                               geom_bar(stat = 'count')+
+                            theme_minimal()
                           return(plot)
                       })
                       
@@ -2573,7 +2582,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   output$plot_ex5 <- renderPlot({
                       req(input$variavel_ex5x == 'dist_comun' && input$variavel_ex5y == 'Não se aplica' && input$variavel_ex5_graf == 'Barras')
                       plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = input$variavel_ex5x))+
-                          geom_bar(stat = 'count')
+                          geom_bar(stat = 'count')+
+                        theme_minimal()
                       return(plot)
                   })
                   
@@ -2601,7 +2611,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   output$plot_ex6 <- renderPlot({
                       req(input$variavel_ex6x == 'Não se aplica' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
                       plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y))+
-                          geom_boxplot()
+                          geom_boxplot()+
+                        theme_minimal()
                       return(plot)
                   })
                   
@@ -2783,7 +2794,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                  output$plot_ex9 <- renderPlot({
                      req(input$variavel_ex9x == 'grupo' && input$variavel_ex9y == 'td_liquido' && input$variavel_ex9_graf == 'Boxplot')
                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex9x, y = input$variavel_ex9y))+
-                         geom_boxplot()
+                         geom_boxplot()+
+                       theme_minimal()
                      return(plot)
                  })
                  
@@ -2912,7 +2924,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                output$plot_ex10 <- renderPlot({
                  req(input$variavel_ex10x == 'td_liquido' && input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf == 'Dispersão')
                  plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex10x, y = input$variavel_ex10y))+
-                   geom_point()
+                   geom_point()+
+                   theme_minimal()
                  return(plot)
                })
                

@@ -58,7 +58,7 @@ loaded <- reactiveValues()
 
 
 blue <- c("#A1D2CE", "#8AD1CB", "#78CAD2", "#62A8AC", "#4CA6AA", "#5497A7", "#50858B", "#254A4F")
-colorful <- c("#20BFB2", "#63BE76", "#A8B245", "#E49C45", "#FE8A77", "#F48BAE", "#BCA0D8", "#64B5DA", "#c9e5f2")
+colorful <- c('#0c7bdc', '#FFc20a', "#20BFB2", "#63BE76", "#E66100", "#0c7bdc", "#d41159", "#4b0092", "#64B5DA", "#c9e5f2")
 medium_cyan <- '#3db9bf'
   dark_cyan <- '#077e84'
     medium_ocre <- "#bf9f56"
@@ -675,7 +675,7 @@ medium_cyan <- '#3db9bf'
                   annotate("text", x = mode, y = 0.5, label = "Moda" , color="black", size=4 , angle=0) +
                   #geom_label(aes(x=mode, y=0, label = paste0("Moda"))) +
                   theme_minimal()+
-                  scale_fill_manual(values = c("steelblue", "red"),
+                  scale_fill_manual(values = c("#FFC20A", "#0C7BDC"),
                                     labels = c("", "Moda")) +
                   scale_x_continuous(breaks = round(seq(min(tab$elementos), max(tab$elementos), by = 1))) +
                   theme(legend.position="none") +
@@ -904,7 +904,7 @@ medium_cyan <- '#3db9bf'
                   print(freqdata)
                   
                   g <- ggplot(data=freqdata, aes(x=seq, y=freq)) +
-                    geom_bar(stat="identity", colour="black", fill = "#4cA6AA", width = gap) + 
+                    geom_bar(stat="identity", colour="black", fill = "#0C7BDC", width = gap) + 
                     theme_minimal() +
                     scale_x_continuous(breaks = x_breaks, labels = round(x_breaks, ifelse(amplitude < 10, abs(floor(log10(amplitude))) + 1, 0))) + 
                     ylab("Frequência Relativa") +
@@ -940,7 +940,7 @@ medium_cyan <- '#3db9bf'
                 selData <- as.data.frame(selData)
                 colnames(selData) <- c("cat")
                 p <- ggplot(selData, aes(x="",y=cat)) + 
-                  geom_boxplot(fill = "#4CA6AA", colour = "black") + 
+                  geom_boxplot(fill = "#0C7BDC", colour = "black") + 
                   xlab("") +
                   ylab(input$varGrafQuant)+
                   theme_minimal()
@@ -961,7 +961,7 @@ medium_cyan <- '#3db9bf'
                   selData$Freq <- selData$Freq/sum(selData$Freq)
                   print(selData)
                   g <- ggplot(selData, aes(x=Var, y=Freq)) + 
-                    geom_bar(stat="identity", colour = "black", fill = "#4cA6AA") +
+                    geom_bar(stat="identity", colour = "black", fill = "#0C7BDC") +
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
                     theme_minimal() + 
@@ -975,7 +975,7 @@ medium_cyan <- '#3db9bf'
                   selData$Freq <- selData$Freq/sum(selData$Freq)
                   print(selData)
                   g <- ggplot(selData, aes(x=Var, y=Freq)) + 
-                    geom_bar(stat="identity", colour = "black", fill = "#4cA6AA", width = 1) +
+                    geom_bar(stat="identity", colour = "black", fill = "#0C7BDC", width = 1) +
                     geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
                     scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
                     scale_x_discrete(expand = expansion(add = .01)) +
@@ -1217,7 +1217,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 selData <- data.frame(userData$data[,colnames(userData$data) == input$varGrafBiQuant1], userData$data[,colnames(userData$data) == input$varGrafBiQuant2])
                 colnames(selData) <- c("Var1", "Var2")
                 g <- ggplot(selData, aes(x=Var1, y=Var2)) + 
-                  geom_point(color = "#5497A7", size = 3L) +
+                  geom_point(color = "#0C7BDC", size = 3L) +
                   theme_minimal() + 
                   labs(x=input$varGrafBiQuant1, y=input$varGrafBiQuant2)
                 g
@@ -1518,7 +1518,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                   annotate(geom="text", x = 2, y=b+0.1, label=text, color=brown, size = 6) 
                 
                 if (min > 0) {
-                  g <- g + geom_segment(aes(x=min, xend=min, y=0, yend=dexp(min, b)), color = "brown", alpha=0.7, linetype=2)
+                  g <- g + geom_segment(aes(x=min, xend=min, y=0, yend=dexp(min, b)), color = "#0C7BDC", alpha=0.7, linetype=2)
                 }
                 g
               })
@@ -1624,14 +1624,14 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 colnames(point) <- c("x", "y")
                 
                 g <- ggplot(data=data1, aes(x=x, y=y))  + 
-                  geom_area(stat="identity", fill="red", alpha = 0.4) + 
-                  geom_area(data=data2, aes(x=x, y=y), stat="identity", fill="red", alpha=0.4) +
-                  stat_function(fun=dnorm, n=300, args = list(mean=u, sd=S), color = "brown") + 
+                  geom_area(stat="identity", fill="#0C7BDC", alpha = 0.4) + 
+                  geom_area(data=data2, aes(x=x, y=y), stat="identity", fill="#0C7BDC", alpha=0.4) +
+                  stat_function(fun=dnorm, n=300, args = list(mean=u, sd=S), color = "#E66100") + 
                   scale_x_continuous(limits = c(x_min, x_max)) + 
                   geom_segment(aes(x=u, xend=u, y=0, yend=dnorm(u, u, S)), color = "gray", linetype=2, alpha=0.6) + 
                   annotate(geom="text", x=u, y=1.1*dnorm(u,u,S), label=paste0("μ = ", u), size=5, color=dark_cyan) + 
                   geom_point(data=point, aes(x=x, y=y), 
-                             color = ifelse(accept, "green", "red"), size = 8, shape = 8)+
+                             color = ifelse(accept, "#FFC20A", "#0C7BDC"), size = 8, shape = 8)+
                   theme_minimal()
                 g
               })
@@ -1784,10 +1784,10 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 colnames(point) <- c("x", "y")
                 g <- ggplot(data=data1, aes(x=x, y=y)) + 
                   stat_function(fun=dt, n=101, args=list(df=n-1), color = "black") + 
-                  geom_area(data=data1, aes(x=x, y=y), fill="red", alpha=0.4) + 
-                  geom_area(data=data2, aes(x=x, y=y), fill="red", alpha=0.4) + 
+                  geom_area(data=data1, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
+                  geom_area(data=data2, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
                   geom_point(data=point, aes(x=x, y=y), 
-                             color = ifelse(accept, "green", "red"), size = 8, shape = 8) + 
+                             color = ifelse(accept, "#FFC20A", "#0C7BDC"), size = 8, shape = 8) + 
                   scale_x_continuous(limits = c(-6, 6)) + 
                   ylab("f(x)")+
                 ggtitle(paste0("Distribuição T de Student com ", n-1, " graus de liberdade"))+
@@ -1872,9 +1872,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                 colnames(point) <- c("x", "y")
                 
                 g <- ggplot(data, aes(x=x, y=y)) + 
-                  geom_area(stat="identity", fill = "red", alpha = 0.4) + 
+                  geom_area(stat="identity", fill = "#0c7bdc", alpha = 0.4) + 
                   stat_function(fun=dchisq, n=101, args = list(df = 1), color="black") + 
-                  geom_point(data=point, aes(x=x, y=y), color = ifelse(accept, "green", "red"), size = 8, shape = 8) + 
+                  geom_point(data=point, aes(x=x, y=y), color = ifelse(accept, "#ffc20a", "#0c7bdc"), size = 8, shape = 8) + 
                   scale_x_continuous(limits = c(0, max(7, 1.2*chi))) + 
                   xlab("x") +
                   ylab("f(x)") + 

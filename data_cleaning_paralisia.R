@@ -29,10 +29,9 @@ dados_paralisia$td_pastoso <- as.numeric(dados_paralisia$td_pastoso)
 dados_paralisia$td_solido <- as.numeric(dados_paralisia$td_solido)
 
 
-#summary(dados_paralisia)
 
+dados_paralisia <- dados_paralisia[,-1]
 
-#View(dados_paralisia)
 
 'entradas <- c(
   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0,
@@ -52,5 +51,5 @@ dados_paralisia$perda_audit[entradas == 0] <- 0
 dados_paralisia$perda_audit[entradas == 1] <- 1
 '
 
-dados_paralisia <- dados_paralisia[,-1]
+
 

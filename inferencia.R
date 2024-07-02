@@ -40,7 +40,7 @@ teste_t_2 <-
       os mesmos carros testando gasolinas diferentes, etc. Dessa forma, se houver diferença entre os dois grupos, a diferença 
       é realmente devido ao método."),
               column(4,
-                     fluidRow(sliderInput("testeT2TamanhoA", "Tamanho das amostras", min = 5, max = 30, value = 12, step = 1)),
+                     fluidRow(sliderInput("testeT2TamanhoA", "Tamanho das amostras", min = 10, max = 100, value = 12, step = 1)),
                      fluidRow(actionButton("testeT2Refresh", "Atualizar", icon = icon("refresh")))
               ),
               column(8, 
@@ -70,9 +70,7 @@ teste_t_2 <-
             ),
             fluidRow(
               column(6, 
-                     fluidRow(
-                       withMathJax(helpText("Valor do teste: $$\\frac{\\bar{D}}{\\frac{S_{D}}{\\sqrt{n}}}$$"))
-                     ),
+                     
                      fluidRow(
                        verbatimTextOutput("testeT2Calc")
                      )
@@ -88,67 +86,79 @@ teste_t_2 <-
 
 teste_qui <-
   tabItem(tabName = 'teste_qui',
-          sidebarLayout(
-            sidebarPanel(
-              h3(strong("Teste qui-quadrado de independência")),
-              p("O teste qui-quadrado de Pearson é aplicado a um conjunto de dados para mensurar o quanto a diferença 
-      entre eles é puro acaso ou se há uma influência real."),
-              helpText("Matriz de entrada"),
-              fluidRow(column(6),
-                       column(3, textInput("testeQuiCol1", value = "Melhora", label = "")),
-                       column(3, textInput("testeQuiCol2", value = "Não", label = ""))
-              ),
-              fluidRow(column(6, textInput("testeQuiRow1", value = "Droga", label = "")),
-                       column(3, numericInput("testeQuiValor1", value = 48, label = "", min = 0)),
-                       column(3, numericInput("testeQuiValor2", value = 8, label = "", min = 0))),
-              fluidRow(column(6, textInput("testeQuiRow2", value = "Placebo", label = "")),
-                       column(3, numericInput("testeQuiValor3", value = 30, label = "", min = 0)),
-                       column(3, numericInput("testeQuiValor4", value = 21, label = "", min = 0))),
-              actionButton("testeQuiRefresh", "Atualizar", icon = icon("refresh")),
-              sliderInput("testeQuiAlpha", "Alfa", min = 0.01, max = 0.1, value = 0.05, step = 0.01)
-            ), mainPanel(
-              withMathJax(),
-              fluidRow(
-                column(6,
-                       strong("Tabela de frequências observadas"),
-                       tableOutput("testeQuiTabela")
-                ),
-                column(6, 
-                       strong("Tabela de frequências esperadas"),
-                       tableOutput("testeQuiEsperado")
-                )
-              ),
-              fluidRow(column(6,
-                              withMathJax(helpText("$$\\chi^{2} = \\sum_{i=1}^{r} \\sum_{j=1}^{s}
-                                          \\frac{(o_{ij} - e_{i}{j})^{2}}{e_{ij}}$$"))
-              ),
-              column(6, 
-                     uiOutput("testeQuiCalc")
-              )),
-              plotOutput("testeQuiPlot"),
-              verbatimTextOutput("testeQuiConta")
+          fluidPage(
+            column(12,
+                   h3(strong("Teste Qui-quadrado de independência")),
+                   p("O teste Qui-quadrado de independência é utilizado para verificar a associação entre 2 variáveis categóricas."),
+                   helpText("Matriz de entrada"),
+                   fluidRow(
+                     column(12, 
+                            uiOutput('testando_qui_q'),
+                            sliderInput("testeQuiAlpha", "Alfa", min = 0.01, max = 0.1, value = 0.05, step = 0.01)
+                     ), align = 'center'
+                     
+                   ),
+                   hr(),
+                   withMathJax(),
+                   fluidRow(
+                     column(6,
+                            h4("Tabela de frequências observadas"),
+                            tableOutput("tabela_qui")
+                     ),
+                     column(6, 
+                            h4("Tabela de frequências esperadas"),
+                            tableOutput("tabela_qui_esperada")
+                     )
+                   ),
+                  # hr(),
+                  # fluidRow(
+                   #  column(12, 
+                     #       withMathJax(helpText("$$\\chi^{2} = \\sum_{i=1}^{r} \\sum_{j=1}^{s}
+                     #                             \\frac{(o_{ij} - e_{i}{j})^{2}}{e_{ij}}$$"))
+                    # )
+                  # ),
+                   hr(),
+                   fluidRow(
+                     column(12, 
+                            plotOutput('grafico_qui_q')
+                     )
+                   ),
+                   hr(),
+                   fluidRow(
+                     column(12, 
+                            verbatimTextOutput('teste_qui_q_conta')
+                     )
+                   )
             )
           )
   )
+
           
   
 
 teste_corr <-
   tabItem(tabName = 'teste_corr',
-          sidebarLayout(sidebarPanel(withMathJax(),
-                                     h3(strong("Testes de Correlação")),
-                                     selectInput("tipoTesteCorr", "Teste", choices = 
-                                                   c("Spearman" = "spearman", 
-                                                     "Pearson" = "pearson")),
-                                     
-                                     uiOutput("selectTesteCorrVarUI"),
-                                     uiOutput("testeCorrExplicacao")
-                                     
-                                     
-                                     
-                                     
+          fluidRow(
+            column(6,
+                   withMathJax(),
+                   h3(strong("Testes de Correlação")),
+                   selectInput("tipoTesteCorr", "Teste", choices = 
+                                 c("Spearman" = "spearman", 
+                                   "Pearson" = "pearson")),
+                   uiOutput("selectTesteCorrVarUI"),
+                   uiOutput("testeCorrExplicacao")
+            ),
+            column(6,
+                   withMathJax(),
+                   h3(strong('Testes de Normalidade')),
+                   verbatimTextOutput('testeNormCorr'),
+                   uiOutput('testeNormCorrExplicacao')),
+            align = 'center'
           ),
-          mainPanel(plotOutput("testeCorrPlot"),
-                    verbatimTextOutput("testeCorrConta"))
+          fluidRow(
+            column(12,
+                   plotOutput("testeCorrPlot"),
+                   verbatimTextOutput("testeCorrConta")
+            )
           )
   )

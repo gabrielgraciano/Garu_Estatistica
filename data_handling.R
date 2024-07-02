@@ -10,11 +10,22 @@ data$Cozinha <- factor(data$Cozinha, levels = c("Nunca", "Durante as férias", "
 data$`Come fora` <- factor(data$`Come fora`, levels = c("Nunca", "1-2 vezes", "2-3 vezes", "3-5 vezes", "Todo dia"))
 data$`Pratica exercícios` <- factor(data$`Pratica exercícios`, levels = c("Nunca", "Uma vez por semana", "2-3 vezes por semana", "Todo dia"))
 data$`Vegetais nas refeições` <- factor(data$`Vegetais nas refeições`, levels = c("Difícil", "Um pouco", "Regular", "Frequente", "Bastante"))
-data$Trabalha <- factor(data$Trabalha, levels = c("Não trabalha", "Meio Período", "Tempo Integral"))
+data$Trabalha <- factor(data$Trabalha, levels = c("Não trabalha", "Meio Período"))
 data$Relacionamento <- factor(data$Relacionamento, levels = c("Solteirx", "Em um relacionamento", "Casadx"))
 data$Relacionamento <- revalue(data$Relacionamento, c("Solteirx" = "Solteiro",
                                                       "Casadx" = "Casado"))
 data$Altura <- as.numeric(unlist(altura))
+
+
+
+#Alterações - Gabriel
+data$Sexo <- factor(data$Sexo)
+data$`Pratica esportes` <- factor(data$`Pratica esportes`)
+data$`Culinária favorita` <- factor(data$`Culinária favorita`)
+data$`Toma vitaminas` <- factor(data$`Toma vitaminas`)
+
+#Fim das alterações - Gabriel
+
 
 data$Idade <- idade$Idade
 data <- cbind(data, labs)
@@ -25,8 +36,7 @@ data$`Consumo de tabaco` <- factor(data$`Consumo de tabaco`, levels = c(
   "Não fuma",
   "Até 1 cigarro",
   "Até 5 cigarros",
-  "Até 1 maço",
-  "2 maços ou mais"
+  "Até 1 maço"
 ))
 
 data$`Álcool: Consumo mensal` <- factor(data$`Álcool: Consumo mensal`, 
@@ -43,8 +53,7 @@ data$`Álcool: Dose média` <- factor(data$`Álcool: Dose média`,
                                       "Uma dose",
                                       "Até 2 doses",
                                       "3 a 4 doses",
-                                      "5 a 11 doses",
-                                      "12 ou mais doses"
+                                      "5 a 11 doses"
                                     ))
 
 example_dataframe <- as.data.frame(rbind(
@@ -52,8 +61,8 @@ example_dataframe <- as.data.frame(rbind(
   c("Ano letivo", "1, 2, 3, 4...", "Quantitativa Discreta"),
   c("Peso (kg)", "61,2; 85; 119,3; ...", "Quantitativa Contínua"),
   c("Altura (m)", "1,75; 1,67; 1,68; ...", "Quantitativa Contínua"),
-  c("Idade (anos)", "17, 21, 20,...", "Quantitativa Contínua"),
-  c("Trabalho", "'Tempo Integral', 'Meio Período', 'Não trabalha'", "Qualitativa Nominal"),
+  c("Idade (anos)", "17, 21, 20,...", "Quantitativa Discreta"),
+  c("Trabalho", "'Tempo Integral', 'Meio Período', 'Não trabalha'", "Qualitativa Ordinal"),
   c("Relacionamento", "'Solteiro', 'Em um relacionamento', 'Morando junto', ...", "Qualitativa Nominal"),
   c("Cozinha", "'Sempre', 'Quase todo dia', 'Nunca', ...", "Qualitativa Ordinal"),
   c("Come Fora", "'Sempre', 'Quase todo dia', 'Nunca', ...", "Qualitativa Ordinal"),
@@ -70,21 +79,43 @@ example_dataframe <- as.data.frame(rbind(
 
 colnames(example_dataframe) <- c("Variável", "Possíveis Valores", "Tipo de Variável")
 
-tab_frequencia_relacionamento <- as.data.frame(table(data$Relacionamento))
-tab_frequencia_relacionamento$prop <- round(tab_frequencia_relacionamento$Freq/sum(tab_frequencia_relacionamento$Freq), digits = 4)
-tab_frequencia_relacionamento$porc <- scales::percent(tab_frequencia_relacionamento$prop)
-colnames(tab_frequencia_relacionamento) <- c("Relacionamento", "Frequência", "Proporção", "Porcentagem")
+## Tabela de frequencias Exemplo 1
 
+tab_frequencia_relacionamento <- as.data.frame(table(data$Relacionamento))
+tab_frequencia_relacionamento$prop <- round(tab_frequencia_relacionamento$Freq/sum(tab_frequencia_relacionamento$Freq), digits = 3)
+tab_frequencia_relacionamento$porc <- scales::percent(tab_frequencia_relacionamento$prop)
+colnames(tab_frequencia_relacionamento) <- c("Relacionamento", "Frequência Absoluta", "Proporção", "Porcentagem")
+tab_frequencia_relacionamento$Relacionamento <- as.character(tab_frequencia_relacionamento$Relacionamento)
+tab_frequencia_relacionamento[4,] <- c(
+  "Total", sum(tab_frequencia_relacionamento[,2]), "1.000", "1.0%"
+)
+
+
+##Tabela de frequencias Exemplo 3
 freq_peso <- cut(data$Peso, breaks = c(45, 60, 75, 90, 105, 120))
-tab_frequencia_peso <- as.data.frame(with(data, table(freq_peso, useNA = 'ifany')))
-tab_frequencia_peso$prop <- round(tab_frequencia_peso$Freq/sum(tab_frequencia_peso$Freq), digits = 4)
+tab_frequencia_peso <- as.data.frame(with(data, table(freq_peso, useNA = 'no')))
+tab_frequencia_peso$prop <- round(tab_frequencia_peso$Freq/sum(tab_frequencia_peso$Freq), digits = 3)
 tab_frequencia_peso$porc<- scales::percent(tab_frequencia_peso$prop) 
 colnames(tab_frequencia_peso) <- c("Faixa de peso", "Frequência", "Proporção", "Porcentagem")
+tab_frequencia_peso$`Faixa de peso` <- as.character(tab_frequencia_peso$`Faixa de peso`)
+tab_frequencia_peso[dim(tab_frequencia_peso)[1]+1,] <- c(
+  "Total", sum(tab_frequencia_peso[,2]), "1.000", "1.0%"
+)
+
+
+### Tabela de frequencias Exemplo 2
 
 tab_frequencia_ano_letivo <- as.data.frame(table(data$`Ano letivo`))
-tab_frequencia_ano_letivo$prop <- round(tab_frequencia_ano_letivo$Freq/sum(tab_frequencia_ano_letivo$Freq), digits = 4)
+tab_frequencia_ano_letivo$prop <- round(tab_frequencia_ano_letivo$Freq/sum(tab_frequencia_ano_letivo$Freq), digits = 3)
 tab_frequencia_ano_letivo$porc <- scales::percent(tab_frequencia_ano_letivo$prop)
 colnames(tab_frequencia_ano_letivo) <- c("Ano Letivo", "Frequência", "Proporção", "Porcentagem")
+tab_frequencia_ano_letivo$`Ano Letivo` <- 
+  as.character(tab_frequencia_ano_letivo$`Ano Letivo`)
+tab_frequencia_ano_letivo[5,] <- c(
+  "Total", sum(tab_frequencia_ano_letivo[,2]), "1.000", "1.0%"
+)
+
+
 
 #tabela culinária sexo (DEPRECATED)
 
@@ -103,13 +134,15 @@ colnames(tab_frequencia_ano_letivo) <- c("Ano Letivo", "Frequência", "Proporç�
 #handling NA
 #sapply(data, function(x) sum(is.na(x)))
 
+
+
+
+
 data[is.na(data$Peso),]$Peso <- mean(data$Peso, na.rm = TRUE)
 data[is.na(data$Trabalha),]$Trabalha <- "Não trabalha"
 data[is.na(data$Relacionamento),]$Relacionamento <- "Solteiro"
 data[is.na(data$Cozinha),]$Cozinha <- "Às vezes"
-data$`Culinária favorita` <- as.character(data$`Culinária favorita`)
-data$`Culinária favorita`[is.na(data$`Culinária favorita`)] <- "Nenhuma"
-data$`Culinária favorita` <- as.factor(data$`Culinária favorita`)
+#Gabriel: retirei o comando que trocava NA por nenhuma
 data$`Pratica esportes`[is.na(data$`Pratica esportes`)] <- "Não"
 data$Peso <- round(data$Peso)
 

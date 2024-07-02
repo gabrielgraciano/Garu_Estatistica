@@ -4,17 +4,22 @@ questionario <-
           fluidPage(
             titlePanel('Questionário'),
             sidebarLayout(
-              sidebarPanel(
+              column(8,
+              wellPanel(
                 uiOutput('pergunta'),
+                br(),
                 uiOutput('opcoes_resposta'),
                 useShinyjs(),
                 actionButton('anterior', 'Questão anterior'),
                 actionButton('confirmar_resposta','Verificar'), #trocar para apenas verificar, sem pular
                 actionButton('proximo', 'Próxima Questão'),
                 textOutput('resultado')
+              )
               ),
-              mainPanel(
+              column(4,
+              wellPanel(
                 gt_output('score')
+              )
 
               )
             )

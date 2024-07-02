@@ -1,41 +1,34 @@
 inicio <-
-    tabItem(tabName = 'inicio',
-            fluidPage(
-                fluidRow(
-                    HTML('<center><img src="images/garu_3.png"></center>')),
-                fluidRow(column(6,
-                                h3(strong('Funcionalidades')), br(),
-        
-                                strong("1. Estatística Descritiva"),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"tipos_variaveis\")'>1.1 Tipos de Variáveis</a>")),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"tabela_frequencias\")'>1.2 Distribuição de Frequências</a>")),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"medidas_resumo\")'>1.3 Medidas Resumo </a>")),  br(),
-                                
-                                strong("2. Gráficos"),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"graf_qualitativa\")'>2.1. Gráficos para variáveis qualitativas</a>")),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"graf_quantitativa\")'>2.2. Gráficos para variáveis quantitativas</a>")), 
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"graf_bidimensional\")'>2.3 Gráficos Bidimensionais</a>")),  br(),
-                                
-                                strong("3. Exercícios Teóricos"),
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"questionario\")'>3.1 Exercícios</a>")),  br(),
-                                
-                                strong("4. Exercícios Práticos"), 
-                                h5(HTML("<a style='color: light-blue; cursor: pointer;' onclick='fakeClick(\"paralisia\")'>4.1 Paralisia Cerebral</a>")),  br(),
-                                
-                ),
-                
-                column(6, 
-                       h3(strong('Equipe')),  br(),
-                       
-                       strong("Alunos participantes"), 
-                       h5(HTML("<p>João Henrique de Araujo Morais e Gabriel Graciano Dias</p>")), br(),
-                       
-                    strong("Orientadores"), 
-                       h5(HTML("<p> Profa. Dra. Camila Bertini Martins e Téc. Dra. Alessandra A. S. Menezes</p>")), br(),
-                       
-                          strong("Contato"), 
-                       h5(HTML("<p><a> joao.morais@unifesp.br, gabriel.graciano@unifesp.br </a></p>")), br(),
-                )
-                )
+  #Podemos usar a imagem do Garu 2.0 que a Alê criou também
+  tabItem(tabName = 'inicio',
+          fluidPage(
+            fluidRow(
+              HTML('<center><img src="images/garu_3.png"></center>')),
+            fluidRow(column(12,
+                            
+                            wellPanel(
+                              h3(strong('Sobre o Garu')),
+                              HTML('Inserir texto explicando o projeto.')
+                            ),
+                            wellPanel(
+                              HTML("<p><strong>Alunos participantes:</strong> João Henrique de Araujo Morais e Gabriel Graciano Dias</p>"),
+                              HTML("<p><strong>Orientadoras:</strong> Profa. Dra. Camila Bertini Martins e Téc. Dra. Alessandra A. S. Menezes</p>"),
+                              HTML("<p><strong>Contato: </strong><a> garuestatistica@gmail.com </a></p>"),
+                              helpText("GARU Estatística, 2024. Versão 1.0.8"),
+                              helpText("Última atualização: 29/04/2024")
+                            )
+                            
             )
-    )
+            )
+          )
+  )
+
+
+
+              
+              
+
+
+
+
+              

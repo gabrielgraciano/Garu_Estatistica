@@ -55,7 +55,9 @@ perguntas_respostas <- list(
   list(
     pergunta =  HTML('O seguinte gráfico de barras representa os planos de pós-graduação dos formandos de ensino médio. Suponha que cada aluno escolha uma dessas cinco opções. (Nota: Um ano sabático significa que o aluno ficará de folga por um ano antes de decidir o que fazer.)
 <br>
+<br>
                      <center><img src="images/questionario/q5_imagem.png"></center>
+                     <br>
                      <br>
                      Qual é o plano de pós-graduação mais comum para esses formandos?
 '),
@@ -69,7 +71,9 @@ perguntas_respostas <- list(
   list(
     pergunta =  HTML('O seguinte gráfico de barras representa os planos de pós-graduação dos formandos de ensino médio. Suponha que cada aluno escolha uma dessas cinco opções. (Nota: Um ano sabático significa que o aluno ficará de folga por um ano antes de decidir o que fazer.)
 <br>
+<br>
                      <center><img src="images/questionario/q5_imagem.png"></center>
+                     <br>
                      <br>
                      Qual é o plano de pós-graduação menos comum para esses formandos?
 '),
@@ -83,7 +87,9 @@ perguntas_respostas <- list(
   list(
     pergunta =  HTML('O seguinte gráfico de barras representa os planos de pós-graduação dos formandos de ensino médio. Suponha que cada aluno escolha uma dessas cinco opções. (Nota: Um ano sabático significa que o aluno ficará de folga por um ano antes de decidir o que fazer.)
 <br>
+<br>
                      <center><img src="images/questionario/q5_imagem.png"></center>
+                     <br>
                      <br>
                      Presumindo que cada aluno escolheu apenas uma das cinco possibilidades, cerca de quantos alunos planejam tirar um ano sabático ou ir para a universidade? 
 
@@ -98,7 +104,9 @@ perguntas_respostas <- list(
   list(
     pergunta =  HTML('O seguinte gráfico de barras representa os planos de pós-graduação dos formandos de ensino médio. Suponha que cada aluno escolha uma dessas cinco opções. (Nota: Um ano sabático significa que o aluno ficará de folga por um ano antes de decidir o que fazer.)
 <br>
+<br>
                      <center><img src="images/questionario/q5_imagem.png"></center>
+                     <br>
                      <br>
                      Qual porcentagem da turma de graduandos está planejando frequentar a faculdade comunitária? 
 
@@ -114,7 +122,9 @@ perguntas_respostas <- list(
   list(
     pergunta =  HTML(' O seguinte gráfico de pizza mostra a proporção de alunos matriculados em diferentes cursos de uma universidade.
 <br>
+<br>
 <center><img src="images/questionario/q9_imagem.png"></center>
+<br>
 <br>
 Se alguns alunos estiverem matriculados em mais de um curso, qual tipo de gráfico seria mais apropriado para exibir a porcentagem em cada curso?
 
@@ -131,7 +141,9 @@ Se alguns alunos estiverem matriculados em mais de um curso, qual tipo de gráfi
   list(
     pergunta =  HTML('Internações por doenças respiratórias em idosos e a intervenção vacinal contra influenza no Estado de São Paulo (Francisco, et al 2004).
 <br>
+<br>
 <center><img src="images/questionario/q10_imagem.png"></center>
+<br>
 <br>
 Da figura acima é correto afirmar que:
 
@@ -147,7 +159,9 @@ Da figura acima é correto afirmar que:
   list(
     pergunta =  HTML('Foi realizado um estudo para avaliar a relação entre o índice de massa corporal segundo padrão internacional e indicadores de adiposidade no diagnóstico de sobrepeso e obesidade em 528 escolares, entre 6 e 10 anos, de ambos os sexos (Giugliano, R e Melo, ALP 2004). A seguir tem-se o gráfico de dispersão entre o índice de massa corporal e o percentual de gordura corporal em escolares, na faixa etária de 6 a 10 anos.
 <br>
-<center><img src="images/questionario/q11_imagem.png"></center>
+<br>
+<center><img src="images/questionario/q11_imagem.png" width="671" height="368"></center>
+<br>
 <br>
 Com relação aos gráficos acima, é correto afirmar:
 
@@ -166,7 +180,9 @@ Com relação aos gráficos acima, é correto afirmar:
     pergunta =  HTML('Abaixo, são dadas medidas resumo do salário mensal e da carga horária semanal (em horas) de 100 funcionários de um determinado hospital:
 
                      <br>
+                     <br>
                      <center><img src="images/questionario/q12_imagem.png"></center>
+<br>
 <br>
 Com base nessas informações, assinale a alternativa CORRETA.
                      '),

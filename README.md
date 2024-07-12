@@ -45,4 +45,4 @@ install.packages(c("tidyverse", "shiny", "shinyjs", "shinyalert",
 
 ## Contato
 
-[garuestatistica\@unifesp.br](mailto:garuestatistica@unifesp.br){.email}
+[garuestatistica\@unifesp.br](mailto:garuestatistica@unifesp.br)

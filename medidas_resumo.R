@@ -43,16 +43,6 @@ medidas_resumo <-
                               ))
                      ),
                      fluidRow(
-                       #column(6, 
-                       #      wellPanel(htmlOutput("modaTitle"),
-                       #                 actionLink("modaMostrarMais", "Mostrar mais"),
-                       #                hidden(actionLink("modaMostrarMenos", "Mostrar menos")),
-                       #                 hidden(p("A moda é representada pela observação mais frequente do conjunto da dados. Ou 
-                       #               seja, o valor que aparece mais vezes. Em alguns casos, pode-se ter mais 
-                       #                de uma moda, ou nenhuma.", id = "modaTexto")),
-                       #                hidden(helpText(id="htModa", "Exemplo com os elementos gerados:"),
-                       #                        verbatimTextOutput("exModa"))
-                       #      )),
                        
                        column(6, 
                               wellPanel(htmlOutput("mediaTitle"),
@@ -136,18 +126,7 @@ medidas_resumo <-
                                         hidden(helpText(id="htDp", "Exemplo com os elementos gerados:"),
                                                verbatimTextOutput("exDp"))
                               ))
-                       #column(6, wellPanel(htmlOutput("epTitle"),
-                       #                       actionLink("epMostrarMais", "Mostrar mais"),
-                       #                      hidden(actionLink("epMostrarMenos", "Mostrar menos")),
-                       #                      hidden(p("Quando tratamos de população e amostras, o erro padrão é utilizado 
-                       #                     como uma medida de variação entre a média da amostra e a média da 
-                       #                     população. Ou seja, é uma medida que ajuda a calcular a confiabilidade 
-                       #                     da amostra e da média amostral calculada. Para obtê-lo, basta dividir o 
-                       #                     desvio padrão pela raiz quadrada do tamanho amostral.", id = "epTexto")),
-                       #                      hidden(uiOutput("epExplain")),
-                       #                     hidden(helpText(id="htEp", "Exemplo com os elementos gerados:"),
-                       #                            verbatimTextOutput("exEp"))
-                       #  ))
+                       
                      ),
                      fluidRow(
                        

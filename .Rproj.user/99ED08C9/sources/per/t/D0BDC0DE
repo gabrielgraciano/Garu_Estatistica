@@ -3,7 +3,7 @@
     "path": "~/GitHub/projeto_pibiti_gabriel/tipos_variaveis.R",
     "project_path": "tipos_variaveis.R",
     "type": "r_source",
-    "hash": "4062958564",
+    "hash": "53118034",
     "contents": "",
     "dirty": false,
     "created": 1720110474772.0,
@@ -11,14 +11,16 @@
     "relative_order": 18,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "0,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1715899759,
+    "lastKnownWriteTime": 1721128060,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1715899759,
+    "last_content_update": 1721128060,
     "read_only": false,
     "read_only_alternatives": []
 }

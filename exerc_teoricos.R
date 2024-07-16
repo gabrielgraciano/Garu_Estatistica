@@ -111,18 +111,13 @@ questoes_teoricos <- list(
   list(
     pergunta= HTML('O seguinte gráfico de pizza mostra a proporção de alunos
     matriculados em diferentes cursos de uma universidade.<br>'),
-    complemento=HTML('Se alguns alunos estiverem matriculados em mais de um 
-    curso, qual tipo de gráfico seria mais apropriado para exibir a 
-    porcentagem de alunos em cada curso?<br>
+    complemento=HTML('Se cada aluno está matriculado em apenas um curso,
+    qual das afirmações está correta?<br>
                      '),
-    opcoes=c('Um gráfico de pizza motrando o percentual de alunos matriculados 
-             por curso, ou seja, o mesmo gráfico da figura.',
-             'Um boxplot para cada curso mostrando a distribuição percentual dos
-             alunos matriculados.',
-             'Um gráfico de barras onde cada barra representa um curso e
-                  a altura mostra o percentual de alunos matriculados.',
-             'Um histograma para cada curso mostrando a distribuição percentual dos
-             alunos matriculados.'),
+    opcoes=c('39% dos alunos estudam Negócios e Engenharia.',
+             '22% dos alunos estudam Educação.',
+             '37% dos alunos estudam Educação ou Engenharia.',
+             '23% dos alunos estudam Artes.'),
     resposta_correta=3,
     has_plot='curso_pie_plot_output'
   ),
@@ -311,7 +306,7 @@ plano_pg_plot <- data.frame(Plano = c("Universidade", "Faculdade Comunitária",
 # Gráfico de pizza
 curso_pie_plot <- data.frame(
   course = c("Negócios", "Educação", "Engenharia", 
-             "Ciências da Saúde", "Artes e Ciências"),
+             "Ciências da Saúde", "Artes"),
   percentage = c(25, 23, 14, 16, 22)
 ) %>%
   ggplot(aes(x = "", y = percentage, fill = course)) +

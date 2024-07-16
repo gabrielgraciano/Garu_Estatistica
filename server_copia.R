@@ -1182,7 +1182,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   })
   
   observeEvent(input$distribuicao, {
-    if (input$distribuicao == "Normal") {
+    if (input$distribuicao == "normal") {
       req(input$normal_p)
       click("normal_refresh")
       print("triggered")
@@ -1383,7 +1383,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
             "bernoulli" = bernoulliPlot(),
             "binomial" = binomPlot(),
             "poisson" = poissonPlot(),
-            "Normal" = normalPlot(),
+            "normal" = normalPlot(),
             "exp" = expPlot(),
             "qui" = quiPlot(),
             "t" = tPlot()
@@ -1396,7 +1396,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   })
   
   
-## Inferência -------
+## Inferência ----
   
   observeEvent(input$testeT1Refresh, {
     testeT1_params$u <- input$testeT1MediaPop
@@ -1957,10 +1957,11 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     colnames(selData) <- c("Var1", "Var2")
     g <- ggplot(selData, aes(x=Var1, y=Var2)) + 
       geom_point(color=dark_cyan, size = 2) + 
-      #geom_smooth(method=lm) + 
+      geom_smooth(method=lm) + 
       xlab(input$testeCorrVar1) + 
       ylab(input$testeCorrVar2) + 
-      theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size = 12))+
+      theme(axis.text.x = element_text(size=12),
+            axis.text.y = element_text(size = 12))+
       theme_minimal()
     
     g
@@ -2089,7 +2090,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     pickerInput('variavel_ex2', 'Medidas-resumo',
                                 choices = c('Média', 'Mediana', 
                                             'Porcentagem', 'Frequência absoluta',
-                                            'Desvio-padrão', 'Frequência relativa', 'Quartis'), 
+                                            'Desvio-padrão', 'Frequência relativa'), 
                                 multiple = TRUE,
                                 options = list(noneSelectedText = 'Nada selecionado')),
                     actionButton('verif_resp_ex2', 'Verificar'),
@@ -2225,16 +2226,11 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              wellPanel(
                p(HTML(enunciado)),
                column(8, 
-                      br(),
-                      
                       gt_output(outputId = 'tabela_pc'),
-                      gt_output(outputId = 'tabela_esperada_ex7'),
                       align = 'center'
                )
              )
-             
       ),
-      
       column(10,
              wellPanel(
                p(HTML('<b>a)</b> Com um nível de significância de 5%, escolha 
@@ -2242,16 +2238,11 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              associação estatisticamente significante 
              entre essas variáveis?<br>')
                ),
-               
                column(8, 
-                      br(),
-                      br(),
                       pickerInput('teste_ex7', 'Escolha um teste:',
-                                  choices = c('Qui-Quadrado', 'Qui-Quadrado via simulação de Monte Carlo'),
+                                  choices = c('Fisher', 'Qui-Quadrado', 't de Student'),
                                   options = list(noneSelectedText = 'Nada selecionado')),
                       actionButton('botao_teste_ex7', 'Verificar'),
-                      br(),
-                      br(),
                       verbatimTextOutput('resultado_teste_ex7'),
                       align = 'center'
                ),
@@ -2262,10 +2253,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                p(HTML('<b>b)</b> De acordo com o resultado do teste,
              é correto afirmar que as variáveis estão associadas ao nível 
                     de significância de 5%?<br?')),
-               
                column(8,
-                      br(),
-                      br(),
                       uiOutput('ex7_parteb'),
                       align = 'center'
                )
@@ -2285,9 +2273,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              wellPanel(
                p(HTML(enunciado)),
                column(8,
-                      br(),
                       gt_output(outputId = 'tabela_ex8_pc'),
-                      gt_output(outputId = 'tabela_esperada_ex8'),
                       align = 'center'
                )
              )
@@ -2300,29 +2286,23 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                       estatisticamente significante entre 
                       essas variáveis?')),
                column(8,
-                      br(),
-                      br(),
                       pickerInput('teste_ex8', 'Escolha o teste:',
-                                  choices = c('Qui-Quadrado', 
-                                              'Qui-Quadrado via simulação de Monte Carlo'),
+                                  choices = c('Fisher', 'Qui-Quadrado', 
+                                              't de Student'),
                                   options = list(noneSelectedText =
                                                    'Nada selecionado')),
                       actionButton('botao_teste_ex8', 'Verificar'),
-                      br(),
-                      br(),
                       verbatimTextOutput('resultado_teste_ex8'),
                       align = 'center'
                )
+               ),
              ),
-      ),
       column(10,
              wellPanel(
                p(HTML('<b>b)</b> De acordo com o resultado do teste, 
                é correto afirmar que as variáveis estão 
                       associadas ao nível de significância de 5%?')),
                column(8,
-                      br(),
-                      br(),
                       uiOutput('ex8_parteb'),
                       align = 'center'
                )
@@ -2332,7 +2312,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   })
   
   ####09UI para exercício 9 ----
-  "output$ex9 <- renderUI({
+  output$ex9 <- renderUI({
     
     enunciado <- questoes_paralisia[[9]]
     
@@ -2394,7 +2374,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
       )
     )
     
-  })"
+  })
   
   ####10UI para exercício 10 ----
   
@@ -2409,8 +2389,6 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                p(HTML(enunciado)
                ),
                column(8,
-                      br(),
-                      br(),
                       pickerInput('variavel_ex10x', 'Eixo x',
                                   choices = c('Não se aplica', nomes_exibidos),
                                   options = list(noneSelectedText = 'Nada selecionado')),
@@ -2421,23 +2399,15 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                                   choices = c('Barras', 'Boxplot', 'Dispersão'),
                                   options = list(noneSelectedText = 'Nada selecionado')),
                       actionButton('graf_ex10', 'Gerar gráfico'),
-                      br(),
-                      br(),
                       plotOutput('plot_ex10'),
-                      br(),
                       align = 'center')
              )
       ),
-      br(),
-      br(),
       column(10,
-             wellPanel(  
-               
-               h5(HTML('<b>Testes de normalidade da variável quantitativa pelos níveis
-             da variável qualitativa: </b>')),
+             wellPanel(               
+               h5('<b>Testes de normalidade da variável quantitativa pelos níveis
+             da variável qualitativa:</b>'),
                column(8,
-                      br(),
-                      br(),
                       verbatimTextOutput('resultado_teste_norm_ex10'),
                       align = 'center'
                )
@@ -2449,11 +2419,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              exibidos, qual é o teste estatístico mais apropriado 
              para verificar se há relação estatisticamente significante
              entre elas a um nível de 5%?')),
-               
                column(8, 
                       uiOutput('ex10_parteb'),
-                      br(),
-                      verbatimTextOutput('resultado_teste_ex10'),
+                      uiOutput('resultado_teste_ex10'),
                       align = 'center')
              )
       ),
@@ -2501,7 +2469,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     mensagem <- reactive({
       if (is.null(input$variavel_ex2)) {
         return("Você não selecionou as respostas!")} else {
-          if (identical(input$variavel_ex2, c('Média', 'Mediana', 'Desvio-padrão', 'Quartis'))) {
+          if (identical(input$variavel_ex2, c('Média', 'Mediana', 'Desvio-padrão'))) {
             return("Resposta correta.")} else {
               return("Há algo errado com sua seleção.")}}
     })
@@ -2635,117 +2603,36 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   
   #Ex7
   output$tabela_pc <- render_gt({
-    contagem_tabela <- dados_paralisia %>%
-      count(perda_audit, grupo) %>%
-      pivot_wider(names_from = grupo, values_from = n, values_fill = list(n = 0)) %>%
-      rename(
-        `Perda Auditiva` = perda_audit,
-        `PC` = PC,
-        `SAN` = SAN
-      )
-    
-    # Calcular as porcentagens
-    contagem_tabela <- contagem_tabela %>%
-      mutate(
-        Total_PC = sum(PC),
-        Total_SAN = sum(SAN),
-        `PC (%)` = paste(PC, "(", round((PC / Total_PC) * 100, 2), "%)", sep = ""),
-        `SAN (%)` = paste(SAN, "(", round((SAN / Total_SAN) * 100, 2), "%)", sep = "")
-      ) %>%
-      select(`Perda Auditiva`, `PC (%)`, `SAN (%)`)
-    
-    # Criar a tabela gt
-    gt(contagem_tabela) %>%
-      tab_header(
-        title = md("**Tabela Observada**")
-      ) %>%
-      cols_label(
-        `Perda Auditiva` = "Perda Auditiva",
-        `PC (%)` = "PC",
-        `SAN (%)` = "SAN"
-      ) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      fmt_markdown(
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências absolutas e relativas",
-        locations = cells_column_labels(columns = c(`PC (%)`, `SAN (%)`))
-      )
+    dados_paralisia%>%
+      select(perda_audit, grupo)%>%
+      tbl_summary(
+        by = 'grupo',
+        missing = 'no',
+        digits = 
+          list(all_continuous() ~ 1,
+               all_categorical() ~ c(0,2)),
+        label = list(
+          grupo ~ 'Grupo de crianças por condição de saúde',
+          perda_audit ~ 
+            'Perda auditiva'))%>%
+      modify_header(label = '**Variável**')%>%
+      modify_footnote(update = starts_with('stat_') ~ 'n (%):
+  frequências absolutas e relativa')%>%
+      as_gt
   })
-  
-  
-  output$tabela_esperada_ex7 <- render_gt({
-    qui_quad_ex7 <- chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
-    tabela_esperada_ex7 <- as.data.frame(qui_quad_ex7$expected)
-    
-    # Renomear colunas e linhas
-    colnames(tabela_esperada_ex7) <- c("PC", "SAN")
-    rownames(tabela_esperada_ex7) <- c("Não", "Sim")
-    
-    # Calcular porcentagens
-    total_coluna <- colSums(tabela_esperada_ex7)
-    tabela_esperada_ex7 <- tabela_esperada_ex7 %>%
-      mutate(PC = sprintf("%.2f (%.2f%%)", PC, PC / total_coluna["PC"] * 100),
-             SAN = sprintf("%.2f (%.2f%%)", SAN, SAN / total_coluna["SAN"] * 100))
-    
-    # Preparar tabela para renderização com gt
-    tabela_esperada_ex7 <- tabela_esperada_ex7 %>%
-      tibble::rownames_to_column(var = "Perda Auditiva") %>%
-      select(`Perda Auditiva`, `PC`, `SAN`)
-    
-    gt(tabela_esperada_ex7) %>%
-      tab_header(
-        title = md("**Tabela esperada do Teste Qui-Quadrado**")
-      ) %>%
-      cols_label(
-        `Perda Auditiva` = "Perda auditiva",
-        `PC` = "PC",
-        `SAN` = "SAN"
-      ) %>%
-      fmt_markdown(columns = everything()) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências esperadas e relativas",
-        locations = cells_column_labels(columns = c(`PC`, `SAN`))
-      )
-  })
-  
   
   observeEvent(input$botao_teste_ex7, {
     
     req(input$teste_ex7)
-    if(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo'){
+    if(input$teste_ex7 == 'Qui-Quadrado'){
       output$resultado_teste_ex7 <- renderPrint({
-        qui_quad_7 <- chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo, simulate.p.value =  TRUE, B = 10000)
+        qui_quad_7 <- chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo)
         cat('p-valor do Teste Qui-Quadrado:', qui_quad_7$p.value)
       }
       )
     }
     mensagem <- reactive({
-      if(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo'){
+      if(input$teste_ex7 == 'Qui-Quadrado'){
         return('Resposta correta.')}
       else{
         if(is.null(input$teste_ex7)){
@@ -2763,8 +2650,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   
   output$ex7_parteb <- renderUI({
     req(input$botao_teste_ex7)
-    req(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo')
-    if(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo'){
+    req(input$teste_ex7 == 'Qui-Quadrado')
+    if(input$teste_ex7 == 'Qui-Quadrado'){
       fluidRow(
         pickerInput('relacao', 'Há relação entre as variáveis?',
                     choices = c('Sim', 'Não')),
@@ -2795,115 +2682,36 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   #Verificar se as tabelas plotadas são iguais
   #Ex8
   output$tabela_ex8_pc <- render_gt({
-    contagem_tabela <- dados_paralisia %>%
-      count(dist_comun, grupo) %>%
-      pivot_wider(names_from = grupo, values_from = n, values_fill = list(n = 0)) %>%
-      rename(
-        `Distúrbio de Comunicação` = dist_comun,
-        `PC` = PC,
-        `SAN` = SAN
-      )
-    
-    # Calcular as porcentagens
-    contagem_tabela <- contagem_tabela %>%
-      mutate(
-        Total_PC = sum(PC),
-        Total_SAN = sum(SAN),
-        `PC (%)` = paste(PC, "(", round((PC / Total_PC) * 100, 2), "%)", sep = ""),
-        `SAN (%)` = paste(SAN, "(", round((SAN / Total_SAN) * 100, 2), "%)", sep = "")
-      ) %>%
-      select(`Distúrbio de Comunicação`, `PC (%)`, `SAN (%)`)
-    
-    # Criar a tabela gt
-    gt(contagem_tabela) %>%
-      tab_header(
-        title = md("**Tabela Observada**")
-      ) %>%
-      cols_label(
-        `Distúrbio de Comunicação` = "Distúrbio de Comunicação",
-        `PC (%)` = "PC",
-        `SAN (%)` = "SAN"
-      ) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      fmt_markdown(
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências absolutas e relativas",
-        locations = cells_column_labels(columns = c(`PC (%)`, `SAN (%)`))
-      )
-  })
-  
-  output$tabela_esperada_ex8 <- render_gt({
-    qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
-    tabela_esperada_ex8 <- as.data.frame(qui_quad_ex8$expected)
-    
-    # Renomear colunas e linhas
-    colnames(tabela_esperada_ex8) <- c("PC", "SAN")
-    rownames(tabela_esperada_ex8) <- c("Não", "Sim")
-    
-    # Calcular porcentagens
-    total_coluna <- colSums(tabela_esperada_ex8)
-    tabela_esperada_ex8 <- tabela_esperada_ex8 %>%
-      mutate(PC = sprintf("%.2f (%.2f%%)", PC, PC / total_coluna["PC"] * 100),
-             SAN = sprintf("%.2f (%.2f%%)", SAN, SAN / total_coluna["SAN"] * 100))
-    
-    # Preparar tabela para renderização com gt
-    tabela_esperada_ex8 <- tabela_esperada_ex8 %>%
-      tibble::rownames_to_column(var = "Distúrbio de Comunicação") %>%
-      select(`Distúrbio de Comunicação`, `PC`, `SAN`)
-    
-    gt(tabela_esperada_ex8) %>%
-      tab_header(
-        title = md("**Tabela esperada do Teste Qui-Quadrado**")
-      ) %>%
-      cols_label(
-        `Distúrbio de Comunicação` = "Distúrbio de Comunicação",
-        `PC` = "PC",
-        `SAN` = "SAN"
-      ) %>%
-      fmt_markdown(columns = everything()) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências esperadas e relativas",
-        locations = cells_column_labels(columns = c(`PC`, `SAN`))
-      )
+    dados_paralisia%>%
+      select(dist_comun, grupo)%>%
+      tbl_summary(
+        by = 'grupo',
+        missing = 'no',
+        digits = 
+          list(all_continuous() ~ 1,
+               all_categorical() ~ c(0,2)),
+        label = list(
+          grupo ~ 'Grupo de crianças por condição de saúde',
+          dist_comun ~ 
+            'Distúrbios de Comunicação'))%>%
+      modify_header(label = '**Variável**')%>%
+      modify_footnote(update = starts_with('stat_') ~ 'n (%):
+  frequências absolutas e relativa')%>%
+      as_gt
   })
   
   observeEvent(input$botao_teste_ex8, {
     
     req(input$teste_ex8)
-    if(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo'){
+    if(input$teste_ex8 == 'Qui-Quadrado'){
       output$resultado_teste_ex8 <- renderPrint({
-        qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
+        qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo)
         cat('p-valor do teste Qui-Quadrado:', qui_quad_ex8$p.value)
       }
       )
     }
     mensagem <- reactive({
-      if(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo'){
+      if(input$teste_ex8 == 'Qui-Quadrado'){
         return('Resposta correta.')}
       else{
         if(is.null(input$teste_ex8)){
@@ -2921,8 +2729,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   
   output$ex8_parteb <- renderUI({
     req(input$botao_teste_ex8)
-    req(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo')
-    if(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo'){
+    req(input$teste_ex8 == 'Qui-Quadrado')
+    if(input$teste_ex8 == 'Qui-Quadrado'){
       fluidRow(
         pickerInput('relacao_ex8', 'Há relação entre as variáveis?',
                     choices = c('Sim', 'Não')),
@@ -2950,8 +2758,169 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     )}
   )
   
-  ###Ex9 (deixei a parte do código no arquivo 'exercicios_nao_utilizados', troquei o nome de exibição do exercício 10 para ex 9 e escondi o ex9, pois necessita correção)
+  #Ex9
+  observeEvent(input$graf_ex9, {
+    output$plot_ex9 <- renderPlot({
+      req(input$variavel_ex9x != input$variavel_ex9y, 
+          (input$variavel_ex9y == 'grupo' || input$variavel_ex9y == 'td_liquido'),
+          (input$variavel_ex9x == 'grupo' || input$variavel_ex9x == 'td_liquido'),
+          input$variavel_ex9_graf == 'Boxplot')
+      
+      # Determine the labels based on the selected variables
+      x_label <- if (input$variavel_ex9x == 'grupo') {
+        'Grupo'
+      } else {
+        'Tempo Líquido'
+      }
+      
+      y_label <- if (input$variavel_ex9y == 'td_liquido') {
+        'Tempo Líquido'
+      } else {
+        'Grupo'
+      }
+      
+      # Determine the fill aesthetic based on whether 'grupo' is in x or y
+      fill_var <- if (input$variavel_ex9x == 'grupo') {
+        input$variavel_ex9x
+      } else if (input$variavel_ex9y == 'grupo') {
+        input$variavel_ex9y
+      } else {
+        NULL
+      }
+      
+      # Create the plot using ggplot2
+      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex9x, y = input$variavel_ex9y, fill = fill_var)) +
+        geom_boxplot() +
+        scale_fill_manual(values = c("#ffc20a", "#0c7bdc")) +
+        labs(x = x_label, y = y_label, fill = 'Grupo') +
+        theme_minimal()
+      
+      return(plot)
+    })
+    
+    
+    
+    
+    mensagem <- reactive({
+      if (is.null(input$variavel_ex9x) && is.null(input$variavel_ex9y) && is.null(input$variavel_ex9_graf)) {
+        return("Você não selecionou as respostas!")}
+      else {
+        if (identical(input$variavel_ex9x, 'grupo') && identical(input$variavel_ex9y, 'td_liquido') && identical(input$variavel_ex9_graf, 'Boxplot')) {
+          return("Resposta correta.")}
+        if (identical(input$variavel_ex9x, 'td_liquido') && identical(input$variavel_ex9y, 'grupo') && identical(input$variavel_ex9_graf, 'Boxplot')) {
+          return("Resposta correta.")}
+        else {
+          return("Há algo errado com sua seleção.")}}
+    })
+    
+    shinyalert(
+      title = "",
+      text = mensagem(),
+      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+    )},
+    ignoreNULL = T)
   
+  output$ex9_parteb <- renderUI({
+    req(input$variavel_ex9x == 'grupo' || input$variavel_ex9x == 'td_liquido')
+    req(input$variavel_ex9y == 'grupo' || input$variavel_ex9y == 'td_liquido')
+    req(input$variavel_ex9_graf == 'Boxplot')
+    req(input$variavel_ex9x != input$variavel_ex9y)
+    req(input$graf_ex9)
+    fluidRow(
+      pickerInput('teste_ex9', 'Escolha o teste:',
+                  choices = c('Mann-Whitney', 'Qui-Quadrado', 't de Student')),
+      actionButton('verificar_teste_ex9', 'Verificar')
+    )
+    
+    
+    
+    
+    
+  })
+  
+  observeEvent(input$graf_ex9, {
+    req(input$variavel_ex9x == 'grupo' || input$variavel_ex9x == 'td_liquido')
+    req(input$variavel_ex9y == 'grupo' || input$variavel_ex9y == 'td_liquido')
+    req(input$variavel_ex9_graf == 'Boxplot')
+    req(input$variavel_ex9x != input$variavel_ex9y)
+    req(input$graf_ex9)
+    output$resultado_teste_norm_ex9 <- renderPrint({
+      shapiro_san <- shapiro.test(SAN$td_liquido)
+      shapiro_pc <- shapiro.test(PC$td_liquido)
+      
+      # Using cat() to ensure line breaks are correctly interpreted
+      cat("p-valor do teste de Shapiro-Wilk para o grupo SAN:\n", shapiro_san$p.value, "\n",
+          "p-valor do teste de Shapiro-Wilk para o grupo PC:\n", shapiro_pc$p.value)
+    })
+    
+  })
+  
+  SAN <- filter(dados_paralisia, grupo == 'SAN')
+  PC <- filter(dados_paralisia, grupo == 'PC')
+  
+  
+  
+  
+  
+  
+  observeEvent(input$verificar_teste_ex9, {
+    
+    if(input$teste_ex9 == 'Mann-Whitney'){
+      output$resultado_teste_ex9 <- renderPrint({
+        wilcox_ex9 <- wilcox.test(td_liquido ~ grupo, alternative = 'two.sided',
+                                  conf.level = 0.95, data = dados_paralisia)
+        
+        cat('p-valor do teste:', wilcox_ex9$p.value)
+        
+      })
+    }
+    
+    mensagem <- reactive({
+      if(input$teste_ex9 == 'Mann-Whitney'){
+        return('Resposta correta.')
+      }
+      else{
+        if(is.null(input$teste_ex9)){
+          return('Você não selecionou as respostas')}
+        else{
+          return('Há algo errado com sua seleção.')}
+      }
+    })
+    shinyalert(
+      title = '',
+      text = mensagem(),
+      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+    )}
+    
+  )
+  
+  output$ex9_partec <- renderUI({
+    req(input$verificar_teste_ex9)
+    if(input$teste_ex9 == 'Mann-Whitney'){
+      fluidRow(
+        pickerInput('relacao_ex9', 'Escolha sua resposta:',
+                    choices = c('Sim', 'Não')),
+        actionButton('verificar_relacao_ex9', 'Verificar')
+        
+      )
+    }
+  })
+  
+  observeEvent(input$verificar_relacao_ex9, {
+    mensagem <- reactive({
+      if(input$relacao_ex9 == 'Sim'){
+        return('Resposta correta.')
+      }
+      else{
+        return('Há algo errado com sua seleção')
+      }
+    })
+    shinyalert(
+      title = '',
+      text = mensagem(),
+      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+    )
+  })
   
   #Ex10
   observeEvent(input$graf_ex10, {
@@ -3012,8 +2981,6 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     req(input$graf_ex10)
     if(input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido' && input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf =='Dispersão' && input$variavel_ex10x != input$variavel_ex10y){
       fluidRow(
-        br(),
-        br(),
         pickerInput('teste_ex10', 'Escolha o teste:',
                     choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
         actionButton('verificar_teste_ex10', 'Verificar')
@@ -3076,8 +3043,6 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     req(input$verificar_teste_ex10)
     if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
       fluidRow(
-        br(),
-        br(),
         pickerInput('relacao_ex10', 'Escolha sua resposta:',
                     choices = c('Sim', 'Não')),
         actionButton('verificar_relacao_ex10', 'Verificar')

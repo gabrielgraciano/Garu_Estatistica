@@ -24,7 +24,7 @@ source("inferencia.R")
 source('exerc_teoricos.R')
 source('exerc_paralisia.R')
 options(OutDec = ",")
-
+Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
 
 useShinyalert(force=TRUE)
 
@@ -86,8 +86,8 @@ dashboardPage(
                                          lib= 'font-awesome'),
                menuSubItem('Teste T para uma amostra', 
                            tabName = 'teste_t_1'),
-               menuSubItem('Teste T para duas amotras', 
-                           tabName = 'teste_t_2'),
+               #menuSubItem('Teste T para duas amotras', 
+               #            tabName = 'teste_t_2'),
                menuSubItem('Teste Qui-quadrado',
                            tabName = 'teste_qui'),
                menuSubItem('Teste de Correlação', 

@@ -1,0 +1,26 @@
+{
+    "id": "72831F3F",
+    "path": "~/GitHub/projeto_pibiti_gabriel/server.R",
+    "project_path": "server.R",
+    "type": "r_source",
+    "hash": "4244969520",
+    "contents": "",
+    "dirty": false,
+    "created": 1719945620314.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "2144,50",
+        "scrollLine": "2137"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1719948435,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1719948435762,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -4,13 +4,13 @@ distr_prob <- tabItem(
     h3(strong("Distribuições de Probabilidade")),
     p("Distribuições de Probabilidade são vistas como medida de comportamento de uma variável aleatória, discreta ou contínua."),
     selectInput("distribuicao", "Distribuição", 
-                choices = c("Bernoulli" = "bernoulli",
-                            "Binomial" = "binomial", 
-                            "Poisson" = "poisson",
-                            "Normal" = "normal",
-                            "Exponencial" = "exp",
-                            "Qui-Quadrado" = "qui",
-                            "T de Student" = "t")),
+                choices =# c("Bernoulli" = "bernoulli",
+                  #  "Binomial" = "binomial", 
+                  #  "Poisson" = "poisson",
+                  ("normal" = "Normal")), #Tive que inverter a ordem (de maíuscula -> minúscula para minúscula -> maiúscula) ~Gabriel
+    #  "Exponencial" = "exp",
+    #  "Qui-Quadrado" = "qui",
+    #  "T de Student" = "t")),
     conditionalPanel("input.distribuicao == 'bernoulli'", 
                      p("Alguns eventos apresentam uma determinada característica: Tem possibilidades binárias de resultados. Por exemplo: sucesso ou fracasso, 0 ou 1, sim ou não, etc. Estes eventos, com duas possibilidades de resultados, são chamados de Eventos de Bernoulli. Dizemos que a probabilidade de que se obtenha 'sucesso' em um desses eventos é p. Logo, como o único outro possível resultado é o fracasso, sua probabilidade é de 1 - p."),
                      helpText("Exemplo: Jogar uma moeda é um evento de Bernoulli, pois tem dois resultados possíveis: cara ou coroa. Se ela for não-viciada, ela tem p = 0.5."),
@@ -35,7 +35,7 @@ distr_prob <- tabItem(
                      sliderInput("poisson_u", "Média", 0, 20, value = 4, step = 1),
                      sliderInput("poisson_minmax", "Intervalo", 0, 40, value = c(0, 10), step = 1)
     ), 
-    conditionalPanel("input.distribuicao == 'normal'", 
+    conditionalPanel("input.distribuicao == 'Normal'", 
                      p("A distribuição normal para variáveis contínuas é uma das mais importantes, visto que diversos fenômenos do mundo podem ser representados por uma distribuição normal. Nela, vê-se há uma distribuição em forma de sino, unimodal e simétrica em relação à sua média. Nessa distribuição, consta que 68,26% dos valores estão distribuídos em até 1 desvio padrão da média. 95,44% em até 2 desvios e 99,73% em até 3."),
                      p("Sua função densidade de probabilidade é definida por:"),
                      withMathJax("$$f(x, \\mu, \\sigma) = \\frac{1}{\\sigma \\sqrt{2\\pi}}e^{-\\frac{1}{2}\\frac{(x - \\mu)^2}{\\sigma^{2}}}$$"),
@@ -71,10 +71,10 @@ distr_prob <- tabItem(
     ),
     mainPanel(
       plotOutput("distribuicao"),
-      conditionalPanel("input.distribuicao != 'normal'", 
+      conditionalPanel("input.distribuicao != 'Normal'", 
                        tableOutput("distrTable")
       ),
-      conditionalPanel("input.distribuicao == 'normal'", 
+      conditionalPanel("input.distribuicao == 'Normal'", 
                        verbatimTextOutput("normalExemplo")
       ),
       conditionalPanel("input.distribuicao == 'exp'",

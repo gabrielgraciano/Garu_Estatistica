@@ -8,7 +8,6 @@ library(htmltools)
 library(gtsummary)
 library(gt)
 library(ggthemes)
-library(fontawesome)
 
 source("data.R")
 source("inicio_projeto.R")
@@ -57,7 +56,7 @@ dashboardPage(
       
       menuItem('Conjuntos de dados', 
                tabName = 'conjunto_dados', 
-               icon = icon('dice', 
+               icon = icon('database', 
                            lib = 'font-awesome')),
       
       menuItem('Descritiva', icon = icon("table", 

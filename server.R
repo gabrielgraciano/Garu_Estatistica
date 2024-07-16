@@ -2129,13 +2129,13 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     
     enunciado <- questoes_paralisia[[4]]
     
-    fluidRow(
+      fluidRow(
       h3(''),
       column(10,
              wellPanel(
                p(HTML(enunciado))
              ),
-             column(8,
+             column(8,offset = 1,
                     pickerInput('variavel_ex4x', 'Eixo x',
                                 choices = c('Não se aplica', nomes_exibidos),
                                 options = list(noneSelectedText = 'Nada selecionado')),
@@ -2148,9 +2148,15 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     actionButton('graf_ex4', 'Gerar gráfico'),
                     align = 'center'
              ),
-             plotOutput('plot_ex4')
+             br(),
+             column(8, offset = 1,
+                    br(),
+             plotOutput('plot_ex4'),
+             align = 'center'
+             )
              )
     )
+    
   })
   
   ####05UI para exercício 5 ----
@@ -2164,7 +2170,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              wellPanel(
                p(HTML(enunciado))
              ),
-             column(8,
+             column(8, offset = 1,
                     pickerInput('variavel_ex5x', 'Eixo x',
                                 choices = c('Não se aplica', nomes_exibidos),
                                 options = list(noneSelectedText = 'Nada selecionado')),
@@ -2177,8 +2183,12 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     actionButton('graf_ex5', 'Gerar gráfico'),
                     align = 'center'
              ),
-             plotOutput('plot_ex5')
-             ),
+             column(8, offset = 1,
+                    br(),
+             plotOutput('plot_ex5'),
+             align = 'center'
+             )
+             )
       
     )
   })
@@ -2194,7 +2204,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
              wellPanel(
                p(HTML(enunciado))
              ),
-             column(8,
+             column(8,offset = 1,
                     pickerInput('variavel_ex6x', 'Eixo x',
                                 choices = c('Não se aplica', nomes_exibidos),
                                 options = list(noneSelectedText = 'Nada selecionado')),
@@ -2207,7 +2217,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
                     actionButton('graf_ex6', 'Gerar gráfico'),
                     align = 'center'
                     ),
-                    plotOutput('plot_ex6')
+             column(8, offset = 1,
+                    plotOutput('plot_ex6'),
+                    align = 'center')
              )
       
       
@@ -2534,17 +2546,41 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   #Ex4
   observeEvent(input$graf_ex4, {
     output$plot_ex4 <- renderPlot({
-      req(input$variavel_ex4x == 'dmo' && input$variavel_ex4y == 'Não se aplica' && input$variavel_ex4_graf == 'Barras')
-      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = input$variavel_ex4x))+
-        geom_bar(stat = 'count')+
-        theme_minimal()+
-        xlab('Disfunção Motora Oral')+
-        ylab('Frequência absoluta')+
-        labs(fill = 'DMO')+
-        scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
-      return(plot)
+      req(input$variavel_ex4x != input$variavel_ex4y,
+          input$variavel_ex4x == 'dmo' || input$variavel_ex4x == 'Não se aplica',
+          input$variavel_ex4y == 'dmo' || input$variavel_ex4y == 'Não se aplica',
+          input$variavel_ex4_graf == 'Barras')
+      
+      x_label <- if(input$variavel_ex4x == 'dmo'){
+        'Disfunção Motora Oral'
+      } else{
+        'Frequência absoluta'
+      }
+      
+      y_label <- if(input$variavel_ex4y == 'dmo'){
+        'Disfunção Motora Oral'
+      } else{
+        'Frequência absoluta'
+      
+      }
+      if(input$variavel_ex4x == 'dmo'){
+        plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = 'dmo'))+
+          geom_bar(stat = 'count')+
+          theme_minimal()+
+          labs(x = x_label, y = y_label,fill = 'DMO')+
+          scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
+        return(plot)
+      }
+      if (input$variavel_ex4y == 'dmo'){
+        plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex4y, fill = 'dmo'))+
+          geom_bar(stat = 'count')+
+          theme_minimal()+
+          labs(x = x_label, y = y_label,fill = 'DMO')+
+          scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
+        return(plot)
+      }
+      
     })
-    
     
     
     mensagem <- reactive({
@@ -2552,6 +2588,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
         return("Você não selecionou as respostas!")}
       else {
         if (identical(input$variavel_ex4x, 'dmo') && identical(input$variavel_ex4y, 'Não se aplica') && identical(input$variavel_ex4_graf, 'Barras')) {
+          return("Resposta correta.")}
+        else if (identical(input$variavel_ex4x, 'Não se aplica') && identical(input$variavel_ex4y, 'dmo') && identical(input$variavel_ex4_graf, 'Barras')) {
           return("Resposta correta.")}
         else {
           return("Há algo errado com sua seleção.")}}
@@ -2567,16 +2605,44 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   #Ex5
   observeEvent(input$graf_ex5, {
     output$plot_ex5 <- renderPlot({
-      req(input$variavel_ex5x == 'dist_comun' && input$variavel_ex5y == 'Não se aplica' && input$variavel_ex5_graf == 'Barras')
-      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = input$variavel_ex5x))+
-        geom_bar(stat = 'count')+
-        xlab('Distúrbio de Comunicação')+
-        ylab('Frequência absoluta')+
-        labs(fill = 'Distúrbio de Comunicação')+
-        scale_fill_manual(values = c(colorful[1], colorful[2]))+
-        theme_minimal()
-      return(plot)
+      req(input$variavel_ex5x != input$variavel_ex5y,
+          input$variavel_ex5x == 'dist_comun' || input$variavel_ex5x == 'Não se aplica',
+          input$variavel_ex5y == 'dist_comun' || input$variavel_ex5y == 'Não se aplica',
+          input$variavel_ex5_graf == 'Barras')
+      
+      x_label <- if(input$variavel_ex5x == 'dist_comun'){
+        'Distúrbio de Comunicação'
+      } else{
+        'Frequência absoluta'
+      }
+      
+      y_label <- if(input$variavel_ex5y == 'dmo'){
+        'Distúrbio de Comunicação'
+      } else{
+        'Frequência absoluta'
+        
+      }
+      if(input$variavel_ex5x == 'dist_comun'){
+        plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = 'dist_comun'))+
+          geom_bar(stat = 'count')+
+          theme_minimal()+
+          labs(x = x_label, y = y_label,fill = 'Distúrbio de Comunicação')+
+          scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
+        return(plot)
+      }
+      if (input$variavel_ex5y == 'dist_comun'){
+        plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex5y, fill = 'dist_comun'))+
+          geom_bar(stat = 'count')+
+          theme_minimal()+
+          labs(x = x_label, y = y_label,fill = 'Distúrbio de Comunicação')+
+          scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
+        return(plot)
+      }
+      
     })
+      
+      
+      
     
     
     
@@ -2585,6 +2651,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
         return("Você não selecionou as respostas!")}
       else {
         if (identical(input$variavel_ex5x, 'dist_comun') && identical(input$variavel_ex5y, 'Não se aplica') && identical(input$variavel_ex5_graf, 'Barras')) {
+          return("Resposta correta.")}
+        else if (identical(input$variavel_ex5x, 'Não se aplica') && identical(input$variavel_ex5y, 'dist_comun') && identical(input$variavel_ex5_graf, 'Barras')) {
           return("Resposta correta.")}
         else {
           return("Há algo errado com sua seleção.")}}
@@ -2600,20 +2668,51 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   #Ex6
   observeEvent(input$graf_ex6, {
     output$plot_ex6 <- renderPlot({
-      req(input$variavel_ex6x == 'Não se aplica' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
-      plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y, fill = as.factor(input$variavel_ex6y)))+
-        geom_boxplot()+
-        theme_minimal()+
-        scale_fill_manual(values = c(colorful[1]), labels = 'Tempo')+
-        ylab('Tempo Líquido')+
-        theme(axis.title.x=element_blank(),
-              axis.text.x=element_blank(),
-              axis.ticks.x=element_blank())+
-        labs(fill = 'Tempo Líquido')
+      req(input$variavel_ex6x != input$variavel_ex6y,
+          input$variavel_ex6x == 'td_liquido' || input$variavel_ex6x == 'Não se aplica',
+          input$variavel_ex6y == 'td_liquido' || input$variavel_ex6y == 'Não se aplica',
+          input$variavel_ex6_graf == 'Boxplot')
       
-      return(plot)
+      x_label <- if(input$variavel_ex6x == 'td_liquido'){
+        'Tempo líquido'
+      } else{
+        ''
+      }
+      
+      y_label <- if(input$variavel_ex6y == 'td_liquido'){
+        'Tempo líquido'
+      } else{
+        ''
+        
+      }
+      if(input$variavel_ex6x == 'td_liquido'){
+        plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex6x, fill = as.factor(input$variavel_ex6x)))+
+          geom_boxplot()+
+          theme_minimal()+
+          scale_fill_manual(values = c(colorful[1]), labels = 'Tempo')+
+          ylab('Tempo Líquido')+
+          theme(axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank())+
+          labs(x = x_label, y = y_label, fill = 'Tempo Líquido')
+        return(plot)
+      }
+      if (input$variavel_ex6y == 'td_liquido'){
+        plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y, fill = as.factor(input$variavel_ex6y)))+
+          geom_boxplot()+
+          theme_minimal()+
+          scale_fill_manual(values = c(colorful[1]), labels = 'Tempo')+
+          ylab('Tempo Líquido')+
+          theme(axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank())+
+          labs(x = x_label, y = y_label, fill = 'Tempo Líquido')
+        return(plot)
+      }
+      
     })
-    
+      
+      
     
     
     mensagem <- reactive({
@@ -2621,6 +2720,8 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
         return("Você não selecionou as respostas!")}
       else {
         if (identical(input$variavel_ex6x, 'Não se aplica') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
+          return("Resposta correta.")}
+        else if (identical(input$variavel_ex6x, 'td_liquido') && identical(input$variavel_ex6y, 'Não se aplica') && identical(input$variavel_ex6_graf, 'Boxplot')) {
           return("Resposta correta.")}
         else {
           return("Há algo errado com sua seleção.")}}

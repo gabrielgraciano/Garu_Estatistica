@@ -1,16 +1,3 @@
-colorful <- c('#0c7bdc', '#FFc20a', "#20BFB2", "#63BE76", "#E66100",
-              "#0c7bdc", "#d41159", "#4b0092", "#64B5DA", "#c9e5f2")
-
-blue <- c("#A1D2CE", "#8AD1CB", "#78CAD2", "#62A8AC", 
-          "#4CA6AA", "#5497A7", "#50858B", "#254A4F")
-medium_cyan <- '#3db9bf'
-dark_cyan <- '#077e84'
-medium_ocre <- "#bf9f56"
-dark_orange <- "#8c6a1c"
-brown <- "#4c380c"
-red_nail <- '#ce4b37'
-red_broken_nail <- '#300802'
-
 floorN <- function(x, N){ 
   N*floor(x/N) 
 }

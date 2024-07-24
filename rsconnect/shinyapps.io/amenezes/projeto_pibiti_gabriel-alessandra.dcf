@@ -4,8 +4,8 @@ username: amenezes
 account: amenezes
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 12327825
-bundleId: 8872701
+appId: 12360882
+bundleId: 8902508
 url: https://amenezes.shinyapps.io/projeto_pibiti_gabriel-alessandra/
 version: 1
 asMultiple: FALSE

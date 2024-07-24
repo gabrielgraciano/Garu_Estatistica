@@ -271,103 +271,6 @@ Com base nessas informações, assinale a alternativa correta.
   )
 )
 
-custom_theme <- theme_minimal() +
-  theme(
-    strip.text.x = element_text(face='bold', size = 12), 
-    plot.caption = element_text(face = "bold", hjust = 0),
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    axis.title = element_text(face='bold', size = 12),
-    axis.text = element_text(face='bold', size = 10),
-    legend.title = element_blank(),
-    legend.text = element_text(face = "bold"),
-    plot.margin = unit(c(1, 1, 1, 1), "cm"),
-    panel.border = element_rect(colour = "black", fill = NA)
-  )
-
-colorful <- c('#0c7bdc', '#FFc20a', "#20BFB2", "#63BE76", "#E66100",
-              "#0c7bdc", "#d41159", "#4b0092", "#64B5DA", "#c9e5f2")
-
-# Gráfico de barras
-plano_pg_plot <- data.frame(Plano = c("Universidade", "Faculdade Comunitária", 
-                                 "Exército", "Emprego", "Ano sabático"),
-                       Numero = c(120, 90, 15, 85, 20)) %>%
-  ggplot(aes(x = Plano, y = Numero, fill = Plano)) +
-  geom_bar(stat = "identity", color='black') +
-  geom_text(aes(label = Numero), vjust = -0.3) +
-  labs(caption = 'Nota: Um ano sabático significa que aluno ficará de folga por um ano antes de decidir o que fazer.',
-       title = "Planos de pós-graduação dos formandos do Ensino Médio",
-       x = "",
-       y = "Número de Indivíduos"
-  ) +
-  scale_fill_manual(values = colorful) +
-  custom_theme +
-  theme(legend.position = "none")
-
-# Gráfico de pizza
-curso_pie_plot <- data.frame(
-  course = c("Negócios", "Educação", "Engenharia", 
-             "Ciências da Saúde", "Artes"),
-  percentage = c(25, 23, 14, 16, 22)
-) %>%
-  ggplot(aes(x = "", y = percentage, fill = course)) +
-  geom_bar(width = 1, stat = "identity", color='black') +
-  coord_polar("y", start = 0) +
-  labs(title = "Percentual de matrículas por curso") +
-  scale_fill_manual(values = colorful) +
-  theme(
-    plot.title = element_text(face = "bold", hjust = 0.5),
-    axis.title = element_blank(),
-    axis.text = element_blank(),
-    legend.title = element_blank(),
-    legend.text = element_text(face = "bold"),
-    panel.border = element_rect(colour = "black", fill = NA),
-    plot.margin = unit(c(1, 1, 1, 1), "cm")
-  ) +
-  geom_text(aes(label = paste0(percentage, "%")), 
-            position = position_stack(vjust = 0.5), 
-            color = "black", 
-            fontface = "bold")
-
-# Gráfico de linhas
-idosos_plot <- ggplot(exerc_idosos, 
-                      aes(x = mes, y = perc, color = sexo, 
-                          linetype = sexo, group = sexo)) +
-  geom_line(linewidth = 0.5) +
-  labs(
-    x = "Mês",
-    y = "%",
-    title = "Proporção de internações por doenças respiratórias na opulação idosa,
-    segundo sexo, estado de São Paulo, 1995 a 2002"
-  ) +
-  scale_color_manual(values = c(colorful[1], colorful[2])) +
-  scale_linetype_manual(values = c("solid", "dashed")) +
-  custom_theme +
-  ylim(0,20) +
-  scale_x_continuous(breaks = seq(1, 84, by = 6), 
-                     labels = exerc_idosos$label[seq(1, 84, by = 6)]) +
-  geom_vline(xintercept = 40, linetype = "dotted",
-             linewidth=1.2, color='red') +
-  annotate("text", x = 40 + 2,
-           y = max(exerc_idosos$perc), label = "Intervenção",
-           angle = 0, vjust = -0.5, hjust = 0)
-
-# Gráfico combinado
-imc_plot <- exerc_imc %>%
-  ggplot(aes(x = perc_gordura, y = imc, color = sexo)) +
-  geom_point() +
-  xlim(0,40) +
-  ylim(0,35) +
-  facet_grid(cols = vars(sexo)) +
-  labs(
-    title = "Distribuição do Índice de Massa Corporal(IMC) por
-    Percentual de Gordura Corporal",
-    x = "\n% de gordura corporal",
-    y = "IMC (kg/m²)\n"
-  ) +
-  scale_color_manual(values = c(colorful[1], colorful[2])) +
-  custom_theme +
-  theme(legend.position = "none")
-
 # UI do módulo -----
 
 exerc_teoricos_ui <- function(id) {
@@ -433,10 +336,109 @@ exerc_teoricos_server <- function(id) {
       }
     })
     
-    output$plano_pg_plot_output <- renderPlot({ plano_pg_plot })
-    output$curso_pie_plot_output <- renderPlot({ curso_pie_plot })
-    output$idosos_plot_output <- renderPlot({ idosos_plot })
-    output$imc_plot_output <- renderPlot({ imc_plot })
+    custom_theme <- theme_minimal() +
+      theme(
+        strip.text.x = element_text(face='bold', size = 12), 
+        plot.caption = element_text(face = "bold", hjust = 0),
+        plot.title = element_text(face = "bold", hjust = 0.5),
+        axis.title = element_text(face='bold', size = 12),
+        axis.text = element_text(face='bold', size = 10),
+        legend.title = element_blank(),
+        legend.text = element_text(face = "bold"),
+        plot.margin = unit(c(1, 1, 1, 1), "cm"),
+        panel.border = element_rect(colour = "black", fill = NA)
+      )
+    
+    
+    output$plano_pg_plot_output <- renderPlot({ 
+      data.frame(Plano = c("Universidade", "Faculdade Comunitária", 
+                           "Exército", "Emprego", "Ano sabático"),
+                 Numero = c(120, 90, 15, 85, 20)) %>%
+        ggplot(aes(x = Plano, y = Numero, fill = Plano)) +
+        geom_bar(stat = "identity", color='black') +
+        geom_text(aes(label = Numero), vjust = -0.3) +
+        labs(caption = 'Nota: Um ano sabático significa que aluno ficará de folga por um ano antes de decidir o que fazer.',
+             title = "Planos de pós-graduação dos formandos do Ensino Médio",
+             x = "",
+             y = "Número de Indivíduos"
+        ) +
+        scale_fill_manual(values = colorful) +
+        custom_theme +
+        theme(legend.position = "none") 
+      })
+    
+    
+    output$curso_pie_plot_output <- renderPlot({
+     data.frame(
+        course = c("Negócios", "Educação", "Engenharia", 
+                   "Ciências da Saúde", "Artes"),
+        percentage = c(25, 23, 14, 16, 22)
+      ) %>%
+        ggplot(aes(x = "", y = percentage, fill = course)) +
+        geom_bar(width = 1, stat = "identity", color='black') +
+        coord_polar("y", start = 0) +
+        labs(title = "Percentual de matrículas por curso") +
+        scale_fill_manual(values = colorful) +
+        theme(
+          plot.title = element_text(face = "bold", hjust = 0.5),
+          axis.title = element_blank(),
+          axis.text = element_blank(),
+          legend.title = element_blank(),
+          legend.text = element_text(face = "bold"),
+          panel.border = element_rect(colour = "black", fill = NA),
+          plot.margin = unit(c(1, 1, 1, 1), "cm")
+        ) +
+        geom_text(aes(label = paste0(percentage, "%")), 
+                  position = position_stack(vjust = 0.5), 
+                  color = "black", 
+                  fontface = "bold")
+      })
+    
+    
+    output$idosos_plot_output <- renderPlot({ 
+      ggplot(exerc_idosos, 
+             aes(x = mes, y = perc, color = sexo, 
+                 linetype = sexo, group = sexo)) +
+        geom_line(linewidth = 0.5) +
+        labs(
+          x = "Mês",
+          y = "%",
+          title = "Proporção de internações por doenças respiratórias na opulação idosa,
+    segundo sexo, estado de São Paulo, 1995 a 2002"
+        ) +
+        scale_color_manual(values = c(colorful[1], colorful[2])) +
+        scale_linetype_manual(values = c("solid", "dashed")) +
+        custom_theme +
+        ylim(0,20) +
+        scale_x_continuous(breaks = seq(1, 84, by = 6), 
+                           labels = exerc_idosos$label[seq(1, 84, by = 6)]) +
+        geom_vline(xintercept = 40, linetype = "dotted",
+                   linewidth=1.2, color='red') +
+        annotate("text", x = 40 + 2,
+                 y = max(exerc_idosos$perc), label = "Intervenção",
+                 angle = 0, vjust = -0.5, hjust = 0) 
+      })
+    
+    
+    output$imc_plot_output <- renderPlot({
+      exerc_imc %>%
+        ggplot(aes(x = perc_gordura, y = imc, color = sexo)) +
+        geom_point() +
+        xlim(0,40) +
+        ylim(0,35) +
+        facet_grid(cols = vars(sexo)) +
+        labs(
+          title = "Distribuição do Índice de Massa Corporal(IMC) por
+    Percentual de Gordura Corporal",
+          x = "\n% de gordura corporal",
+          y = "IMC (kg/m²)\n"
+        ) +
+        scale_color_manual(values = c(colorful[1], colorful[2])) +
+        custom_theme +
+        theme(legend.position = "none")
+      
+      })
+    
     
     output$has_plot_output_teoricos <- renderUI({
       if (questao_atual() <= length(questoes_teoricos)) {

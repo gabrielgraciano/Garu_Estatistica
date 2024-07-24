@@ -364,12 +364,12 @@ exerc_teoricos_server <- function(id) {
         ) +
         scale_fill_manual(values = colorful) +
         custom_theme +
-        theme(legend.position = "none") 
-      })
+        theme(legend.position = "none")
+    })
     
     
     output$curso_pie_plot_output <- renderPlot({
-     data.frame(
+      data.frame(
         course = c("Negócios", "Educação", "Engenharia", 
                    "Ciências da Saúde", "Artes"),
         percentage = c(25, 23, 14, 16, 22)

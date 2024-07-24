@@ -38,6 +38,9 @@ exerc_imc <- read.csv2( "data/exerc_imc.csv", sep = ";") %>%
   modify_at(c('sexo'), as.factor) %>% 
   mutate(sexo = fct_relevel(sexo, 'Meninas', 'Meninos'))
 
+planos <- data.frame(Plano = c("Universidade", "Faculdade Comunitária", 
+                              "Exército", "Emprego", "Ano sabático"),
+                    Numero = c(120, 90, 15, 85, 20))
 
 example_dataframe <- as.data.frame(rbind(
   c("Sexo", "'Masculino', 'Feminino'", "Qualitativa Nominal"),

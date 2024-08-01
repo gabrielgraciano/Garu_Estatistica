@@ -42,13 +42,20 @@ questoes_paralisia <- list(
   </left>",
   "9" = "<left>
   <p>Utilize as caixas de seleção para construir 
-  um gráfico para visualizar a relação do <b>tempo de deglutição de alimentos
-  líquidos</b> com os <b> grupos de crianças PC e SAN.</b><p>
-  </left>",
-  "10" = "<left>
-  <p>Utilize as caixas de seleção para construir 
   um gráfico para visualizar a relação do <b>tempo de deglutição de alimentos 
   líquidos </b> com o <b>tempo de deglutição de alimentos sólidos.</b><p>
+  </left>",
+  "10" = "<left>
+  <p>Utilize as caixas de seleção para construir um gráfico para  
+  visualizar a relação do <b>tempo de deglutição de alimentos 
+  líquidos </b> com o <b>tempo de deglutição de alimentos pastosos </b> entre as 
+  crianças com paralisia cerebral (PC) e entre as crianças sem acometimentos 
+  neurológicos (SAN).<p>
+  </left>",
+  "11" = "<left>
+  <p>Utilize as caixas de seleção para construir 
+  um gráfico para visualizar a relação do <b>tempo de deglutição de alimentos
+  líquidos</b> com os <b> grupos de crianças PC e SAN.</b><p>
   </left>"
 )
 
@@ -120,8 +127,8 @@ exerc_paralisia_ui <- function(id) {
                          tabPanel('Ex06', uiOutput(ns('ex6'))),
                          tabPanel('Ex07', uiOutput(ns('ex7'))),
                          tabPanel('Ex08', uiOutput(ns('ex8'))),
-                         #tabPanel('Ex9', uiOutput(ns('ex9'))),
-                         tabPanel('Ex09', uiOutput(ns('ex10')))
+                         tabPanel('Ex09', uiOutput(ns('ex9'))),
+                         tabPanel('Ex10', uiOutput(ns('ex10')))
                        )
                      )
               )
@@ -157,10 +164,12 @@ exerc_paralisia_server <- function(id) {
         numero_do_exercicio(9)  
       } else if (input$tabs == 'ex10') {
         numero_do_exercicio(10)  
+      } else if (input$tabs == 'ex11') {
+        numero_do_exercicio(11)  
       }
     })
     
-    ### 01UI para exercício 1 ----
+    ## 01UI para exercício 01 ----
     output$ex1 <- renderUI({
       enunciado <- questoes_paralisia[[1]]
       fluidRow(
@@ -200,7 +209,7 @@ exerc_paralisia_server <- function(id) {
     # Ex1 - Validação das respostas
     observeEvent(input$verif_resp_ex1, {
       mensagem <- reactive({
-        if (is.null(input$variavel_quali) && is.null(input$variavel_quanti)) {
+        if (is.null(input$variavel_quali) & is.null(input$variavel_quanti)) {
           return("Você não selecionou as respostas!")
         } else {
           if (identical(input$variavel_quali, c("sexo", "grupo", "perda_audit", "dist_comun", "dmo")) & 
@@ -219,7 +228,7 @@ exerc_paralisia_server <- function(id) {
     }, ignoreNULL = TRUE)
     
     
-    ### 02UI para exercício 2 ----
+    ## 02UI para exercício 02 ----
     output$ex2 <- renderUI({
       enunciado <- questoes_paralisia[[2]]
       fluidRow(
@@ -263,7 +272,7 @@ exerc_paralisia_server <- function(id) {
       )
     }, ignoreNULL = TRUE)
     
-    ### 03UI para exercício 3 ----
+    ## 03UI para exercício 03 ----
     output$ex3 <- renderUI({
       enunciado <- questoes_paralisia[[3]]
       fluidRow(
@@ -305,7 +314,7 @@ exerc_paralisia_server <- function(id) {
       )
     }, ignoreNULL = TRUE)
     
-    ### 04UI para exercício 4 ----
+    ## 04UI para exercício 04 ----
     output$ex4 <- renderUI({
       enunciado <- questoes_paralisia[[4]]
       fluidRow(
@@ -340,9 +349,11 @@ exerc_paralisia_server <- function(id) {
     # Ex4 - Validação das respostas
     observeEvent(input$graf_ex4, {
       output$plot_ex4 <- renderPlot({
-        req(input$variavel_ex4x != input$variavel_ex4y,
-            input$variavel_ex4x == 'dmo' || input$variavel_ex4x == 'Não se aplica',
-            input$variavel_ex4y == 'dmo' || input$variavel_ex4y == 'Não se aplica',
+        req((input$variavel_ex4x != input$variavel_ex4y),
+            (input$variavel_ex4x == 'dmo' | 
+               input$variavel_ex4x == 'Não se aplica'),
+            (input$variavel_ex4y == 'dmo' |
+               input$variavel_ex4y == 'Não se aplica'),
             input$variavel_ex4_graf == 'Barras')
         
         x_label <- if(input$variavel_ex4x == 'dmo'){
@@ -375,12 +386,12 @@ exerc_paralisia_server <- function(id) {
         }
       })
       mensagem <- reactive({
-        if (is.null(input$variavel_ex4x) && is.null(input$variavel_ex4y) && is.null(input$variavel_ex4_graf)) {
+        if (is.null(input$variavel_ex4x) & is.null(input$variavel_ex4y) & is.null(input$variavel_ex4_graf)) {
           return("Você não selecionou as respostas!")
         } else {
-          if (identical(input$variavel_ex4x, 'dmo') && identical(input$variavel_ex4y, 'Não se aplica') && identical(input$variavel_ex4_graf, 'Barras')) {
+          if (identical(input$variavel_ex4x, 'dmo') & identical(input$variavel_ex4y, 'Não se aplica') & identical(input$variavel_ex4_graf, 'Barras')) {
             return("Resposta correta.")
-          } else if (identical(input$variavel_ex4x, 'Não se aplica') && identical(input$variavel_ex4y, 'dmo') && identical(input$variavel_ex4_graf, 'Barras')) {
+          } else if (identical(input$variavel_ex4x, 'Não se aplica') & identical(input$variavel_ex4y, 'dmo') & identical(input$variavel_ex4_graf, 'Barras')) {
             return("Resposta correta.")
           } else {
             return("Há algo errado com sua seleção.")
@@ -394,8 +405,8 @@ exerc_paralisia_server <- function(id) {
       )
     }, ignoreNULL = TRUE)
     
-   
-    ### 05UI para exercício 5 ----
+    
+    ## 05UI para exercício 05 ----
     output$ex5 <- renderUI({
       enunciado <- questoes_paralisia[[5]]
       fluidRow(
@@ -429,9 +440,11 @@ exerc_paralisia_server <- function(id) {
     # Ex5 - Validação das respostas
     observeEvent(input$graf_ex5, {
       output$plot_ex5 <- renderPlot({
-        req(input$variavel_ex5x != input$variavel_ex5y,
-            input$variavel_ex5x == 'dist_comun' || input$variavel_ex5x == 'Não se aplica',
-            input$variavel_ex5y == 'dist_comun' || input$variavel_ex5y == 'Não se aplica',
+        req((input$variavel_ex5x != input$variavel_ex5y),
+            (input$variavel_ex5x == 'dist_comun' |
+               input$variavel_ex5x == 'Não se aplica'),
+            (input$variavel_ex5y == 'dist_comun' |
+               input$variavel_ex5y == 'Não se aplica'),
             input$variavel_ex5_graf == 'Barras')
         
         x_label <- if(input$variavel_ex5x == 'dist_comun'){
@@ -464,12 +477,12 @@ exerc_paralisia_server <- function(id) {
         }
       })
       mensagem <- reactive({
-        if (is.null(input$variavel_ex5x) && is.null(input$variavel_ex5y) && is.null(input$variavel_ex5_graf)) {
+        if (is.null(input$variavel_ex5x) & is.null(input$variavel_ex5y) & is.null(input$variavel_ex5_graf)) {
           return("Você não selecionou as respostas!")
         } else {
-          if (identical(input$variavel_ex5x, 'dist_comun') && identical(input$variavel_ex5y, 'Não se aplica') && identical(input$variavel_ex5_graf, 'Barras')) {
+          if (identical(input$variavel_ex5x, 'dist_comun') & identical(input$variavel_ex5y, 'Não se aplica') & identical(input$variavel_ex5_graf, 'Barras')) {
             return("Resposta correta.")
-          } else if (identical(input$variavel_ex5x, 'Não se aplica') && identical(input$variavel_ex5y, 'dist_comun') && identical(input$variavel_ex5_graf, 'Barras')) {
+          } else if (identical(input$variavel_ex5x, 'Não se aplica') & identical(input$variavel_ex5y, 'dist_comun') & identical(input$variavel_ex5_graf, 'Barras')) {
             return("Resposta correta.")
           } else {
             return("Há algo errado com sua seleção.")
@@ -485,7 +498,7 @@ exerc_paralisia_server <- function(id) {
     
     
     
-    ### 06UI para exercício 6 ----
+    ## 06UI para exercício 06 ----
     output$ex6 <- renderUI({
       enunciado <- questoes_paralisia[[6]]
       fluidRow(
@@ -518,8 +531,8 @@ exerc_paralisia_server <- function(id) {
     observeEvent(input$graf_ex6, {
       output$plot_ex6 <- renderPlot({
         req(input$variavel_ex6x != input$variavel_ex6y,
-            input$variavel_ex6x == 'td_liquido' || input$variavel_ex6x == 'Não se aplica',
-            input$variavel_ex6y == 'td_liquido' || input$variavel_ex6y == 'Não se aplica',
+            input$variavel_ex6x == 'td_liquido' | input$variavel_ex6x == 'Não se aplica',
+            input$variavel_ex6y == 'td_liquido' | input$variavel_ex6y == 'Não se aplica',
             input$variavel_ex6_graf == 'Boxplot')
         
         x_label <- if(input$variavel_ex6x == 'td_liquido'){
@@ -562,12 +575,12 @@ exerc_paralisia_server <- function(id) {
       })
       
       mensagem <- reactive({
-        if (is.null(input$variavel_ex6x) && is.null(input$variavel_ex6y) && is.null(input$variavel_ex6_graf)) {
+        if (is.null(input$variavel_ex6x) & is.null(input$variavel_ex6y) & is.null(input$variavel_ex6_graf)) {
           return("Você não selecionou as respostas!")
         } else {
-          if (identical(input$variavel_ex6x, 'Não se aplica') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
+          if (identical(input$variavel_ex6x, 'Não se aplica') & identical(input$variavel_ex6y, 'td_liquido') & identical(input$variavel_ex6_graf, 'Boxplot')) {
             return("Resposta correta.")
-          } else if (identical(input$variavel_ex6x, 'td_liquido') && identical(input$variavel_ex6y, 'Não se aplica') && identical(input$variavel_ex6_graf, 'Boxplot')) {
+          } else if (identical(input$variavel_ex6x, 'td_liquido') & identical(input$variavel_ex6y, 'Não se aplica') & identical(input$variavel_ex6_graf, 'Boxplot')) {
             return("Resposta correta.")
           } else {
             return("Há algo errado com sua seleção.")
@@ -582,7 +595,7 @@ exerc_paralisia_server <- function(id) {
     }, ignoreNULL = TRUE)
     
     
-    ### 07UI para exercício 7 ----
+    ## 07UI para exercício 07 ----
     output$ex7 <- renderUI({
       enunciado <- questoes_paralisia[[7]]
       fluidRow(
@@ -738,7 +751,7 @@ exerc_paralisia_server <- function(id) {
       )
     })
     
-    ### 08UI para exercício 8 ----
+    ## 08UI para exercício 08 ----
     output$ex8 <- renderUI({
       enunciado <- questoes_paralisia[[8]]
       fluidRow(
@@ -848,15 +861,15 @@ exerc_paralisia_server <- function(id) {
           cat('p-valor do teste Qui-Quadrado:', qui_quad_ex8$p.value)
         })
       } else {
-          output$resultado_teste_ex8 <- renderPrint({
-            qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, 
-                                       dados_paralisia$grupo, 
-                                       simulate.p.value = TRUE, 
-                                       B = 10000)
-            cat('p-valor do teste Qui-Quadrado (Monte Carlo):', qui_quad_ex8$p.value)
-          })
-        }
-
+        output$resultado_teste_ex8 <- renderPrint({
+          qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, 
+                                     dados_paralisia$grupo, 
+                                     simulate.p.value = TRUE, 
+                                     B = 10000)
+          cat('p-valor do teste Qui-Quadrado (Monte Carlo):', qui_quad_ex8$p.value)
+        })
+      }
+      
       mensagem <- reactive({
         if (input$teste_ex8 == 'Qui-Quadrado') {
           return('Resposta correta.')} 
@@ -874,7 +887,7 @@ exerc_paralisia_server <- function(id) {
         }
       })
       
-        shinyalert(
+      shinyalert(
         title = '',
         text = mensagem(),
         type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
@@ -883,11 +896,11 @@ exerc_paralisia_server <- function(id) {
     
     output$ex8_parteb <- renderUI({
       req(input$botao_teste_ex8)
-        fluidRow(
-          pickerInput(ns('relacao_ex8'), 'Há relação entre as variáveis?',
-                      choices = c('Sim', 'Não')),
-          actionButton(ns('verificar_teste_ex8'), 'Verificar')
-        )
+      fluidRow(
+        pickerInput(ns('relacao_ex8'), 'Há relação entre as variáveis?',
+                    choices = c('Sim', 'Não')),
+        actionButton(ns('verificar_teste_ex8'), 'Verificar')
+      )
     })
     
     observeEvent(input$verificar_teste_ex8, {
@@ -911,7 +924,7 @@ exerc_paralisia_server <- function(id) {
     })
     
     
-    ### 09UI para exercício 9 ----
+    ##09UI para exercício 09 ----
     output$ex9 <- renderUI({
       enunciado <- questoes_paralisia[[9]]
       fluidRow(
@@ -920,6 +933,8 @@ exerc_paralisia_server <- function(id) {
                wellPanel(
                  p(HTML(enunciado)),
                  column(9,
+                        br(),
+                        br(),
                         pickerInput(ns('variavel_ex9x'), 'Eixo x',
                                     choices = c('Não se aplica', nomes_exibidos),
                                     options = list(noneSelectedText = 'Nada selecionado')),
@@ -930,39 +945,44 @@ exerc_paralisia_server <- function(id) {
                                     choices = c('Barras', 'Boxplot', 'Dispersão'),
                                     options = list(noneSelectedText = 'Nada selecionado')),
                         actionButton(ns('graf_ex9'), 'Gerar gráfico'),
+                        br(),
+                        br(),
                         plotOutput(ns('plot_ex9')),
-                        align = 'center'
-                 )
+                        br(),
+                        align = 'center')
                )
         ),
+        br(),
+        br(),
         column(10,
-               wellPanel(
-                 h5('<b>Testes de normalidade da variável quantitativa pelos níveis
-             da variável qualitativa:</b>'),
+               wellPanel(  
+                 h5(HTML('<b>Testes de normalidade das variáveis: </b>')),
                  column(9,
+                        br(),
+                        br(),
                         verbatimTextOutput(ns('resultado_teste_norm_ex9')),
                         align = 'center'
                  )
                )
         ),
         column(10,
-               wellPanel(
+               wellPanel(  
                  p(HTML('<b>a)</b> A partir dos resultados dos testes de normalidade
-             exibidos, qual é o teste estatístico mais apropriado
-      para verificar se há associação estatisticamente significante entre essas 
-      variáveis a um nível de 5%?')),
-                 column(9,
+             exibidos, qual é o teste estatístico mais apropriado 
+             para verificar se há relação estatisticamente significante
+             entre as variáveis a um nível de significância de 5%?')),
+                 column(9, 
                         uiOutput(ns('ex9_parteb')),
-                        uiOutput(ns('resultado_teste_ex9')),
-                        align = 'center'
-                 )
+                        br(),
+                        verbatimTextOutput(ns('resultado_teste_ex9')),
+                        align = 'center')
                )
         ),
         column(10,
-               wellPanel(
-                 p(HTML('<b>b)</b> De acordo com o resultado do teste,
-           é correto afirmar que as variáveis estão 
-                  associadas ao nível de significância de 5%?')
+               wellPanel(  
+                 p(HTML('<b>b)</b> De acordo com o resultado do teste de 
+                 correlação, é correto afirmar que as variáveis estão
+                         relacionadas ao nível de significância de 5%?')
                  ),
                  column(9,
                         uiOutput(ns('ex9_partec')),
@@ -973,97 +993,31 @@ exerc_paralisia_server <- function(id) {
       )
     })
     
-    ### 10UI para exercício 10 ----
-    output$ex10 <- renderUI({
-      enunciado <- questoes_paralisia[[10]]
-      fluidRow(
-        h3(''),
-        column(10,
-               wellPanel(
-                 p(HTML(enunciado)),
-                 column(9,
-                        br(),
-                        br(),
-                        pickerInput(ns('variavel_ex10x'), 'Eixo x',
-                                    choices = c('Não se aplica', nomes_exibidos),
-                                    options = list(noneSelectedText = 'Nada selecionado')),
-                        pickerInput(ns('variavel_ex10y'), 'Eixo y',
-                                    choices = c('Não se aplica', nomes_exibidos),
-                                    options = list(noneSelectedText = 'Nada selecionado')),
-                        pickerInput(ns('variavel_ex10_graf'), 'Tipo de gráfico',
-                                    choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                    options = list(noneSelectedText = 'Nada selecionado')),
-                        actionButton(ns('graf_ex10'), 'Gerar gráfico'),
-                        br(),
-                        br(),
-                        plotOutput(ns('plot_ex10')),
-                        br(),
-                        align = 'center')
-               )
-        ),
-        br(),
-        br(),
-        column(10,
-               wellPanel(  
-                 h5(HTML('<b>Testes de normalidade da variável quantitativa pelos níveis
-             da variável qualitativa: </b>')),
-                 column(9,
-                        br(),
-                        br(),
-                        verbatimTextOutput(ns('resultado_teste_norm_ex10')),
-                        align = 'center'
-                 )
-               )
-        ),
-        column(10,
-               wellPanel(  
-                 p(HTML('<b>a)</b> A partir dos resultados dos testes de normalidade
-             exibidos, qual é o teste estatístico mais apropriado 
-             para verificar se há relação estatisticamente significante
-             entre elas a um nível de 5%?')),
-                 column(9, 
-                        uiOutput(ns('ex10_parteb')),
-                        br(),
-                        verbatimTextOutput(ns('resultado_teste_ex10')),
-                        align = 'center')
-               )
-        ),
-        column(10,
-               wellPanel(  
-                 p(HTML('<b>b)</b> De acordo com o resultado do teste, 
-                  é correto afirmar que as variáveis estão
-                         relacionadas ao nível de significância de 5%?')
-                 ),
-                 column(9,
-                        uiOutput(ns('ex10_partec')),
-                        align = 'center'
-                 )
-               )
-        )
-      )
-    })
-    
-    # Ex10 - Validação das respostas
-    observeEvent(input$graf_ex10, {
-      output$plot_ex10 <- renderPlot({
-        req(input$variavel_ex10x != input$variavel_ex10y, 
-            (input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido'),
-            (input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido'),
-            input$variavel_ex10_graf == 'Dispersão')
+    # Ex9 - Validação das respostas
+    observeEvent(input$graf_ex9, {
+      output$plot_ex9 <- renderPlot({
+        req((input$variavel_ex9x != input$variavel_ex9y), 
+            (input$variavel_ex9x == 'td_liquido' |
+               input$variavel_ex9x == 'td_solido'),
+            (input$variavel_ex9y == 'td_liquido' | 
+               input$variavel_ex9y == 'td_solido'),
+            input$variavel_ex9_graf == 'Dispersão')
         
-        x_label <- if (input$variavel_ex10x == 'td_liquido') {
+        x_label <- if (input$variavel_ex9x == 'td_liquido') {
           'Tempo líquido'
         } else {
           'Tempo sólido'
         }
         
-        y_label <- if (input$variavel_ex10y == 'td_liquido') {
+        y_label <- if (input$variavel_ex9y == 'td_liquido') {
           'Tempo líquido'
         } else {
           'Tempo sólido'
         }
         
-        plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex10x, y = input$variavel_ex10y)) +
+        plot <- ggplot(dados_paralisia, 
+                       aes_string(x = input$variavel_ex9x, 
+                                  y = input$variavel_ex9y)) +
           geom_point() +
           labs(x = x_label, y = y_label) +
           theme_minimal()
@@ -1071,12 +1025,18 @@ exerc_paralisia_server <- function(id) {
         return(plot)
       })
       mensagem <- reactive({
-        if (is.null(input$variavel_ex10x) && is.null(input$variavel_ex10y) && is.null(input$variavel_ex10_graf)) {
-          return("Você não selecionou as respostas!")
+        if (is.null(input$variavel_ex9x) |
+            is.null(input$variavel_ex9y) |
+            is.null(input$variavel_ex9_graf)) {
+          return("Você não selecionou todas as respostas!")
         } else {
-          if (identical(input$variavel_ex10x, 'td_liquido') && identical(input$variavel_ex10y, 'td_solido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
+          if (identical(input$variavel_ex9x, 'td_liquido') & 
+              identical(input$variavel_ex9y, 'td_solido') & 
+              identical(input$variavel_ex9_graf, 'Dispersão')) {
             return("Resposta correta.")
-          } else if (identical(input$variavel_ex10x, 'td_solido') && identical(input$variavel_ex10y, 'td_liquido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
+          } else if (identical(input$variavel_ex9x, 'td_solido') & 
+                     identical(input$variavel_ex9y, 'td_liquido') & 
+                     identical(input$variavel_ex9_graf, 'Dispersão')) {
             return("Resposta correta.")
           } else {
             return("Há algo errado com sua seleção.")
@@ -1091,26 +1051,29 @@ exerc_paralisia_server <- function(id) {
       )
     }, ignoreNULL = TRUE)
     
-    output$ex10_parteb <- renderUI({
-      req(input$variavel_ex10x != input$variavel_ex10y, 
-          (input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido'),
-          (input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido'),
-          input$variavel_ex10_graf == 'Dispersão')
-      req(input$graf_ex10)
-      if(input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido' && input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf =='Dispersão' && input$variavel_ex10x != input$variavel_ex10y){
+    output$ex9_parteb <- renderUI({
+      req(input$variavel_ex9x != input$variavel_ex9y, 
+          (input$variavel_ex9x == 'td_liquido' | input$variavel_ex9x == 'td_solido'),
+          (input$variavel_ex9y == 'td_liquido' | input$variavel_ex9y == 'td_solido'),
+          input$variavel_ex9_graf == 'Dispersão')
+      req(input$graf_ex9)
+      if(input$variavel_ex9x == 'td_liquido' | input$variavel_ex9x == 'td_solido' & input$variavel_ex9y == 'td_liquido' | input$variavel_ex9y == 'td_solido' & input$variavel_ex9_graf =='Dispersão' & input$variavel_ex9x != input$variavel_ex9y){
         fluidRow(
           br(),
           br(),
-          pickerInput(ns('teste_ex10'), 'Escolha o teste:',
-                      choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
-          actionButton(ns('verificar_teste_ex10'), 'Verificar')
+          pickerInput(ns('teste_ex9'), 'Escolha o teste:',
+                      choices = c('Teste de Correlação de Pearson',
+                                  'Teste de Correlação de Spearman',
+                                  'Qui-Quadrado', 
+                                  't de Student')),
+          actionButton(ns('verificar_teste_ex9'), 'Verificar')
         )
       }
     })
     
-    observeEvent(input$graf_ex10, {
-      if(input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido' && input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf =='Dispersão' && input$variavel_ex10x != input$variavel_ex10y){
-        output$resultado_teste_norm_ex10 <- renderPrint({
+    observeEvent(input$graf_ex9, {
+      if(input$variavel_ex9x == 'td_liquido' | input$variavel_ex9x == 'td_solido' & input$variavel_ex9y == 'td_liquido' | input$variavel_ex9y == 'td_solido' & input$variavel_ex9_graf =='Dispersão' & input$variavel_ex9x != input$variavel_ex9y){
+        output$resultado_teste_norm_ex9 <- renderPrint({
           shapiro_tdliq <- shapiro.test(dados_paralisia$td_liquido)
           shapiro_tdsol <- shapiro.test(dados_paralisia$td_solido)
           
@@ -1122,19 +1085,19 @@ exerc_paralisia_server <- function(id) {
       }
     })
     
-    observeEvent(input$verificar_teste_ex10, {
-      if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-        output$resultado_teste_ex10 <- renderPrint({
-          teste_cor_ex10 <- cor.test(dados_paralisia$td_liquido, dados_paralisia$td_solido,
-                                     exact = FALSE, method = 'spearman')
-          cat('p-valor do Teste de Correlação de Spearman', teste_cor_ex10$p.value)
+    observeEvent(input$verificar_teste_ex9, {
+      if(input$teste_ex9 == 'Teste de Correlação de Spearman'){
+        output$resultado_teste_ex9 <- renderPrint({
+          teste_cor_ex9 <- cor.test(dados_paralisia$td_liquido, dados_paralisia$td_solido,
+                                    exact = FALSE, method = 'spearman')
+          cat('p-valor do Teste de Correlação de Spearman', teste_cor_ex9$p.value)
         })
       }
       mensagem <- reactive({
-        if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
+        if(input$teste_ex9 == 'Teste de Correlação de Spearman'){
           return('Resposta correta.')
         } else {
-          if(is.null(input$teste_ex10)){
+          if(is.null(input$teste_ex9)){
             return('Você não selecionou as respostas')
           } else {
             return('Há algo errado com sua seleção.')
@@ -1149,22 +1112,22 @@ exerc_paralisia_server <- function(id) {
       )
     })
     
-    output$ex10_partec <- renderUI({
-      req(input$verificar_teste_ex10)
-      if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
+    output$ex9_partec <- renderUI({
+      req(input$verificar_teste_ex9)
+      if(input$teste_ex9 == 'Teste de Correlação de Spearman'){
         fluidRow(
           br(),
           br(),
-          pickerInput(ns('relacao_ex10'), 'Escolha sua resposta:',
+          pickerInput(ns('relacao_ex9'), 'Escolha sua resposta:',
                       choices = c('Sim', 'Não')),
-          actionButton(ns('verificar_relacao_ex10'), 'Verificar')
+          actionButton(ns('verificar_relacao_ex9'), 'Verificar')
         )
       }
     })
     
-    observeEvent(input$verificar_relacao_ex10, {
+    observeEvent(input$verificar_relacao_ex9, {
       mensagem <- reactive({
-        if(input$relacao_ex10 == 'Sim'){
+        if(input$relacao_ex9 == 'Sim'){
           return('Resposta correta.')
         } else {
           return('Há algo errado com sua seleção')
@@ -1177,5 +1140,460 @@ exerc_paralisia_server <- function(id) {
       )
     })
     
+    
+    ## 10UI para exercício 10 ----
+    output$ex10 <- renderUI({
+      enunciado <- questoes_paralisia[[10]]
+      fluidRow(
+        h3(''),
+        column(10,
+               wellPanel(
+                 p(HTML(enunciado)),
+                 column(9,
+                        br(),
+                        br(),
+                        pickerInput(ns('variavel_ex10x'), 'Eixo x',
+                                    choices = c('Não se aplica', nomes_exibidos),
+                                    options = list(noneSelectedText = 'Nada selecionado')
+                        ),
+                        pickerInput(ns('variavel_ex10y'), 'Eixo y',
+                                    choices = c('Não se aplica', nomes_exibidos),
+                                    options = list(noneSelectedText = 'Nada selecionado')
+                        ),
+                        pickerInput(ns('variavel_ex10g'), 'Grupo',
+                                    choices = c('Não se aplica', nomes_exibidos),
+                                    options = list(noneSelectedText = 'Nada selecionado')
+                        ),
+                        pickerInput(ns('variavel_ex10_graf'), 'Tipo de gráfico',
+                                    choices = c('Barras', 'Boxplot', 'Dispersão'),
+                                    options = list(noneSelectedText = 'Nada selecionado')
+                        ),
+                        actionButton(ns('gerar_graf_ex10'), 'Gerar gráfico'),
+                        br(),
+                        br(),
+                        plotOutput(ns('plot_ex10')),
+                        br(),
+                        align = 'center'
+                 )
+               )
+        ),
+        br(),
+        br(),
+        column(10,
+               wellPanel(
+                 h5(HTML('<b>Testes de normalidade das variáveis em cada subgrupo de crianças:</b>')),
+                 column(9,
+                        br(),
+                        br(),
+                        verbatimTextOutput(ns('resultado_teste_norm_ex10')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>a)</b> A partir dos resultados dos testes de 
+                        normalidade exibidos, com um nível de significância 
+                        de 5%, qual é o teste estatístico mais apropriado
+                        para verificar se há relação estatisticamente 
+                        significante entre as variáveis dentre as crianças
+                        com paralisia cerebral?')),
+                 column(9,
+                        uiOutput(ns('ex10_partea')),
+                        br(),
+                        verbatimTextOutput(ns('resultado_teste_ex10pc')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>b)</b> De acordo com o resultado do teste de 
+                        correlação, é correto afirmar que as variáveis estão 
+                        relacionadas ao nível de significância de 5% dentre 
+                        as crianças com paralisia cerebral?')),
+                 column(9,
+                        uiOutput(ns('ex10_parteb')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>c)</b> A partir dos resultados dos testes de
+                        normalidade exibidos, com um nível de significância 
+                        de 5%, qual é o teste estatístico mais apropriado 
+                        para verificar se há relação estatisticamente
+                        significante entre as variáveis dentre as
+                        crianças sem acometimentos neurológicos?')),
+                 column(9,
+                        uiOutput(ns('ex10_partec')),
+                        br(),
+                        verbatimTextOutput(ns('resultado_teste_ex10san')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>d)</b> De acordo com o resultado do teste de
+                        correlação, é correto afirmar que as variáveis
+                        estão relacionadas ao nível de significância de 
+                        5% dentre as crianças sem acometimentos neurológicos?')),
+                 column(9,
+                        uiOutput(ns('ex10_parted')),
+                        align = 'center'
+                 )
+               )
+        )
+      )
+    })
+    
+    # Ex10 - Validação das respostas
+    ## Validação do gráfico
+    observeEvent(input$gerar_graf_ex10, {
+      output$plot_ex10 <- renderPlot({
+        req(input$variavel_ex10x != input$variavel_ex10y, 
+            (input$variavel_ex10x == 'td_liquido' |
+               input$variavel_ex10x == 'td_pastoso'),
+            (input$variavel_ex10y == 'td_liquido' |
+               input$variavel_ex10y == 'td_pastoso'),
+            input$variavel_ex10g == 'grupo',
+            input$variavel_ex10_graf == 'Dispersão')
+        
+        x_label <- if (input$variavel_ex10x == 'td_liquido') {
+          '\nTempo líquido'
+        } else {
+          '\nTempo pastoso'
+        }
+        
+        y_label <- if (input$variavel_ex10y == 'td_liquido') {
+          'Tempo líquido\n'
+        } else {
+          'Tempo pastoso'
+        }
+        
+        plot <- ggplot(dados_paralisia, 
+                       aes_string(x = input$variavel_ex10x, 
+                                  y = input$variavel_ex10y,
+                                  color = input$variavel_ex10g)) +
+          geom_point() +
+          #geom_smooth(method = "lm", se = FALSE, color = 'black') + 
+          labs(x = x_label, y = y_label) +
+          theme_minimal() +
+          scale_color_manual("Grupo", values = c(colorful[1], colorful[2]))
+        
+        return(plot)
+      })
+      
+      mensagem <- reactive({
+        if (is.null(input$variavel_ex10x) | 
+            is.null(input$variavel_ex10y) | 
+            is.null(input$variavel_ex10g) | 
+            is.null(input$variavel_ex10_graf)) {
+          return("Você não selecionou todas as respostas!")
+        } else {
+          if (identical(input$variavel_ex10x, 'td_liquido') &
+              identical(input$variavel_ex10y, 'td_pastoso') &
+              identical(input$variavel_ex10g, 'grupo') &
+              identical(input$variavel_ex10_graf, 'Dispersão')) {
+            return("Resposta correta.")
+          } else if (identical(input$variavel_ex10x, 'td_pastoso') & 
+                     identical(input$variavel_ex10y, 'td_liquido') & 
+                     identical(input$variavel_ex10g, 'grupo') &
+                     identical(input$variavel_ex10_graf, 'Dispersão')) {
+            return("Resposta correta.")
+          } else {
+            return("Há algo errado com sua seleção.")
+          }
+        }
+      })
+      
+      shinyalert(
+        title = "",
+        text = mensagem(),
+        type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
+      )
+    }, ignoreNULL = TRUE)
+    
+    ## Teste de normalidade
+    observeEvent(input$gerar_graf_ex10, {
+      req((input$variavel_ex10x == 'td_liquido' | 
+             input$variavel_ex10x == 'td_pastoso'),
+          (input$variavel_ex10y == 'td_liquido' |
+             input$variavel_ex10y == 'td_pastoso'), 
+          input$variavel_ex10g == 'grupo',
+          input$variavel_ex10_graf == 'Dispersão',
+          (input$variavel_ex10x != input$variavel_ex10y))
+      
+      output$resultado_teste_norm_ex10 <- renderPrint({
+        shapiro_tdliqpc <- shapiro.test(
+          dados_paralisia[dados_paralisia$grupo == 'PC',]$td_liquido)
+        shapiro_tdpaspc <- shapiro.test(
+          dados_paralisia[dados_paralisia$grupo == 'PC',]$td_pastoso)
+        shapiro_tdliqsan <- shapiro.test(
+          dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_liquido)
+        shapiro_tdpassan <- shapiro.test(
+          dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_pastoso)
+        
+        res <- cat('Crianças com paralisia cerebral:\n',
+            'p-valor do teste de Shapiro-Wilk para tempo líquido:',
+            shapiro_tdliqpc$p.value, '\n',
+            'p-valor do teste de Shapiro-Wilk para tempo pastoso:',
+            shapiro_tdpaspc$p.value, '\n\n',
+            'Crianças sem acometimentos neurológicos:\n',
+            'p-valor do teste de Shapiro-Wilk para tempo líquido:',
+            shapiro_tdliqsan$p.value, '\n',
+            'p-valor do teste de Shapiro-Wilk para tempo pastoso:',
+            shapiro_tdpassan$p.value
+        )
+        return(res)
+      })
+    })
+    
+    output$ex10_partea <- renderUI({
+      req(input$gerar_graf_ex10)
+      if((input$variavel_ex10x == 'td_liquido' | 
+          input$variavel_ex10x == 'td_pastoso') & 
+         (input$variavel_ex10y == 'td_liquido' | 
+          input$variavel_ex10y == 'td_pastoso') & 
+         input$variavel_ex10_graf =='Dispersão' & 
+         (input$variavel_ex10x != input$variavel_ex10y)){
+        fluidRow(
+          br(),
+          br(),
+          pickerInput(ns('teste_ex10pc'), 'Escolha o teste de correlação 
+                      para o subgrupo PC:',
+                      choices = c('Teste de Correlação de Pearson',
+                                  'Teste de Correlação de Spearman',
+                                  'Qui-Quadrado', 
+                                  't de Student')
+          ),
+          actionButton(ns('verificar_teste_ex10pc'), 'Verificar')
+        )
+      }
+    })
+    
+    observeEvent(input$verificar_teste_ex10pc, {
+      if(input$teste_ex10pc == 'Teste de Correlação de Spearman'){
+        output$resultado_teste_ex10pc <- renderPrint({
+          teste_cor_ex10pc <- cor.test(
+            dados_paralisia[dados_paralisia$grupo=='PC',]$td_liquido,
+            dados_paralisia[dados_paralisia$grupo=='PC',]$td_pastoso,
+            exact = FALSE, method = 'spearman'
+          )
+          cat('p-valor do Teste de Correlação de Spearman',
+              teste_cor_ex10pc$p.value)
+        })
+      }
+      mensagem <- reactive({
+        if(input$teste_ex10pc == 'Teste de Correlação de Spearman'){
+          return('Resposta correta.')
+        } else {
+          if(is.null(input$teste_ex10pc)){
+            return('Você não selecionou as respostas')
+          } else {
+            return('Há algo errado com sua seleção.')
+          }
+        }
+      })
+      
+      shinyalert(
+        title = '',
+        text = mensagem(),
+        type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+      )
+    })
+    
+    output$ex10_parteb <- renderUI({
+      req(input$verificar_teste_ex10pc)
+      if(input$teste_ex10pc == 'Teste de Correlação de Spearman'){
+        fluidRow(
+          br(),
+          br(),
+          pickerInput(ns('relacao_ex10pc'), 'Escolha sua resposta:',
+                      choices = c('Sim', 'Não')
+          ),
+          actionButton(ns('verificar_relacao_ex10pc'), 'Verificar')
+        )
+      }
+    })
+    
+    observeEvent(input$verificar_relacao_ex10pc, {
+      mensagem <- reactive({
+        if(input$relacao_ex10pc == 'Sim'){
+          return('Resposta correta.')
+        } else {
+          return('Há algo errado com sua seleção')
+        }
+      })
+      shinyalert(
+        title = '',
+        text = mensagem(),
+        type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+      )
+    })
+    
+    output$ex10_partec <- renderUI({
+      req(input$variavel_ex10x != input$variavel_ex10y, 
+          (input$variavel_ex10x == 'td_liquido' | 
+             input$variavel_ex10x == 'td_pastoso'),
+          (input$variavel_ex10y == 'td_liquido' |
+             input$variavel_ex10y == 'td_pastoso'),
+          input$variavel_ex10g == 'grupo',
+          input$variavel_ex10_graf == 'Dispersão',
+          input$gerar_graf_ex10)
+      fluidRow(
+        br(),
+        br(),
+        pickerInput(ns('teste_ex10san'), 'Escolha o teste de correlação para 
+                    o subgrupo SAN:',
+                    c('Teste de Correlação de Pearson',
+                      'Teste de Correlação de Spearman',
+                      'Qui-Quadrado', 
+                      't de Student')
+        ),
+        actionButton(ns('verificar_teste_ex10san'), 'Verificar')
+      )
+    })
+    
+    observeEvent(input$verificar_teste_ex10san, {
+      if(input$teste_ex10san == 'Teste de Correlação de Pearson'){
+        output$resultado_teste_ex10san <- renderPrint({
+          teste_cor_ex10san <- cor.test(
+            dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_liquido,
+            dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_pastoso,
+            exact = FALSE, method = 'pearson'
+          )
+          cat('p-valor do Teste de Correlação de Pearson',
+              teste_cor_ex10san$p.value)
+        })
+      }
+      
+      if(input$teste_ex10san == 'Teste de Correlação de Spearman'){
+        output$resultado_teste_ex10san <- renderPrint({
+          teste_cor_ex10san <- cor.test(
+            dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_liquido,
+            dados_paralisia[dados_paralisia$grupo == 'SAN',]$td_pastoso,
+            exact = FALSE, method = 'spearman'
+          )
+          cat('p-valor do Teste de Correlação de Spearman',
+              teste_cor_ex10san$p.value)
+        })
+      }
+      
+      mensagem <- reactive({
+        if((input$teste_ex10san == 'Teste de Correlação de Pearson') |
+           (input$teste_ex10san == 'Teste de Correlação de Spearman')){
+          return('Resposta correta.')
+        } else {
+          if(is.null(input$teste_ex10san)){
+            return('Você não selecionou as respostas')
+          } else {
+            return('Há algo errado com sua seleção.')
+          }
+        }
+      })
+      
+      shinyalert(
+        title = '',
+        text = mensagem(),
+        type = ifelse(mensagem() == 'Resposta correta.',
+                      'success', 'warning')
+      )
+    })
+    
+    output$ex10_parted <- renderUI({
+      req(input$verificar_teste_ex10san)
+      if((input$teste_ex10san == 'Teste de Correlação de Pearson') |
+         (input$teste_ex10san == 'Teste de Correlação de Spearman')){
+        fluidRow(
+          br(),
+          br(),
+          pickerInput(ns('relacao_ex10san'), 'Escolha sua resposta:',
+                      choices = c('Sim', 'Não')
+          ),
+          actionButton(ns('verificar_relacao_ex10san'), 'Verificar')
+        )
+      }
+    })
+    
+    observeEvent(input$verificar_relacao_ex10san, {
+      mensagem <- reactive({
+        if(input$relacao_ex10san == 'Não'){
+          return('Resposta correta.')
+        } else {
+          return('Há algo errado com sua seleção')
+        }
+      })
+      shinyalert(
+        title = '',
+        text = mensagem(),
+        type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
+      )
+    })
+    
+    
+    ## 11I para exercício 11 ----
+    output$ex11 <- renderUI({
+      enunciado <- questoes_paralisia[[11]]
+      fluidRow(
+        h3(''),
+        column(10,
+               wellPanel(
+                 p(HTML(enunciado)),
+                 column(9,
+                        pickerInput(ns('variavel_ex11x'), 'Eixo x',
+                                    choices = c('Não se aplica', nomes_exibidos),
+                                    options = list(noneSelectedText = 'Nada selecionado')),
+                        pickerInput(ns('variavel_ex11y'), 'Eixo y',
+                                    choices = c('Não se aplica', nomes_exibidos),
+                                    options = list(noneSelectedText = 'Nada selecionado')),
+                        pickerInput(ns('variavel_ex11_graf'), 'Tipo de gráfico',
+                                    choices = c('Barras', 'Boxplot', 'Dispersão'),
+                                    options = list(noneSelectedText = 'Nada selecionado')),
+                        actionButton(ns('graf_ex11'), 'Gerar gráfico'),
+                        plotOutput(ns('plot_ex11')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 h5('<b>Testes de normalidade da variável quantitativa pelos níveis
+             da variável qualitativa:</b>'),
+                 column(9,
+                        verbatimTextOutput(ns('resultado_teste_norm_ex11')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>a)</b> A partir dos resultados dos testes de normalidade
+             exibidos, qual é o teste estatístico mais apropriado
+      para verificar se há associação estatisticamente significante entre essas 
+      variáveis a um nível de 5%?')),
+                 column(9,
+                        uiOutput(ns('ex11_parteb')),
+                        uiOutput(ns('resultado_teste_ex11')),
+                        align = 'center'
+                 )
+               )
+        ),
+        column(10,
+               wellPanel(
+                 p(HTML('<b>b)</b> De acordo com o resultado do teste,
+           é correto afirmar que as variáveis estão 
+                  associadas ao nível de significância de 5%?')
+                 ),
+                 column(9,
+                        uiOutput(ns('ex11_partec')),
+                        align = 'center'
+                 )
+               )
+        )
+      )
+    })
   })
 }

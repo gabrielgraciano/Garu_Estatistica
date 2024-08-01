@@ -16,7 +16,7 @@ inicio_contato_ui <- function(id) {
                tags$p(tags$b("garuestatistica@unifesp.br")),
                br(),
                tags$p('Garu Estatística, 2024. Versão 1.0.8'),
-               tags$p('Última atualização: 16/07/2024')
+               tags$p('Última atualização: 01/08/2024')
              )
       )
     )

@@ -27,7 +27,7 @@ Acesse: <https://garuestatistica.unifesp.br/>
 ``` r
 install.packages(c("tidyverse", "shiny", "shinyjs", "shinyalert", 
                    "shinydashboard", "shinyWidgets", "htmltools", 
-                   "gtsummary", "gt", "ggthemes", "fontawesome"))
+                   "gtsummary", "gt", "ggthemes", "DT"))
 ```
 
 -   Baixe o aplicativo GARU Estatística.

@@ -2,11 +2,14 @@
 
 inicio_contato_ui <- function(id) {
   
-  ns <- NS(id)
   tagList(
     fluidRow(
       column(12, 
              h3(strong('Contato')),
+      )
+    ),
+    fluidRow(
+      column(12,
              div(
                style = "padding: 20px; text-align: left;",
                tags$p("Críticas, correções, sugestões ou interesse em participar do projeto devem ser enviadas para:"),

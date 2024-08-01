@@ -38,14 +38,14 @@ inicio_equipe_ui <- function(id) {
              div(
                div(class = "participant-container", 
                    
-                   #div(class = "participant", 
-                   #   img(src = "images/alessandra.jpg"),
-                   #    div(class = "participant-name",
-                   #        HTML("Alessandra A. S. Menezes<br>
-                   #        Epidemiologia e Bioestatística<br>
-                   #        Medicina Preventiva<br>
-                   #           UNIFESP"))
-                   #),
+                   div(class = "participant", 
+                      img(src = "images/alessandra.jpg"),
+                       div(class = "participant-name",
+                           HTML("Alessandra A. S. Menezes<br>
+                           Epidemiologia e Bioestatística<br>
+                           Medicina Preventiva<br>
+                              UNIFESP"))
+                   ),
                    div(class = "participant", 
                        img(src = "images/camila.jpg"),
                        div(class = "participant-name",
@@ -89,7 +89,7 @@ inicio_equipe_ui <- function(id) {
                            img(src = "images/paulopaiva.jpg"),
                            div(class = "participant-name", 
                                HTML("Paulo Bandiera Paiva<br>
-                                Informática e Saúde<br>
+                                Informática em Saúde<br>
                                UNIFESP"))
                        )
                    )

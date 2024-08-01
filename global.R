@@ -9,6 +9,9 @@ library(htmltools)
 library(gtsummary)
 library(gt)
 library(ggthemes)
+library(DT)
+
+useShinyalert(force=TRUE)
 
 # Data ----
 dados_saude_alimentacao <- readr::read_delim("data/dados_saude_alimentacao.csv",

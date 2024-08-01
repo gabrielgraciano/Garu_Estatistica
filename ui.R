@@ -8,12 +8,11 @@ source("medidas_resumo.R")
 source('graficos.R')
 source('distr_prob.R')
 source("inferencia.R") 
+source("calc_qui_qua.R")
 source('exerc_teoricos.R')
 source('exerc_paralisia.R')
+source('ref_biblio.R')
 options(OutDec = ",")
-Sys.setlocale("LC_ALL", "pt_BR.UTF-8")
-
-useShinyalert(force=TRUE)
 
 dashboardPage(
   
@@ -27,6 +26,7 @@ dashboardPage(
                                  icon("envelope", lib = "font-awesome"), 
                                  "Contato"))
   ),
+  
   dashboardSidebar(
     
     sidebarMenu(
@@ -73,12 +73,12 @@ dashboardPage(
                                          lib= 'font-awesome'),
                menuSubItem('Teste T para uma amostra', 
                            tabName = 'teste_t_1'),
-               #menuSubItem('Teste T para duas amotras', 
-               #            tabName = 'teste_t_2'),
                menuSubItem('Teste Qui-quadrado',
                            tabName = 'teste_qui'),
                menuSubItem('Teste de Correlação', 
-                           tabName= 'teste_corr')),
+                           tabName= 'teste_corr'),
+               menuSubItem('Calculadora Qui-quadrao', 
+                           tabName= 'calc_qui_qua')),
       
       
       menuItem('Exercícios', icon = icon("pencil", 
@@ -86,8 +86,12 @@ dashboardPage(
                menuSubItem('Exercícios Teóricos', 
                            tabName = 'exerc_teoricos'),
                menuSubItem('Exercícios Práticos',
-                           tabName = 'exerc_paralisia')
-      )
+                           tabName = 'exerc_paralisia')),
+      
+      menuItem('Referências', 
+               tabName = 'ref_biblio', 
+               icon = icon("book", 
+                           lib = "font-awesome"))
       
     )
   ),
@@ -117,12 +121,12 @@ dashboardPage(
       graf_bidimensional,
       distr_prob,
       teste_t_1,
-      teste_t_2,
       teste_qui,
       teste_corr,
+      tabItem(tabName = 'calc_qui_qua', calc_qui_qua_ui("calc_qui_qua")),
       tabItem(tabName = 'exerc_teoricos', exerc_teoricos_ui("exerc_teoricos")),
-      exerc_paralisia
+      tabItem(tabName = 'exerc_paralisia', exerc_paralisia_ui("exerc_paralisia")),
+      tabItem(tabName = 'ref_biblio', ref_biblio_ui("ref"))
     )
   )
-  #selected = "inicio_projeto"  # Define a guia inicial selecionada
 )

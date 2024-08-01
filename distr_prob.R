@@ -2,7 +2,8 @@ distr_prob <- tabItem(
   tabName = 'distr_prob',
   fluidPage(
     h3(strong("Distribuições de Probabilidade")),
-    p("Distribuições de Probabilidade são vistas como medida de comportamento de uma variável aleatória, discreta ou contínua."),
+    p("Distribuições de Probabilidade são vistas como medida de comportamento
+      de uma variável aleatória, discreta ou contínua."),
     selectInput("distribuicao", "Distribuição", 
                 choices =# c("Bernoulli" = "bernoulli",
                   #  "Binomial" = "binomial", 

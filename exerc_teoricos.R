@@ -271,7 +271,7 @@ Com base nessas informações, assinale a alternativa correta.
   )
 )
 
-# UI do módulo -----
+# UI -----
 
 exerc_teoricos_ui <- function(id) {
   ns <- NS(id)
@@ -302,7 +302,7 @@ exerc_teoricos_ui <- function(id) {
 }
 
 
-# server do módulo -----
+# server -----
 
 exerc_teoricos_server <- function(id) {
   
@@ -494,12 +494,10 @@ exerc_teoricos_server <- function(id) {
     })
     
     output$score_teoricos <- render_gt({
-      data <- data.frame(
+      data.frame(
         Categoria = c("Acertos", "Erros", "Tentativas"),
         Quantidade = c(acertos(), erros(), tentativas())
-      ) 
-      
-      data %>%
+      ) %>%
         gt() %>%
         tab_header(title = "Pontuação")
     })

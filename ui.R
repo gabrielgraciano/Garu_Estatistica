@@ -97,17 +97,29 @@ dashboardPage(
   ),
   
   dashboardBody(
-    tags$head(tags$script(HTML('
-      var fakeClick = function(tabName) {
-        var dropdownList = document.getElementsByTagName("a");
-        for (var i = 0; i < dropdownList.length; i++) {
-          var link = dropdownList[i];
-          if(link.getAttribute("data-value") == tabName) {
-            link.click();
-          };
-        }
-      };
-    '))),
+    tags$head(
+      tags$script(HTML('
+        var fakeClick = function(tabName) {
+          var dropdownList = document.getElementsByTagName("a");
+          for (var i = 0; i < dropdownList.length; i++) {
+            var link = dropdownList[i];
+            if(link.getAttribute("data-value") == tabName) {
+              link.click();
+            };
+          }
+        };
+      ')),
+      tags$meta(property = "og:title", 
+                content = "Garu Estatística"),
+      tags$meta(property = "og:description", 
+      content = "Uma ferramenta para ensino de Estatística"),
+      tags$meta(property = "og:image", 
+                content = "https://garuestatistica.unifesp.br/images/garu_3.png"),
+      tags$meta(property = "og:url", 
+                content = "https://garuestatistica.unifesp.br/"),
+      tags$meta(property = "og:type", 
+                content = "website")
+    ),
     tabItems(
       tabItem(tabName = 'inicio_projeto', inicio_projeto_ui("inicio_projeto")),
       tabItem(tabName = 'inicio_equipe', inicio_equipe_ui("inicio_equipe")),

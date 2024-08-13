@@ -6,9 +6,10 @@ calc_qui_qua_ui <- function(id) {
     
     sidebarLayout(
       sidebarPanel(
-        numericInput(ns("ncol"), "Número de colunas:", 2, min = 2, max = 20),
-        numericInput(ns("nrow"), "Número de linhas:", 2, min = 2, max = 20),
-        numericInput(ns("conf_level"), "Nível de confiança (%):", 95, min = 90, max = 99),
+        numericInput(ns("ncol"), "Número de colunas:", 2, min = 2, max = 10),
+        numericInput(ns("nrow"), "Número de linhas:", 2, min = 2, max = 10),
+        numericInput(ns("conf_level"), "Nível de confiança (%):", 
+                     95, min = 90, max = 99),
         
         uiOutput(ns("table_setup")),
         
@@ -39,20 +40,29 @@ calc_qui_qua_server <- function(id) {
     output$table_setup <- renderUI({
       req(input$nrow, input$ncol)
       tagList(
-        textInput(ns("rownames"), HTML("Nomes das linhas<br>(separados por vírgulas):"), 
+        textInput(ns("rownames"),
+                  HTML("Nomes das linhas<br>(separados por vírgulas):"), 
                   paste0("Linha ", 1:input$nrow, collapse = ",")),
-        textInput(ns("colnames"), HTML("Nomes das colunas <br>(separados por vírgulas):"), 
+        textInput(ns("colnames"), 
+                  HTML("Nomes das colunas <br>(separados por vírgulas):"), 
                   paste0("Coluna ", 1:input$ncol, collapse = ","))
       )
     })
     
-    rv <- reactiveValues(data = NULL, rownames = NULL, colnames = NULL, test_result = NULL)
+    rv <- reactiveValues(data = NULL, 
+                         rownames = NULL, 
+                         colnames = NULL, 
+                         test_result = NULL)
     
     observe({
       req(input$nrow, input$ncol)
-      rv$data <- matrix(0, nrow = input$nrow, ncol = input$ncol)
       rv$rownames <- paste0("Linha ", 1:input$nrow)
-      rv$colnames <- paste0("Coluna ", 1:input$ncol)
+      rv$colnames <- c(NULL, paste0("Coluna ", 1:input$ncol))
+      rv$data <- matrix(0, 
+                        nrow = input$nrow, 
+                        ncol = input$ncol,
+                        dimnames = list(rv$rownames, rv$colnames)
+                        )
     })
     
     observe({
@@ -63,15 +73,19 @@ calc_qui_qua_server <- function(id) {
     
     output$obs_table_dt <- renderDT({
       req(rv$data, rv$rownames, rv$colnames)
-      datatable(rv$data, editable = TRUE, 
+      datatable(rv$data, 
+                editable = TRUE, 
                 rownames = rv$rownames,
-                colnames = rv$colnames,
-                options = list(dom = 't', # Remove search, pagination, and other features
+                colnames = c(NULL, rv$colnames),
+                options = list(dom = 't',
                                pageLength = 10, 
                                scrollX = TRUE,
                                autoWidth = TRUE,
-                               columnDefs = list(list(className = 'dt-center', targets = "_all"),
-                                                 list(width = '100px', targets = "_all"))))
+                               columnDefs = list(
+                                 list(className = 'dt-center', targets = "_all"),
+                                 list(width = '100px', targets = "_all"))
+                               )
+                )
     })
     
     observeEvent(input$obs_table_dt_cell_edit, {
@@ -81,10 +95,11 @@ calc_qui_qua_server <- function(id) {
       
       v <- as.numeric(info$value)
       
-      if (!is.na(v) && i <= nrow(rv$data) && j <= ncol(rv$data)) {
+      if (!is.na(v) & i <= nrow(rv$data) & j <= ncol(rv$data)) {
         rv$data[i, j] <- v
       } else {
-        showNotification("Por favor, insira um valor numérico válido.", type = "error")
+        showNotification("Por favor, insira um valor numérico válido.", 
+                         type = "error")
       }
     })
     
@@ -96,7 +111,9 @@ calc_qui_qua_server <- function(id) {
       colnames(data) <- rv$colnames
       
       test <- tryCatch({
-        chisq.test(data)
+        chisq.test(data,
+                   correct = FALSE,
+                   simulate.p.value = FALSE)
       }, warning = function(w) {
         w
       }, error = function(e) {
@@ -124,7 +141,11 @@ calc_qui_qua_server <- function(id) {
       if (!inherits(test, "htest")) {
         output$montecarlo_options <- renderUI({
           tagList(
-            numericInput(ns("num_simulations"), "Número de Simulações:", 1000, min = 100, max = 10000),
+            numericInput(ns("num_simulations"), 
+                         "Número de Simulações:", 
+                         2000, 
+                         min = 100,
+                         max = 10000),
             actionButton(ns("apply_montecarlo_btn"), "Aplicar Monte Carlo")
           )
         })
@@ -144,7 +165,10 @@ calc_qui_qua_server <- function(id) {
       colnames(data) <- rv$colnames
       
       test <- tryCatch({
-        chisq.test(data, simulate.p.value = TRUE, B = input$num_simulations)
+        chisq.test(data, 
+                   correct = FALSE,
+                   simulate.p.value = TRUE,
+                   B = input$num_simulations)
       }, warning = function(w) {
         w
       }, error = function(e) {
@@ -171,3 +195,4 @@ calc_qui_qua_server <- function(id) {
     })
   })
 }
+

@@ -77,7 +77,7 @@ dashboardPage(
                            tabName = 'teste_qui'),
                menuSubItem('Teste de Correlação', 
                            tabName= 'teste_corr'),
-               menuSubItem('Calculadora Qui-quadrao', 
+               menuSubItem('Calculadora Qui-quadrado', 
                            tabName= 'calc_qui_qua')),
       
       

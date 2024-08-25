@@ -1,735 +1,3 @@
-colorful <- c('#0c7bdc', '#FFc20a', "#20BFB2", "#63BE76", "#E66100",
-              "#0c7bdc", "#d41159", "#4b0092", "#64B5DA", "#c9e5f2")
-
-blue <- c("#A1D2CE", "#8AD1CB", "#78CAD2", "#62A8AC", 
-          "#4CA6AA", "#5497A7", "#50858B", "#254A4F")
-medium_cyan <- '#3db9bf'
-dark_cyan <- '#077e84'
-medium_ocre <- "#bf9f56"
-dark_orange <- "#8c6a1c"
-brown <- "#4c380c"
-red_nail <- '#ce4b37'
-red_broken_nail <- '#300802'
-
-floorN <- function(x, N){ 
-  N*floor(x/N) 
-}
-
-ceilN <- function(x, N) {
-  N*ceiling(x/N)
-}
-
-values <- reactiveValues()
-values$showMedia <- FALSE
-normal_params <- reactiveValues()
-normal_params$u <- 0
-normal_params$dp <- 1
-normal_params$min <- 1
-normal_params$max <- 4
-normal_params$sit <- 1
-
-testeT1_params <- reactiveValues()
-testeT1_params$u <- 0
-testeT1_params$dp <- 1
-testeT1_params$X <- 0.18
-testeT1_params$n <- 10
-testeT1_params$alpha <- 0.05
-
-testeT2_params <- reactiveValues()
-testeT2_params$n <- 12
-testeT2_params$u1 <- 10
-testeT2_params$u2 <- 9
-testeT2_params$dp1 <- 2.2
-testeT2_params$dp2 <- 2.2
-p1 <- rnorm(12, 10, 2.2)
-p2 <- rnorm(12, 9, 2.2)
-testeT2_params$p1 <- p1
-testeT2_params$p2 <- p2
-testeT2_params$D <- p1 - p2
-
-testeQui_params <- reactiveValues()
-testeQui_params$matrix <- rbind(c(48, 8, 56), c(30, 21, 51), c(78, 29, 107))
-testeQui_params$expected <- rbind(c(41, 15, 56), c(37, 14, 51), c(78, 29, 107))
-testeQui_params$colnames <- c("Melhora", "Não", "Total")
-testeQui_params$rownames <- c("Droga", "Placebo", "Total")
-testeQui_params$chi <- 9.3
-
-elementos <- sort(round(runif(20, min = 1, max = 10)))
-
-getmode <- function(v) {
-  uv <- unique(v)
-  tab <- tabulate(match(v, uv))
-  uv[tab == max(tab)]
-}
-
-vectorToString <- function(v) {
-  string <- v[1]
-  if (length(v) > 1) {
-    string <- "{"
-    for (i in (1:length(v))) {
-      if (i != length(v)) {
-        string <- paste0(string, v[i], ", ")
-      }
-      else {
-        string <- paste0(string, v[i], "}")
-      }
-    }
-  }
-  return (string)
-}
-
-dataqui <- reactiveValues(data=dados_saude_alimentacao,
-                          custom=FALSE, 
-                          factors=var_factors, 
-                          numbers=var_numerics,
-                          shortLevels=shortLevels,
-                          uploaded = FALSE)
-
-
-# server function ----
-
-<<<<<<< Updated upstream
-
-blue <- c("#A1D2CE", "#8AD1CB", "#78CAD2", "#62A8AC", "#4CA6AA", "#5497A7", "#50858B", "#254A4F")
-colorful <- c('#0c7bdc', '#FFc20a', "#20BFB2", "#63BE76", "#E66100", "#0c7bdc", "#d41159", "#4b0092", "#64B5DA", "#c9e5f2")
-medium_cyan <- '#3db9bf'
-  dark_cyan <- '#077e84'
-    medium_ocre <- "#bf9f56"
-      dark_orange <- "#8c6a1c"
-        brown <- "#4c380c"
-          red_nail <- '#ce4b37'
-            red_broken_nail <- '#300802'
-              
-            
-            
-            
-            getmode <- function(v) {
-              uv <- unique(v)
-              tab <- tabulate(match(v, uv))
-              uv[tab == max(tab)]
-            }
-            
-            vectorToString <- function(v) {
-              string <- v[1]
-              if (length(v) > 1) {
-                string <- "{"
-                for (i in (1:length(v))) {
-                  if (i != length(v)) {
-                    string <- paste0(string, v[i], ", ")
-                  }
-                  else {
-                    string <- paste0(string, v[i], "}")
-                  }
-                }
-              }
-              return (string)
-            }
-            
-            function(input, output, session) {
-              
-              # output$imagemLogo <- renderImage({
-              #   return(list(
-              #     src = "www/images/garu_3.png",
-              #     filetype = "image/png",
-              #     alt = "Garu"
-              #   ))
-              # }, deleteFile = FALSE)
-              
-              output$statusDadosUsuario <- renderUI({
-                input$modalOk
-                #print(head(userData$dados))
-                texto <- "<p>Nenhuma base de dados selecionada.</p>"
-                if (!is.null(userData$data)) {
-                  texto <- paste0("<p>Base de dados selecionada: <strong>", userData$nome, "</strong></p>")
-                }
-                HTML(texto)
-              })
-              
-              output$botaoBaixarDados <- downloadHandler(
-                filename = function() {
-                  paste("dados_saude_alimentacao", ".csv", sep="")
-                },
-                content = function(file) {
-                  write.csv(mtcars, file)
-                }
-              )
-              
-              'userDataDialog <- function(failed = FALSE) {
-                modalDialog(
-                  fileInput("userDataUploader", "Escolha arquivo CSV",
-                            multiple = FALSE,
-                            accept = c("text/csv",
-                                       "text/comma-separated-values,text/plain",
-                                       ".csv")),
-                  span(
-                    if (failed) {
-                      div(tags$b("Arquivo escolhido inválido. Por favor, escolha outro.", style = "color: red;"))
-                    }
-                  ), 
-                  footer = tagList(
-                    modalButton("Cancelar"),
-                    actionButton("modalOk", "Ok")
-                  )
-                )
-              }
-              
-              checaDialog <- reactive({
-                # Check that data object exists and is data frame.
-                tryCatch({
-                  userData$data <- read.csv(input$userDataUploader$datapath, header = input$selecionarDadosHeader)
-                  
-                  userData$nome <- input$userDataUploader$name
-                  if (!is.null(userData$data$X)) {
-                    userData$data$X <- NULL
-                  }
-                  userData$factors <- sapply(userData$data, is.factor)
-                  userData$numbers <- sapply(userData$data, is.numeric) | sapply(userData$data, is.integer)
-                  userData$shortLevels <- sapply(userData$data, nlevels) < 8 & userData$factors
-                  userData$continuous <- sapply(userData$data, is.numeric)
-                  userData$custom <- TRUE
-                  userData$uploaded <- TRUE
-                  loaded$data <- userData$data
-                  loaded$nome <- userData$nome
-                  loaded$factors <- userData$factors
-                  loaded$shortLevels <- userData$shortLevels
-                  loaded$continuous <- userData$continuous
-                  updateSelectInput(session, "varGrafQuant")
-                }, error = function(e) {updateSelectInput(session, "dataSource", selected = "nativo")
-                  showNotification("Não foi possível importar seu conjunto de dados. Verifique 
-                       ou tente outro arquivo.",
-                                   duration = 3, 
-                                   closeButton = TRUE,
-                                   type = "error")})
-                if (!is.null(userData$data) && is.data.frame(userData$data)) {
-                  removeModal()
-                } else {
-                  showModal(userDataDialog(failed = TRUE))
-                }
-              })
-              
-              observeEvent(input$modalOk, {
-                print(input$userDataUploader)
-                checaDialog()
-                print(head(userData$data))
-              }
-              
-              )'
-              
-              observeEvent(input$selecionarDados,
-                           showModal(userDataDialog())
-              )
-              
-              observeEvent(input$dataSource, {
-                if (input$dataSource == "Dados do usuário") {
-                  if (userData$uploaded) {
-                    userData$data <- loaded$data
-                    userData$factors <- loaded$factors
-                    userData$numbers <- loaded$numbers
-                    userData$shortLevels <- loaded$shortLevels
-                    userData$continuous <- loaded$continuous
-                    userData$custom <- TRUE
-                  } else {
-                    showModal(userDataDialog())
-                  }
-                  
-                }
-                
-                if (input$dataSource == "nativo") {
-                  userData$data <- data
-                  userData$custom <- FALSE
-                  userData$factors <- native_factors
-                  userData$numbers <- native_numbers
-                  userData$shortLevels <- native_shortLevels
-                }
-              })
-              
-              
-              output$tabelaExemploVariaveis <- renderTable(example_dataframe, bordered = TRUE)
-              
-              output$imagemTiposVariaveis <- renderImage({
-                return(list(
-                  src = "www/images/tipos_variaveis.png",
-                  filetype = "image/png",
-                  alt = "Tipos de Variaveis"
-                ))
-              }, deleteFile = FALSE)
-              
-              output$calcFrequencia <- renderText({
-                "Frequência absoluta: Número de ocorrências de determinada categoria"
-              })
-              
-              output$calcProporcao <- renderText({
-                "Proporção: Frequência absoluta dividida pelo número total de ocorrências"
-              })
-              
-              output$tabelaFreqRelacionamento <- renderTable(tab_frequencia_relacionamento,
-                                                             bordered = TRUE, striped = TRUE)
-              
-              output$tabelaFreqAnoLetivo <- renderTable(tab_frequencia_ano_letivo,
-                                                        bordered = TRUE, striped = TRUE)
-              
-              output$tabelaFreqPeso <- renderTable(tab_frequencia_peso,
-                                                   bordered = TRUE, striped = TRUE)
-              
-              observeEvent(input$geraElementos, {
-                elementos <<- sort(round(runif(input$slider_qtd_elementos, min = input$slider_min_max_valor[1], max = input$slider_min_max_valor[2])))
-              })
-              
-              getElementos <- reactive({
-                return(elementos)
-              })
-              
-              output$printElementos <- renderText({
-                input$geraElementos
-                elementos
-              })
-              
-              #Média
-              
-              observeEvent(input$mediaMostrarMais, {
-                shinyjs::hide("mediaMostrarMais")
-                shinyjs::show("mediaMostrarMenos")
-                shinyjs::show("mediaTexto")
-                shinyjs::show("mediaExplain")
-                shinyjs::show("htMedia")
-                shinyjs::show("exMedia")
-              })
-              
-              observeEvent(input$mediaMostrarMenos, {
-                shinyjs::hide("mediaMostrarMenos")
-                shinyjs::show("mediaMostrarMais")
-                shinyjs::hide("mediaTexto")
-                shinyjs::hide("mediaExplain")
-                shinyjs::hide("htMedia")
-                shinyjs::hide("exMedia")
-              })
-              
-              output$mediaTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Média: <strong> ", round(mean(elementos), 2), "</strong> </h4>")
-              })
-              
-              output$showMedia <- reactive({
-                return(values$showMedia)
-              })
-              
-              output$mediaExplain <- renderUI({
-                withMathJax(helpText("Média:  $$\\frac{1}{n} \\sum_{i=1}^{n} x_{i}$$"))
-              })
-              
-              output$exMedia <- renderText({
-                input$geraElementos
-                text <- "Média = ("
-                for (i in (1:length(elementos))) {
-                  if (i != length(elementos)) {
-                    text <- paste0(text, elementos[i], " + ")
-                  } else {
-                    text <- paste0(text, elementos[i])
-                  }
-                  
-                }
-                
-                text <- paste0(text, ")/", length(elementos), " = ", round(mean(elementos), 4))
-                text
-              })
-              
-              #Mediana
-              
-              observeEvent(input$medianaMostrarMais, {
-                shinyjs::hide("medianaMostrarMais")
-                shinyjs::show("medianaMostrarMenos")
-                shinyjs::show("medianaTexto")
-                shinyjs::show("medianaExplain")
-                shinyjs::show("htMediana")
-                shinyjs::show("exMediana")
-              })
-              
-              observeEvent(input$medianaMostrarMenos, {
-                shinyjs::hide("medianaMostrarMenos")
-                shinyjs::show("medianaMostrarMais")
-                shinyjs::hide("medianaTexto")
-                shinyjs::hide("medianaExplain")
-                shinyjs::hide("htMediana")
-                shinyjs::hide("exMediana")
-              })
-              
-              output$medianaTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Mediana: <strong> ", round(median(elementos), 2), "</strong> </h4>")
-              })
-              
-              output$medianaExplain <- renderUI({
-                withMathJax(helpText("Mediana (n ímpar): $$x_{\\frac{n+1}{2}}$$"),
-                            helpText("Mediana (n par): $$\\frac{x_{\\frac{n}{2}} + x_{\\frac{n}{2} + 1}}{2}$$")
-                )
-              })
-              
-              output$exMediana <- renderText({
-                input$geraElementos
-                text <- "Mediana = "
-                if (length(elementos)%%2 == 1) {
-                  text <- paste0(text, median(elementos))
-                } else {
-                  text <- paste0(text, "(", elementos[length(elementos)/2], " + ", elementos[(length(elementos)/2) + 1], ")/2 = ", round(median(elementos), 4))
-                }
-                text
-              })
-              
-              #Moda
-              
-              observeEvent(input$modaMostrarMais, {
-                shinyjs::hide("modaMostrarMais")
-                shinyjs::show("modaMostrarMenos")
-                shinyjs::show("modaTexto")
-                shinyjs::show("modaExplain")
-                shinyjs::show("htModa")
-                shinyjs::show("exModa")
-              })
-              
-              observeEvent(input$modaMostrarMenos, {
-                shinyjs::hide("modaMostrarMenos")
-                shinyjs::show("modaMostrarMais")
-                shinyjs::hide("modaTexto")
-                shinyjs::hide("modaExplain")
-                shinyjs::hide("htModa")
-                shinyjs::hide("exModa")
-              })
-              
-              output$modaTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Moda: <strong> ", vectorToString(getmode(elementos)), "</strong> </h4>")
-              })
-              
-              output$exModa <- renderText({
-                input$geraElementos
-                text <- paste0("Moda = ", vectorToString(getmode(elementos)))
-                text
-              })
-              
-              #Mínimo
-              
-              observeEvent(input$minimoMostrarMais, {
-                shinyjs::hide("minimoMostrarMais")
-                shinyjs::show("minimoMostrarMenos")
-                shinyjs::show("minimoTexto")
-                shinyjs::show("minimoExplain")
-                shinyjs::show("htMinimo")
-                shinyjs::show("exMinimo")
-              })
-              
-              observeEvent(input$minimoMostrarMenos, {
-                shinyjs::hide("minimoMostrarMenos")
-                shinyjs::show("minimoMostrarMais")
-                shinyjs::hide("minimoTexto")
-                shinyjs::hide("minimoExplain")
-                shinyjs::hide("htMinimo")
-                shinyjs::hide("exMinimo")
-              })
-              
-              output$minimoTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Mínimo: <strong> ", min(elementos), "</strong> </h4>")
-              })
-              
-              output$exMinimo <- renderText({
-                input$geraElementos
-                text <- paste0("Mínimo = ", min(elementos))
-                text
-              })
-              
-              #Máximo
-              
-              observeEvent(input$maximoMostrarMais, {
-                shinyjs::hide("maximoMostrarMais")
-                shinyjs::show("maximoMostrarMenos")
-                shinyjs::show("maximoTexto")
-                shinyjs::show("maximoExplain")
-                shinyjs::show("htMaximo")
-                shinyjs::show("exMaximo")
-              })
-              
-              observeEvent(input$maximoMostrarMenos, {
-                shinyjs::hide("maximoMostrarMenos")
-                shinyjs::show("maximoMostrarMais")
-                shinyjs::hide("maximoTexto")
-                shinyjs::hide("maximoExplain")
-                shinyjs::hide("htMaximo")
-                shinyjs::hide("exMaximo")
-              })
-              
-              output$maximoTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Máximo: <strong> ", max(elementos), "</strong> </h4>")
-              })
-              
-              output$exMaximo <- renderText({
-                input$geraElementos
-                text <- paste0("Máximo = ", max(elementos))
-                text
-              })
-              
-              #Variância
-              
-              observeEvent(input$varianciaMostrarMais, {
-                shinyjs::hide("varianciaMostrarMais")
-                shinyjs::show("varianciaMostrarMenos")
-                shinyjs::show("varianciaTexto")
-                shinyjs::show("varianciaExplain")
-                shinyjs::show("htVariancia")
-                shinyjs::show("exVariancia")
-              })
-              
-              observeEvent(input$varianciaMostrarMenos, {
-                shinyjs::hide("varianciaMostrarMenos")
-                shinyjs::show("varianciaMostrarMais")
-                shinyjs::hide("varianciaTexto")
-                shinyjs::hide("varianciaExplain")
-                shinyjs::hide("htVariancia")
-                shinyjs::hide("exVariancia")
-              })
-              
-              output$varianciaTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Variância: <strong> ", round(var(elementos), 2), "</strong> </h4>")
-              })
-              
-              output$varianciaExplain <- renderUI({
-                withMathJax(helpText("Variância: $$\\frac{\\sum_{i=1}^{n} (x_{i} - \\bar{x})^{2}}{n}$$")
-                )
-              })
-              
-              output$exVariancia <- renderText({
-                input$geraElementos
-                text <- "Variância = ("
-                for (i in (1:length(elementos))) {
-                  if (i != length(elementos)) {
-                    text <- paste0(text, "(",elementos[i], " - ", round(mean(elementos), 4), ")^2 + ")
-                  }
-                  else {
-                    text <- paste0(text, "(",elementos[i], " - ", round(mean(elementos), 4), ")^2)/", length(elementos), " = ", round(var(elementos), 4))
-                  }
-                }
-                text
-              })
-              
-              #Desvio Padrão
-              
-              observeEvent(input$dpMostrarMais, {
-                shinyjs::hide("dpMostrarMais")
-                shinyjs::show("dpMostrarMenos")
-                shinyjs::show("dpTexto")
-                shinyjs::show("dpExplain")
-                shinyjs::show("htDp")
-                shinyjs::show("exDp")
-              })
-              
-              observeEvent(input$dpMostrarMenos, {
-                shinyjs::hide("dpMostrarMenos")
-                shinyjs::show("dpMostrarMais")
-                shinyjs::hide("dpTexto")
-                shinyjs::hide("dpExplain")
-                shinyjs::hide("htDp")
-                shinyjs::hide("exDp")
-              })
-              
-              output$dpTitle <- renderText({
-                input$geraElementos
-                paste0("<h4> Desvio Padrão: <strong> ", round(sd(elementos), 2), "</strong> </h4>")
-              })
-              
-              output$dpExplain <- renderUI({
-                withMathJax(helpText("Desvio Padrão: $$\\sqrt{var(X)}$$")
-                )
-              })
-              
-              output$exDp <- renderText({
-                input$geraElementos
-                text <- paste0("Desvio Padrão = sqrt(", round(var(elementos), 2), ") = ", round(sd(elementos), 4))
-                text
-              })
-              
-              #Erro Padrão
-              
-              observeEvent(input$epMostrarMais, {
-                shinyjs::hide("epMostrarMais")
-                shinyjs::show("epMostrarMenos")
-                shinyjs::show("epTexto")
-                shinyjs::show("epExplain")
-                shinyjs::show("htEp")
-                shinyjs::show("exEp")
-              })
-              
-              observeEvent(input$epMostrarMenos, {
-                shinyjs::hide("epMostrarMenos")
-                shinyjs::show("epMostrarMais")
-                shinyjs::hide("epTexto")
-                shinyjs::hide("epExplain")
-                shinyjs::hide("htEp")
-                shinyjs::hide("exEp")
-              })
-              
-              output$epTitle <- renderText({
-                paste0("<h4> Erro Padrão </h4>")
-              })
-              
-              output$epExplain <- renderUI({
-                withMathJax(helpText("Erro Padrão: $$\\frac{\\sigma}{\\sqrt{n}}$$")
-                )
-              })
-              
-              output$exEp <- renderText({
-                input$geraElementos
-                tam_amostra <- ceiling(sqrt(length(elementos)))
-                amostra <- sample(elementos, tam_amostra, replace = FALSE)
-                text <- paste0("Separando uma amostra exemplo dos elementos gerados: \n", vectorToString(amostra),
-                               "\nCalcula-se o seu desvio padrão = sqrt(var(", vectorToString(amostra), ")) = ", 
-                               round(sd(amostra), 4), "\nE divide-se pela raiz do tamanho da amostra: \n", 
-                               round(sd(amostra), 4), "/sqrt(", tam_amostra, ") = ", round((sd(amostra)/sqrt(tam_amostra)), 4))
-                text
-              })
-              
-              #Quantis
-              
-              observeEvent(input$quantilMostrarMais, {
-                shinyjs::hide("quantilMostrarMais")
-                shinyjs::show("quantilMostrarMenos")
-                shinyjs::show("quantilTexto")
-                shinyjs::show("quantilExplain")
-                shinyjs::show("htQuantil")
-                shinyjs::show("exQuantil")
-              })
-              
-              observeEvent(input$quantilMostrarMenos, {
-                shinyjs::hide("quantilMostrarMenos")
-                shinyjs::show("quantilMostrarMais")
-                shinyjs::hide("quantilTexto")
-                shinyjs::hide("quantilExplain")
-                shinyjs::hide("htQuantil")
-                shinyjs::hide("exQuantil")
-              })
-              
-              output$quantilTitle <- renderText({
-                paste0("<h4> Quartis </h4>")
-              })
-              
-              output$exQuantil <- renderText({
-                input$geraElementos
-                isEven <- (length(elementos)%%2 == 0)
-                text <- paste0("Temos: ", vectorToString(elementos), "\n")
-                
-                if (isEven) {
-                  text <- paste0(text, 
-                                 paste0("0.25 quartil = ", elementos[ceiling(0.25*length(elementos))], ", o "),
-                                 ceiling(0.25*length(elementos)), "º elemento, pois divide 25% dos elementos abaixo dele.\n",
-                                 "0.5 quartil (mediana) = (", elementos[length(elementos)/2] , " + ", elementos[(length(elementos)/2) + 1], 
-                                 ")/2 = ", median(elementos), "\n",
-                                 "0.75 quartil = ", elementos[ceiling(0.75*length(elementos))], ", o ",
-                                 ceiling(0.75*length(elementos)), "º elemento, pois divide 75% dos elementos abaixo dele.\n"
-                  )
-                } else {
-                  text <- paste0(text, 
-                                 "0.25 quartil = (",  elementos[floor(0.25*length(elementos))] , " + ", elementos[ceiling(0.25*length(elementos))], 
-                                 ")/2 = ", as.vector(quantile(elementos))[2], "\n",
-                                 "0.5 quartil (mediana) = ", elementos[ceiling(0.5*length(elementos))], ", o ",
-                                 ceiling(0.5*length(elementos)), "º elemento, pois divide metade dos elementos abaixo dele.\n",
-                                 "0.75 quartil = (",  elementos[floor(0.75*length(elementos))] , " + ", elementos[ceiling(0.75*length(elementos))],
-                                 ")/2 = ", as.vector(quantile(elementos))[4], "\n"
-                  )
-                }
-                
-                text
-              })
-              
-              #Distância interquartílica
-              
-              observeEvent(input$dist_quantilMostrarMais, {
-                shinyjs::hide("dist_quantilMostrarMais")
-                shinyjs::show("dist_quantilMostrarMenos")
-                shinyjs::show("dist_quantilTexto")
-                shinyjs::show("dist_quantilExplain")
-                shinyjs::show("dist_htQuantil")
-                shinyjs::show("dist_exQuantil")
-              })
-              
-              observeEvent(input$dist_quantilMostrarMenos, {
-                shinyjs::hide("dist_quantilMostrarMenos")
-                shinyjs::show("dist_quantilMostrarMais")
-                shinyjs::hide("dist_quantilTexto")
-                shinyjs::hide("dist_quantilExplain")
-                shinyjs::hide("dist_htQuantil")
-                shinyjs::hide("dist_exQuantil")
-              })
-              
-              output$dist_quantilTitle <- renderText({
-                input$gerarElementos
-                paste0("<h4> Distância Interquartílica: não está atualizando <strong>", round(median(elementos) - as.vector(quantile(elementos))[2], 2), "</strong> </h4>")
-              })
-              
-
-              output$dist_exQuantil <- renderText({
-                input$geraElementos
-                isEven <- (length(elementos)%%2 == 0)
-                text <- paste0("Temos: ", vectorToString(elementos), "\n")
-                
-                if (isEven) {
-                  text <- paste0(text, 
-                                 paste0("0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', elementos[ceiling(0.25*length(elementos))], ' = ', 
-                                        median(elementos) - elementos[ceiling(0.25*length(elementos))], '\n')
-                                 
-                  )
-                } else {
-                  text <- paste0(text,
-                                 "0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', as.vector(quantile(elementos))[2], ' = ',
-                                 median(elementos) - as.vector(quantile(elementos))[2], '. \n'
-                                 
-                  )
-                }
-                
-                text
-              })
-              
-              
-              
-              
-              
-              output$graficoElementos <- renderPlot({
-                input$geraElementos
-                tab <- as.data.frame(table(elementos))
-                tab$elementos <- as.numeric(as.character(tab$elementos))
-                mean <- round(mean(elementos), 2)
-                mode <- getmode(elementos)
-                tab$isMode <- ifelse(tab$elementos %in% mode, TRUE, FALSE)
-                ggplot(data=tab, aes(x=elementos, y=Freq, fill = isMode)) + 
-                  geom_bar(stat="identity", position=position_dodge(), color = "black", width = 0.9) +
-                  geom_text(aes(label=Freq), vjust=-0.5, size=3.5)+
-                  annotate("segment", x = mean, xend = mean, y = 0, yend = max(tab$Freq) + 0.5, colour = "black", size=1) +
-                  #geom_segment(aes(x=mean, xend=mean, y=0, yend=max(tab$Freq) + 0.5)) +
-                  geom_label(aes(x=mean, y=max(tab$Freq) + 0.5, label = paste0("Média = ", mean))) +
-                  annotate("text", x = mode, y = 0.5, label = "Moda" , color="black", size=4 , angle=0) +
-                  #geom_label(aes(x=mode, y=0, label = paste0("Moda"))) +
-                  theme_minimal()+
-                  scale_fill_manual(values = c("#FFC20A", "#0C7BDC"),
-                                    labels = c("", "Moda")) +
-                  scale_x_continuous(breaks = round(seq(min(tab$elementos), max(tab$elementos), by = 1))) +
-                  theme(legend.position="none") +
-                  theme(legend.title = element_blank()) +
-                  labs(x="Valores", y = "Quantidade de elementos com esse valor")
-              })
-              
-              ##################################################################################################
-              #Página Gráficos
-              ##################################################################################################
-              
-              output$uiGrafQual <- renderUI({
-                tags <- tagList(h3(strong("Gráficos para variáveis qualitativas")))
-                if (sum(userData$shortLevels) >= 1) {
-                  tags <- tagList(tags, selectInput("varGrafQual", "Variável", choices = colnames(userData$data)[userData$shortLevels]))
-                }
-                tags <- tagList(
-                  tags,
-                  h5(strong("Gráfico de Barras")),
-                  p("O gráfico de barras se dá por retângulos (barras) em que em uma de suas direções (mais frequentemente 
-=======
 function(input, output, session) {
   
   ## Projeto ----
@@ -759,7 +27,7 @@ function(input, output, session) {
   output$botaoBaixarAlimentacao <- downloadHandler(
     filename = function() {
       'dados_saude_alimentacao.csv'
-      },
+    },
     content = function(file) {
       write_excel_csv2(dados_saude_alimentacao, file, na="")
     }
@@ -797,16 +65,12 @@ function(input, output, session) {
   })
   
   
-## Descritiva ----
+  ## Descritiva ----
+  
+  ### Tipos de variáveis ----
   
   observeEvent(input$linkTiposVariaveis, { 
     updateNavbarPage(session, "mainNav", selected = "tipos_variaveis")
-  })
-  observeEvent(input$linkDistrFreq, { 
-    updateNavbarPage(session, "mainNav", selected = "tabTabFreqs")
-  })
-  observeEvent(input$linkMedidasResumo, { 
-    updateNavbarPage(session, "mainNav", selected = "tabMedidasResumo")
   })
   
   output$tabelaExemploVariaveis <- renderTable(example_dataframe, bordered = TRUE)
@@ -818,6 +82,13 @@ function(input, output, session) {
       alt = "Tipos de Variaveis"
     ))
   }, deleteFile = FALSE)
+  
+  ### Dist. Freq. ----
+  
+  observeEvent(input$linkDistrFreq, { 
+    updateNavbarPage(session, "mainNav", selected = "tabTabFreqs")
+  })
+  
   
   output$calcFrequencia <- renderText({
     "Frequência absoluta: Número de ocorrências de determinada categoria"
@@ -836,19 +107,35 @@ function(input, output, session) {
   output$tabelaFreqPeso <- renderTable(tab_frequencia_peso,
                                        bordered = TRUE, striped = TRUE)
   
+  ### Medidas resumo ----
   
-  
-  observeEvent(input$geraElementos, {
-    elementos <<- sort(round(runif(input$slider_qtd_elementos, min = input$slider_min_max_valor[1], max = input$slider_min_max_valor[2])))
+  observeEvent(input$linkMedidasResumo, { 
+    updateNavbarPage(session, "mainNav", selected = "tabMedidasResumo")
   })
   
-  getElementos <- reactive({
-    return(elementos)
+  elementos <- reactiveVal(sort(c(round(runif(50, min = 250, max = 750)))))
+  
+  
+  observeEvent(input$geraAmostras, {
+    
+    novos_elementos <- sort(round(runif(input$slider_qtd_elementos, 
+                                            min = input$slider_min_max_valor[1],
+                                            max = input$slider_min_max_valor[2])))
+    elementos(novos_elementos)
   })
   
-  output$printElementos <- renderText({
-    input$geraElementos
-    elementos
+  output$printElementos <- renderUI({
+    for (i in 1:length(elementos())) {
+      if (i == 1) {
+        text <- paste0(elementos()[i], "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+        } else {
+          if (i %% 10 == 0 && i != length(elementos())) {
+        text <- paste0(text, elementos()[i], "<br>")
+      } else {
+        text <- paste0(text, elementos()[i], "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+      } }
+        }
+    HTML(text)
   })
   
   #Média
@@ -872,12 +159,8 @@ function(input, output, session) {
   })
   
   output$mediaTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Média: <strong> ", round(mean(elementos), 2), "</strong> </h4>")
-  })
-  
-  output$showMedia <- reactive({
-    return(values$showMedia)
+    paste0("<h4> Média: <strong> ",
+           round(mean(elementos()), 0), "</strong> </h4>")
   })
   
   output$mediaExplain <- renderUI({
@@ -885,18 +168,18 @@ function(input, output, session) {
   })
   
   output$exMedia <- renderText({
-    input$geraElementos
     text <- "Média = ("
-    for (i in (1:length(elementos))) {
-      if (i != length(elementos)) {
-        text <- paste0(text, elementos[i], " + ")
+    for (i in (1:length(elementos()))) {
+      if (i != length(elementos())) {
+        text <- paste0(text, elementos()[i], " + ")
       } else {
-        text <- paste0(text, elementos[i])
+        text <- paste0(text, elementos()[i])
       }
       
     }
     
-    text <- paste0(text, ")/", length(elementos), " = ", round(mean(elementos), 4))
+    text <- paste0(text, ")/", length(elementos()), " = ", 
+                   round(mean(elementos()), 1))
     text
   })
   
@@ -921,55 +204,28 @@ function(input, output, session) {
   })
   
   output$medianaTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Mediana: <strong> ", round(median(elementos), 2), "</strong> </h4>")
+    paste0("<h4> Mediana (2º Quartil): <strong> ", 
+           round(median(elementos()), 0), "</strong> </h4>")
   })
   
   output$medianaExplain <- renderUI({
-    withMathJax(helpText("Mediana (n ímpar): $$x_{\\frac{n+1}{2}}$$"),
-                helpText("Mediana (n par): $$\\frac{x_{\\frac{n}{2}} + x_{\\frac{n}{2} + 1}}{2}$$")
+    withMathJax(
+      helpText("Mediana (n ímpar): $$x_{\\frac{n+1}{2}}$$"),
+      helpText("Mediana (n par): $$\\frac{x_{\\frac{n}{2}} +
+               x_{\\frac{n}{2} + 1}}{2}$$")
     )
   })
   
   output$exMediana <- renderText({
-    input$geraElementos
     text <- "Mediana = "
-    if (length(elementos)%%2 == 1) {
-      text <- paste0(text, median(elementos))
+    if (length(elementos())%%2 == 1) {
+      text <- paste0(text, median(elementos()))
     } else {
-      text <- paste0(text, "(", elementos[length(elementos)/2], " + ", elementos[(length(elementos)/2) + 1], ")/2 = ", round(median(elementos), 4))
+      text <- paste0(text, 
+                     "(", elementos()[length(elementos())/2], " + ", 
+                     elementos()[(length(elementos())/2) + 1], ")/2 = ",
+                     round(median(elementos()), 0))
     }
-    text
-  })
-  
-  #Moda
-  
-  observeEvent(input$modaMostrarMais, {
-    shinyjs::hide("modaMostrarMais")
-    shinyjs::show("modaMostrarMenos")
-    shinyjs::show("modaTexto")
-    shinyjs::show("modaExplain")
-    shinyjs::show("htModa")
-    shinyjs::show("exModa")
-  })
-  
-  observeEvent(input$modaMostrarMenos, {
-    shinyjs::hide("modaMostrarMenos")
-    shinyjs::show("modaMostrarMais")
-    shinyjs::hide("modaTexto")
-    shinyjs::hide("modaExplain")
-    shinyjs::hide("htModa")
-    shinyjs::hide("exModa")
-  })
-  
-  output$modaTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Moda: <strong> ", vectorToString(getmode(elementos)), "</strong> </h4>")
-  })
-  
-  output$exModa <- renderText({
-    input$geraElementos
-    text <- paste0("Moda = ", vectorToString(getmode(elementos)))
     text
   })
   
@@ -994,14 +250,11 @@ function(input, output, session) {
   })
   
   output$minimoTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Mínimo: <strong> ", min(elementos), "</strong> </h4>")
+    paste0("<h4> Mínimo: <strong> ", min(elementos()), "</strong> </h4>")
   })
   
   output$exMinimo <- renderText({
-    input$geraElementos
-    text <- paste0("Mínimo = ", min(elementos))
-    text
+    paste0("Mínimo = ", min(elementos()))
   })
   
   #Máximo
@@ -1025,14 +278,11 @@ function(input, output, session) {
   })
   
   output$maximoTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Máximo: <strong> ", max(elementos), "</strong> </h4>")
+    paste0("<h4> Máximo: <strong> ", max(elementos()), "</strong> </h4>")
   })
   
   output$exMaximo <- renderText({
-    input$geraElementos
-    text <- paste0("Máximo = ", max(elementos))
-    text
+  paste0("Máximo = ", max(elementos()))
   })
   
   #Variância
@@ -1056,24 +306,29 @@ function(input, output, session) {
   })
   
   output$varianciaTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Variância: <strong> ", round(var(elementos), 2), "</strong> </h4>")
+    paste0("<h4> Variância: <strong> ",
+           round(var(elementos()), 0), "</strong> </h4>")
   })
   
   output$varianciaExplain <- renderUI({
-    withMathJax(helpText("Variância: $$\\frac{\\sum_{i=1}^{n} (x_{i} - \\bar{x})^{2}}{n}$$")
+    withMathJax(
+      helpText("Variância: $$\\frac{\\sum_{i=1}^{n} (x_{i} - 
+               \\bar{x})^{2}}{n}$$")
     )
   })
   
   output$exVariancia <- renderText({
-    input$geraElementos
     text <- "Variância = ("
-    for (i in (1:length(elementos))) {
-      if (i != length(elementos)) {
-        text <- paste0(text, "(",elementos[i], " - ", round(mean(elementos), 4), ")^2 + ")
+    for (i in (1:length(elementos()))) {
+      if (i != length(elementos())) {
+        
+        text <- paste0(text, "(",elementos()[i], " - ",
+                       round(mean(elementos()), 4), ")^2 + ")
       }
       else {
-        text <- paste0(text, "(",elementos[i], " - ", round(mean(elementos), 4), ")^2)/", length(elementos), " = ", round(var(elementos), 4))
+        text <- paste0(text, "(",elementos()[i], " - ",
+                       round(mean(elementos()), 4), ")^2)/", 
+                       length(elementos()), " = ", round(var(elementos()), 4))
       }
     }
     text
@@ -1100,8 +355,8 @@ function(input, output, session) {
   })
   
   output$dpTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Desvio Padrão: <strong> ", round(sd(elementos), 2), "</strong> </h4>")
+    paste0("<h4> Desvio Padrão: <strong> ", 
+           round(sd(elementos()), 0), "</strong> </h4>")
   })
   
   output$dpExplain <- renderUI({
@@ -1110,102 +365,76 @@ function(input, output, session) {
   })
   
   output$exDp <- renderText({
-    input$geraElementos
-    text <- paste0("Desvio Padrão = sqrt(", round(var(elementos), 2), ") = ", round(sd(elementos), 4))
-    text
+    paste0("Desvio Padrão = sqrt(", round(var(elementos()), 0), ") = ",
+                   round(sd(elementos()), 4))
   })
   
-  #Erro Padrão
+  #1º Quartil
   
-  observeEvent(input$epMostrarMais, {
-    shinyjs::hide("epMostrarMais")
-    shinyjs::show("epMostrarMenos")
-    shinyjs::show("epTexto")
-    shinyjs::show("epExplain")
-    shinyjs::show("htEp")
-    shinyjs::show("exEp")
+  observeEvent(input$quartilq1MostrarMais, {
+    shinyjs::hide("quartilq1MostrarMais")
+    shinyjs::show("quartilq1MostrarMenos")
+    shinyjs::show("quartilq1Texto")
+    shinyjs::show("quartilq1Explain")
+    shinyjs::show("htQuartilq1")
+    shinyjs::show("exQuartilq1")
   })
   
-  observeEvent(input$epMostrarMenos, {
-    shinyjs::hide("epMostrarMenos")
-    shinyjs::show("epMostrarMais")
-    shinyjs::hide("epTexto")
-    shinyjs::hide("epExplain")
-    shinyjs::hide("htEp")
-    shinyjs::hide("exEp")
+  observeEvent(input$quartilq1MostrarMenos, {
+    shinyjs::hide("quartilq1MostrarMenos")
+    shinyjs::show("quartilq1MostrarMais")
+    shinyjs::hide("quartilq1Texto")
+    shinyjs::hide("quartilq1Explain")
+    shinyjs::hide("htQuartilq1")
+    shinyjs::hide("exQuartilq1")
   })
   
-  output$epTitle <- renderText({
-    paste0("<h4> Erro Padrão </h4>")
+  output$quartilq1Title <- renderText({
+    paste0("<h4> 1º Quartil: <strong> ", 
+           round(quantile(elementos(), 0.25), 0), "</strong> </h4>")
   })
   
-  output$epExplain <- renderUI({
-    withMathJax(helpText("Erro Padrão: $$\\frac{\\sigma}{\\sqrt{n}}$$")
+  output$exQuartilq1 <- renderText({
+    input$geraAmostras
+    q1 <- quantile(elementos(), 0.25)
+    paste0("1º quartil = ", q1, ", divide a lista ordenada de elementos deixando
+      25% dos valores da lista abaixo dele.\n"
+      )
+  })
+  
+  #3º Quartil
+  
+  observeEvent(input$quartilq3MostrarMais, {
+    shinyjs::hide("quartilq3MostrarMais")
+    shinyjs::show("quartilq3MostrarMenos")
+    shinyjs::show("quartilq3Texto")
+    shinyjs::show("quartilq3Explain")
+    shinyjs::show("htQuartilq3")
+    shinyjs::show("exQuartilq3")
+  })
+  
+  observeEvent(input$quartilq3MostrarMenos, {
+    shinyjs::hide("quartilq3MostrarMenos")
+    shinyjs::show("quartilq3MostrarMais")
+    shinyjs::hide("quartilq3Texto")
+    shinyjs::hide("quartilq3Explain")
+    shinyjs::hide("htQuartilq3")
+    shinyjs::hide("exQuartilq3")
+  })
+  
+  output$quartilq3Title <- renderText({
+    paste0("<h4> 3º Quartil: <strong> ", 
+           round(quantile(elementos(), 0.75), 0), "</strong> </h4>")
+  })
+  
+  output$exQuartilq3 <- renderText({
+    input$geraAmostras
+    q3 <- quantile(elementos(), 0.75)
+    paste0("3º quartil = ", q3, ", divide a lista ordenada de elementos deixando
+      75% dos valores da lista abaixo dele.\n"
     )
   })
   
-  output$exEp <- renderText({
-    input$geraElementos
-    tam_amostra <- ceiling(sqrt(length(elementos)))
-    amostra <- sample(elementos, tam_amostra, replace = FALSE)
-    text <- paste0("Separando uma amostra exemplo dos elementos gerados: \n", vectorToString(amostra),
-                   "\nCalcula-se o seu desvio padrão = sqrt(var(", vectorToString(amostra), ")) = ", 
-                   round(sd(amostra), 4), "\nE divide-se pela raiz do tamanho da amostra: \n", 
-                   round(sd(amostra), 4), "/sqrt(", tam_amostra, ") = ", round((sd(amostra)/sqrt(tam_amostra)), 4))
-    text
-  })
-  
-  #Quantis
-  
-  observeEvent(input$quantilMostrarMais, {
-    shinyjs::hide("quantilMostrarMais")
-    shinyjs::show("quantilMostrarMenos")
-    shinyjs::show("quantilTexto")
-    shinyjs::show("quantilExplain")
-    shinyjs::show("htQuantil")
-    shinyjs::show("exQuantil")
-  })
-  
-  observeEvent(input$quantilMostrarMenos, {
-    shinyjs::hide("quantilMostrarMenos")
-    shinyjs::show("quantilMostrarMais")
-    shinyjs::hide("quantilTexto")
-    shinyjs::hide("quantilExplain")
-    shinyjs::hide("htQuantil")
-    shinyjs::hide("exQuantil")
-  })
-  
-  output$quantilTitle <- renderText({
-    paste0("<h4> Quartis </h4>")
-  })
-  
-  output$exQuantil <- renderText({
-    input$geraElementos
-    isEven <- (length(elementos)%%2 == 0)
-    text <- paste0("Temos: ", vectorToString(elementos), "\n")
-    
-    if (isEven) {
-      text <- paste0(text, 
-                     paste0("0.25 quartil = ", elementos[ceiling(0.25*length(elementos))], ", o "),
-                     ceiling(0.25*length(elementos)), "º elemento, pois divide 25% dos elementos abaixo dele.\n",
-                     "0.5 quartil (mediana) = (", elementos[length(elementos)/2] , " + ", elementos[(length(elementos)/2) + 1], 
-                     ")/2 = ", median(elementos), "\n",
-                     "0.75 quartil = ", elementos[ceiling(0.75*length(elementos))], ", o ",
-                     ceiling(0.75*length(elementos)), "º elemento, pois divide 75% dos elementos abaixo dele.\n"
-      )
-    } else {
-      text <- paste0(text, 
-                     "0.25 quartil = (",  elementos[floor(0.25*length(elementos))] , " + ", elementos[ceiling(0.25*length(elementos))], 
-                     ")/2 = ", as.vector(quantile(elementos))[2], "\n",
-                     "0.5 quartil (mediana) = ", elementos[ceiling(0.5*length(elementos))], ", o ",
-                     ceiling(0.5*length(elementos)), "º elemento, pois divide metade dos elementos abaixo dele.\n",
-                     "0.75 quartil = (",  elementos[floor(0.75*length(elementos))] , " + ", elementos[ceiling(0.75*length(elementos))],
-                     ")/2 = ", as.vector(quantile(elementos))[4], "\n"
-      )
-    }
-    
-    text
-  })
   
   #Distância interquartílica
   
@@ -1228,60 +457,58 @@ function(input, output, session) {
   })
   
   output$dist_quantilTitle <- renderText({
-    input$geraElementos
-    paste0("<h4> Distância Interquartílica: <strong>", round(median(elementos) - as.vector(quantile(elementos))[2], 2), "</strong> </h4>")
+    q1 <- quantile(elementos(), 0.25)
+    q3 <- quantile(elementos(), 0.75)
+    iqr <- q3 - q1
+    paste0("<h4> Distância Interquartílica: <strong>", 
+           round(iqr, 0), "</strong> </h4>")
   })
   
   
   output$dist_exQuantil <- renderText({
-    input$geraElementos
-    isEven <- (length(elementos)%%2 == 0)
-    text <- paste0("Temos: ", vectorToString(elementos), "\n")
-    
-    if (isEven) {
-      text <- paste0(text, 
-                     paste0("0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', elementos[ceiling(0.25*length(elementos))], ' = ', 
-                            median(elementos) - elementos[ceiling(0.25*length(elementos))], '\n')
-                     
-      )
-    } else {
-      text <- paste0(text,
-                     "0.5 quartil - 0.25 quartil = ", median(elementos), ' - ', as.vector(quantile(elementos))[2], ' = ',
-                     median(elementos) - as.vector(quantile(elementos))[2], '. \n'
-                     
-      )
-    }
-    
-    text
+    q1 <- quantile(elementos(), 0.25)
+    q3 <- quantile(elementos(), 0.75)
+    iqr <- q3 - q1
+    paste0("Q3 - Q1 = ", round(q3, 0), " - ", 
+           round(q1, 0), " = ", round(iqr, 0))
   })
   
-  
+  # Gráfico das medidas resumo
   output$graficoElementos <- renderPlot({
-    input$geraElementos
-    tab <- as.data.frame(table(elementos))
-    tab$elementos <- as.numeric(as.character(tab$elementos))
-    mean <- round(mean(elementos), 2)
-    mode <- getmode(elementos)
-    tab$isMode <- ifelse(tab$elementos %in% mode, TRUE, FALSE)
-    ggplot(data=tab, aes(x=elementos, y=Freq, fill = isMode)) + 
-      geom_bar(stat="identity", position=position_dodge(), color = "black", width = 0.9) +
-      geom_text(aes(label=Freq), vjust=-0.5, size=3.5)+
-      annotate("segment", x = mean, xend = mean, y = 0, yend = max(tab$Freq) + 0.5, colour = "black", size=1) +
-      #geom_segment(aes(x=mean, xend=mean, y=0, yend=max(tab$Freq) + 0.5)) +
-      geom_label(aes(x=mean, y=max(tab$Freq) + 0.5, label = paste0("Média = ", mean))) +
-      annotate("text", x = mode, y = 0.5, label = "Moda" , color="black", size=4 , angle=0) +
-      #geom_label(aes(x=mode, y=0, label = paste0("Moda"))) +
-      theme_minimal()+
-      scale_fill_manual(values = c("#FFC20A", "#0C7BDC"),
-                        labels = c("", "Moda")) +
-      scale_x_continuous(breaks = round(seq(min(tab$elementos), max(tab$elementos), by = 1))) +
+    tab <- table(elementos())
+    data <- data.frame(e = as.numeric(names(tab)))
+    data$Freq <- as.numeric(tab)
+    mean_val <- round(mean(elementos()), 0)
+    max_val <- max(data$Freq)
+    data$isMax <- ifelse(data$Freq == max_val, TRUE, FALSE)
+    
+    ggplot(data=data, aes(x=e, y=Freq, fill = isMax)) + 
+      geom_bar(stat="identity", position=position_dodge(), 
+               color = "black", width = 0.9) +
+      geom_text(aes(label=as.character(Freq)), vjust=-0.5, size=3.5) +
+      annotate("segment", x = mean_val, xend = mean_val, y = 0, 
+               yend = max_val + 0.5, colour = "black", linewidth=1) +
+      geom_label(aes(x=mean_val, y=max_val + 0.5, 
+                     label = paste0("Média = ", mean_val))) +
+      theme_minimal() +
+      scale_fill_manual(values = c("#FFC20A", "#0C7BDC")) +
       theme(legend.position="none") +
       theme(legend.title = element_blank()) +
-      labs(x="Valores", y = "Quantidade de elementos com esse valor")
+      labs(x = "\nAmostra", y = "Frequência absoluta\n") 
+    
   })
   
+  ## Gráficos ----
   
-## Gráficos ----
+  observeEvent(input$linkGrafQual, { 
+    updateNavbarPage(session, "mainNav", selected = "tabGrafQual")
+  })
+  observeEvent(input$linkGrafQuant, { 
+    updateNavbarPage(session, "mainNav", selected = "tabGrafQuant")
+  })
+  observeEvent(input$linkGrafBi, { 
+    updateNavbarPage(session, "mainNav", selected = "tabGrafBi")
+  })
   
   output$uiGrafQual <- renderUI({
     tagList(
@@ -1290,7 +517,6 @@ function(input, output, session) {
                   choices = colnames(dados_saude_alimentacao)[var_factors]),
       h5(strong("Gráfico de Barras")),
       p("O gráfico de barras se dá por retângulos (barras) em que em uma de suas direções (mais frequentemente 
->>>>>>> Stashed changes
       na vertical) representa-se a frequência absoluta (contagem) ou relativa (porcentagem) de uma 
       variável qualitativa. Cada barra representa um possível valor e todas são paralelas umas às outras."),
       h5(strong("Gráfico de Pizza")),
@@ -1325,319 +551,6 @@ function(input, output, session) {
          LS = q3 + 1,5dq, chamado de limite superior. Similarmente, segue uma linha abaixo até o ponto que não exceda 
          LI = q1 - 1,5dq, chamando limite inferior. Os valores acima do limite superior e abaixo do limite inferior 
          são plotados como pontos e chamados de outliers ou valores atípicos.</p>"),
-<<<<<<< Updated upstream
-                  br(),
-                  helpText("Observação: dq é a distância interquartil, que se dá por dq = q3 - q1."),
-                  br(),
-                  helpText("Fonte: Morettin, P. and Bussab, W. (2000). Estatística Básica (7a. ed.). Editora Saraiva.")
-                )
-                tags
-              })
-              
-              output$graficosQual <- renderUI({
-                tags <- NULL
-                
-                
-                if (sum(userData$shortLevels) >= 1) {
-                  req(input$varGrafQual)
-                  req(input$varGrafQual %in% colnames(userData$data))
-                  if (!userData$custom) {
-                    if (input$varGrafQual %in% c("Sexo", "Relacionamento", "Pratica esportes", "Toma vitaminas", "Culinária favorita")) {
-                      tags <- tagList(
-                        column(6,h4(strong("Gráfico de Barras")),
-                               plotOutput("grafBarras")),
-                        column(6, h4(strong("Gráfico de Pizza")),
-                               plotOutput("grafPizza")))
-                    } else {
-                      tags <- tagList(
-                        h4(strong("Gráfico de Barras")),
-                        plotOutput("grafBarras"),
-                        helpText("O gráfico de pizza não é exibido pois a variável é qualitativa ordinal.")
-                      )
-                    }
-                  } else {
-                    tags <- tagList(
-                      column(6,h4(strong("Gráfico de Barras")),
-                             plotOutput("grafBarras")),
-                      column(6, h4(strong("Gráfico de Pizza")),
-                             plotOutput("grafPizza"))
-                    )
-                  }
-                } else {
-                  print("entrou")
-                  tags <- tagList(p(h4("A fonte de dados que você está utilizando não possui variáveis qualitativas 
-                para podemos mostrar os gráficos. Escolha outra fonte de dados ou use os dados nativos.")))
-                  #imagemTriste?
-                }
-                
-                
-                tags
-                
-              })
-              
-              output$graficosQuant <- renderUI({
-                tags <- NULL
-                if (sum(userData$numbers) >= 1) {
-                  tags <- tagList(
-                    fluidRow(column(6,htmlOutput("tituloGraf1"),
-                                    plotOutput("histograma"),
-                                    conditionalPanel("input.varGrafQuant != 'Ano letivo' && input.varGrafQuant != 'Percepção de Saúde'",
-                                                     sliderInput("histNumBins", "Número de Barras", min = 5, max = 20, value = 10, step = 1)),
-                                    htmlOutput("htGraf1")
-                    ),
-                    column(6, h4(strong("Boxplot")),
-                           plotOutput("boxplot"))),
-                    fluidRow(column(8,
-                                    uiOutput("histAlt")))
-                  )
-                } else {
-                  tags <- tagList(
-                    p("A fonte de dados que você está utilizando não possui variáveis quantitativas 
-          para mostrarmos os gráficos. Escolha outra fonte de dados ou use os dados nativos.")
-                  )
-                }
-                
-                tags
-              })
-              
-              getQualPlotData <- reactive({
-                req(input$varGrafQual)
-                req(input$varGrafQual %in% colnames(userData$data))
-                return (userData$data[input$varGrafQual])
-              })
-              
-              getQuantPlotData <- reactive({
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                return (userData$data[input$varGrafQuant])
-              })
-              
-              output$grafBarras <- renderPlot({
-                selData <- getQualPlotData()
-                selData <- as.data.frame(table(selData))
-                colnames(selData) <- c("cat", "freq")
-                selData$freq <- selData$freq/sum(selData$freq)
-                print(selData)
-                
-                g <- ggplot(data = selData, aes(x=cat, y=freq, fill = cat)) +
-                  geom_bar(stat="identity", colour = "black", width = 0.8) +
-                  geom_text(aes(x = cat, y = freq, label = round(freq, 2)), colour = "black", vjust = -2) +
-                  scale_fill_manual(values=colorful) +
-                  guides(fill=FALSE) +
-                  theme_minimal() +
-                  scale_x_discrete(name = input$varGrafQual) +
-                  scale_y_continuous(name = "Frequência relativa", limits = c(0, max(selData$freq) + 0.05)) +
-                  theme(axis.title.y = element_text(size = 16),
-                        axis.text.y = element_text(size = 12))
-                
-                g
-              })
-              
-              
-              
-              output$grafPizza <- renderPlot({
-                selData <- getQualPlotData()
-                selData <- as.data.frame(table(selData))
-                colnames(selData) <- c("cat", "freq")
-                
-                g <- ggplot(selData, aes(x="", y=freq, fill = cat)) +
-                  geom_bar(width = 1, stat = "identity", colour = "black") +
-                  coord_polar("y", start = 0) +
-                  scale_fill_manual(values = colorful, name = input$varGrafQual) + 
-                  xlab(" ") +
-                  ylab(" ") + 
-                  theme_minimal() + 
-                  theme(
-                    axis.ticks = element_blank(),
-                    axis.text.x=element_blank()
-                  )
-                
-                if (length(levels(selData$cat)) <= 5) {
-                  g <- g + geom_text(aes(label = scales::percent(freq/sum(freq))), position = position_stack(vjust = 0.5))
-                }
-                
-                g
-              })
-              
-              
-              
-              output$histograma <- renderPlot({
-                g <- NULL
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                if (!userData$custom && input$varGrafQuant %in% c("Ano letivo", "Percepção de Saúde")) { #gráfico de barras para var. quant. discr.
-                  selData <- data.frame(as.factor(data[,colnames(data) == input$varGrafQuant]))
-                  colnames(selData) <- c("Var")
-                  g <- ggplot() + 
-                    geom_bar(data=selData, aes(x=Var, fill = Var), stat="count", colour = "black", width = 0.8)
-                  gd <- as.data.frame(ggplot_build(g)$data)
-                  g <- g + geom_text(data=gd,
-                                     aes(x=x, y=ymax, label=count),
-                                     colour = "black", vjust = -2) +
-                    theme_minimal() +
-                    guides(fill=FALSE) +
-                    scale_x_discrete(name = input$varGrafQuant) +
-                    scale_y_continuous(name = "Frequência absoluta", limits = c(0, max(gd$ymax) + 5))
-                } 
-
-                else {
-                  selData <- data.frame(userData$data[,colnames(userData$data) == input$varGrafQuant])
-                  colnames(selData) <- c("Var")
-                  #N <- ifelse(input$varGrafQuant == "Altura", 0.05, 5)
-                  amplitude <- max(selData$Var, na.rm = TRUE) - min(selData$Var, na.rm = TRUE)
-                  N <- 5 * 10^(floor(log10(amplitude)) - 1)
-                  x_breaks <- seq(floorN(min(selData$Var, na.rm = TRUE), N), ceilN(max(selData$Var, na.rm = TRUE), N), length.out = input$histNumBins + 1)
-                  gap <- x_breaks[2] - x_breaks[1]
-                  freq <- as.data.frame(table(cut(selData$Var, breaks = x_breaks)))$Freq/(length(selData$Var))
-                  seq <- (x_breaks + (gap/2))[-length(x_breaks)]
-                  freqdata <- data.frame(seq, freq)
-                  print(freqdata)
-                  
-                  g <- ggplot(data=freqdata, aes(x=seq, y=freq)) +
-                    geom_bar(stat="identity", colour="black", fill = "#0C7BDC", width = gap) + 
-                    theme_minimal() +
-                    scale_x_continuous(breaks = x_breaks, labels = round(x_breaks, ifelse(amplitude < 10, abs(floor(log10(amplitude))) + 1, 0))) + 
-                    ylab("Frequência Relativa") +
-                    xlab(input$varGrafQuant) + 
-                    geom_text(data=freqdata,
-                              aes(x=seq, y=freq + 0.008, label=scales::percent(freq)), size = 3.0)
-
-                  
-                }
-                g
-              })
-              
-              output$tituloGraf1 <- renderText({
-                req(input$varGrafQuant)
-                text <- ifelse((!userData$custom && input$varGrafQuant %in% c("Ano letivo", "Percepção de Saúde")),
-                               "<h4><strong>Gráfico de Barras</strong></h4>",
-                               "<h4><strong>Histograma</strong></h4>")
-                text 
-              })
-              
-              output$htGraf1 <- renderText({
-                req(input$varGrafQuant)
-                ifelse((!userData$custom && input$varGrafQuant %in% c("Ano letivo", "Percepção de Saúde")), paste0("<span class = 'help-block'> Pode-se utilizar o gráfico de barras pois a variável ", 
-                                                                                                                   input$varGrafQuant, " é quantitativa discreta.</span>"),
-                       paste0("<span class = 'help-block'> Utiliza-se somente o histograma pois a variável ", 
-                              input$varGrafQuant, " é quantitativa contínua.</span>"))
-              })
-              
-              output$boxplot <- renderPlot({
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                selData <- getQuantPlotData()
-                selData <- as.data.frame(selData)
-                colnames(selData) <- c("cat")
-                p <- ggplot(selData, aes(x="",y=cat)) + 
-                  geom_boxplot(fill = "#0C7BDC", colour = "black") + 
-                  xlab("") +
-                  ylab(input$varGrafQuant)+
-                  theme_minimal()
-                p
-              })
-              
-              output$histogramaAlt <- renderPlot({
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                selData <- getQuantPlotData()
-                g <- NULL
-                colnames(selData) <- c("Var")
-                
-                if (input$varGrafQuant == "Ano letivo") {
-                  selData$Var <- cut(selData$Var, breaks=c(-Inf, 2.5, Inf), labels = c("Início", "Fim"))
-                  selData <- as.data.frame(table(selData))
-                  colnames(selData) <- c("Var", "Freq")
-                  selData$Freq <- selData$Freq/sum(selData$Freq)
-                  print(selData)
-                  g <- ggplot(selData, aes(x=Var, y=Freq)) + 
-                    geom_bar(stat="identity", colour = "black", fill = "#0C7BDC") +
-                    geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
-                    scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
-                    theme_minimal() + 
-                    ylab("Frequência Relativa") + 
-                    xlab(input$varGrafQuant)
-                } else {
-                  selData$Var <- cut(selData$Var, breaks=c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), labels = c('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'))
-                  selData <- as.data.frame(table(selData))
-                  colnames(selData) <- c("Var", "Freq")
-                  selData$Freq <- selData$Freq/nrow(selData)
-                  selData$Freq <- selData$Freq/sum(selData$Freq)
-                  print(selData)
-                  g <- ggplot(selData, aes(x=Var, y=Freq)) + 
-                    geom_bar(stat="identity", colour = "black", fill = "#0C7BDC", width = 1) +
-                    geom_text(aes(x = Var, y = Freq, label = scales::percent(Freq)), colour = "black", vjust = -2) +
-                    scale_y_continuous(limits = c(0, max(selData$Freq) + 0.05)) +
-                    scale_x_discrete(expand = expansion(add = .01)) +
-                    theme_minimal() + 
-                    ylab("Frequência Relativa") + 
-                    xlab(input$varGrafQuant)
-                }
-                g
-              })
-              
-              output$histAlt <- renderUI({
-                tags <- NULL
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                if (!userData$custom && input$varGrafQuant %in% c("Ano letivo", "Percepção de Saúde")) {
-                  tags <- tagList(fluidRow(
-                    column(8, 
-                           h4(strong(("Histograma")),
-                              plotOutput("histogramaAlt"),
-                              helpText("Mesmo sendo uma variável quantitativa discreta, pode-se utilizar o 
-                               histograma além do gráfico de barras."))
-                    ), 
-                    column(8,
-                           p("Separação de valores em intervalos"),
-                           tableOutput("tabHist")
-                    )
-                  ))
-                }
-                tags
-              })
-              
-              output$tabHist <- renderTable({
-                tab <- NULL
-                req(input$varGrafQuant)
-                req(input$varGrafQuant %in% colnames(userData$data))
-                if (!userData$custom) {
-                  if (input$varGrafQuant == "Ano letivo") {
-                    tab <- as.data.frame(cbind(c("[1, 2]", "[3, 4]"), c("Início", "Fim")))
-                  } else if (input$varGrafQuant == "Percepção de Saúde") {
-                    tab <- as.data.frame(cbind(c("[1, 2]", "[3, 4]", "[5, 6]", "[7, 8]", "[9, 10]"), 
-                                               c("Muito ruim", "Ruim", "Regular", "Boa", "Muito boa")))
-                  } 
-                }
-                
-                tab
-              }, striped = TRUE, colnames = FALSE, bordered = TRUE)
-              
-              output$biUI <- renderUI({
-                
-                
-                
-                enable1 <- sum(userData$shortLevels) >= 2
-                enable2 <- sum(userData$numbers) >= 2
-                enable3 <- sum(userData$shortLevels) >= 1 & sum(userData$numbers) >= 1
-                print(paste0("shortLevels: ", userData$shortLevels))
-                print(paste0("enable2: ", enable2))
-                print(paste0("enable3: ", enable3))
-                
-                tags <- NULL
-                part1 <- NULL
-                part2 <- NULL
-                part3 <- NULL
-                
-                if (enable1) {
-                  part1 <- tagList(
-                    h4(strong("Duas variáveis qualitativas")),
-                    selectInput("varGrafBiQual1", "Variável 1", choices = colnames(userData$data[userData$shortLevels]), 
-                                selected = colnames(userData$data[userData$shortLevels])[1]),
-                    selectInput("varGrafBiQual2", "Variável 2", choices = colnames(userData$data[userData$shortLevels]), 
-                                selected = colnames(userData$data[userData$shortLevels])[2]),
-                    p("Imagine que queiramos visualizar a distribuição das observações em 
-=======
       br(),
       helpText("Observação: dq é a distância interquartil, que se dá por dq = q3 - q1."),
       br(),
@@ -1862,7 +775,6 @@ function(input, output, session) {
         selectInput("varGrafBiQual2", "Variável 2", choices = colnames(dados_saude_alimentacao)[shortLevels], 
                     selected = colnames(dados_saude_alimentacao)[shortLevels][2]),
         p("Imagine que queiramos visualizar a distribuição das observações em 
->>>>>>> Stashed changes
                         relação a duas variáveis qualitativas. Podemos, primeiramente, visualizar 
                         a tabela de frequências relativas: "),
         tableOutput("tabGrafVarQual"),
@@ -1980,44 +892,9 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
       scale_fill_discrete(name = input$varQualBoxplot1)
   })
   
-## Probabilidade ----
+  ## Probabilidade ----
   
-  values <- reactiveValues()
-  values$showMedia <- FALSE
-  normal_params <- reactiveValues()
-  normal_params$u <- 0
-  normal_params$dp <- 1
-  normal_params$min <- 1
-  normal_params$max <- 4
-  normal_params$sit <- 1
-  
-  testeT1_params <- reactiveValues()
-  testeT1_params$u <- 0
-  testeT1_params$dp <- 1
-  testeT1_params$X <- 0.18
-  testeT1_params$n <- 10
-  testeT1_params$alpha <- 0.05
-  
-  testeT2_params <- reactiveValues()
-  testeT2_params$n <- 12
-  testeT2_params$u1 <- 10
-  testeT2_params$u2 <- 9
-  testeT2_params$dp1 <- 2.2
-  testeT2_params$dp2 <- 2.2
-  p1 <- rnorm(12, 10, 2.2)
-  p2 <- rnorm(12, 9, 2.2)
-  testeT2_params$p1 <- p1
-  testeT2_params$p2 <- p2
-  testeT2_params$D <- p1 - p2
-  
-  testeQui_params <- reactiveValues()
-  testeQui_params$matrix <- rbind(c(48, 8, 56), c(30, 21, 51), c(78, 29, 107))
-  testeQui_params$expected <- rbind(c(41, 15, 56), c(37, 14, 51), c(78, 29, 107))
-  testeQui_params$colnames <- c("Melhora", "Não", "Total")
-  testeQui_params$rownames <- c("Droga", "Placebo", "Total")
-  testeQui_params$chi <- 9.3
-
-  bernoulliPlot <- reactive({
+    bernoulliPlot <- reactive({
     p <- input$bernoulli_p
     bern <- data.frame(c(0, 1), c(1-p, p))
     colnames(bern) <- c("x", "p(x)")
@@ -2110,7 +987,7 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
             "bernoulli" = buildBernoulliTable(),
             "binomial" = buildBinomTable(),
             "poisson" = buildPoissonTable(),
-            "Normal" = buildBinomTable()
+            "normal" = buildBinomTable()
     )
   }, bordered = TRUE, striped = TRUE, colnames = TRUE, width = "100%", align = "c")
   
@@ -2145,6 +1022,13 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
       print("triggered")
     }
   })
+  
+  normal_params <- reactiveValues()
+  normal_params$u <- 0
+  normal_params$dp <- 1
+  normal_params$min <- 1
+  normal_params$max <- 4
+  normal_params$sit <- 1
   
   observeEvent(input$normal_refresh, {
     normal_params$u <- input$normal_media
@@ -2268,408 +1152,6 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     prob <- pexp(max, b) - pexp(min, b)
     withMathJax(paste0("P(", min, " <= x <= ", max, ") = $$\\int_{", min, "}^{", max, "}
                        2e^{-2x}dx = ", prob, "$$"))
-<<<<<<< Updated upstream
-              })
-              
-              expPlot <- reactive({
-                b <- input$exp_b
-                min <- input$exp_val[1]
-                max <- input$exp_val[2]
-                x <- seq(min, max, length = 300)
-                y <- dexp(x, b)
-                area <- data.frame(x, y)
-                prob <- pexp(max, b) - pexp(min, b)
-                text <- paste0("P(", min, " <= x <= ", max, ") = ", scales::percent(round(prob, 4)))
-                g <- ggplot(data = area, aes(x=x, y=y)) + 
-                  geom_area(stat="identity", fill = medium_ocre) + 
-                  stat_function(fun=dexp, n=101, args = list(rate = b), color="black") + 
-                  scale_x_continuous(name="x", limits = c(0, 3)) + 
-                  scale_y_continuous(name="f(x)", limits=c(0, b + 1)) + 
-                  geom_segment(aes(x=max, xend=max, y=0, yend=dexp(max, b)), color = brown, alpha= 0.7, linetype=2) +
-                  annotate(geom="text", x = 2, y=b+0.1, label=text, color=brown, size = 6) 
-                
-                if (min > 0) {
-                  g <- g + geom_segment(aes(x=min, xend=min, y=0, yend=dexp(min, b)), color = "#0C7BDC", alpha=0.7, linetype=2)
-                }
-                g
-              })
-              
-              quiPlot <- reactive({
-                qx <- input$qui_x
-                min <- input$qui_values[1]
-                max <- input$qui_values[2]
-                x <- seq(min, max, length = 300)
-                y <- dchisq(x, qx)
-                area <- data.frame(x, y)
-                prob <- pchisq(max, qx) - pchisq(min, qx)
-                text <- paste0("P(", min, " <= x <= ", max, ") = ", scales::percent(round(prob, 4)))
-                g <- ggplot(data = area, aes(x=x, y=y)) + 
-                  geom_area(stat="identity", fill = red_nail) + 
-                  stat_function(fun=dchisq, n=101, args = list(df = qx), color=red_broken_nail) + 
-                  scale_x_continuous(name="x", limits = c(0, 16)) + 
-                  ylab("f(x)") + 
-                  geom_segment(aes(x=max, xend=max, y=0, yend=dchisq(max, qx)), color = red_broken_nail, alpha= 0.7, linetype=2) +
-                  annotate(geom="text", x = 12, y=dchisq(max, qx) + 0.1, label=text, color=red_broken_nail, size = 6) 
-                
-                if (min > 0) {
-                  g <- g + geom_segment(aes(x=min, xend=min, y=0, yend=dchisq(min, qx)), color = red_broken_nail, alpha=0.7, linetype=2)
-                }
-                g
-              })
-              
-              tPlot <- reactive({
-                gl <- input$t_gl
-                min <- -4
-                max <- 4
-                x <- seq(min, max, length=300)
-                y <- dt(x, gl)
-                area <- data.frame(x, y)
-                
-                g <- ggplot(data=area, aes(x=x, y=y)) + 
-                  stat_function(fun=dnorm, n=101, args=list(mean=0, sd=1), color = medium_cyan, alpha = 0.7) +
-                  stat_function(fun=dt, n=101, args=list(df=gl), color = "black") + 
-                  annotate(geom="text", x=2, y=dnorm(1, 0, 1), color=medium_cyan, label = "Distribuição Normal") + 
-                  annotate(geom="text", x=-0.1, y=dt(-1, gl) - 0.15, color="black", label = paste0("Distribuição T com ", gl, " graus de liberdade")) + 
-                  labs(x="x", y="f(x)")
-                g
-              })
-              
-              
-              
-              distributionInput <- reactive({
-                switch (input$distribuicao,
-                        "bernoulli" = bernoulliPlot(),
-                        "binomial" = binomPlot(),
-                        "poisson" = poissonPlot(),
-                        "normal" = normalPlot(),
-                        "exp" = expPlot(),
-                        "qui" = quiPlot(),
-                        "t" = tPlot()
-                )
-              })
-              
-              output$distribuicao <- renderPlot({
-                g <- distributionInput()
-                g
-              })
-              
-              
-              ######################################################################
-              ####################---I N F E R Ê N C I A---#########################
-              ######################################################################
-              
-              observeEvent(input$testeT1Refresh, {
-                testeT1_params$u <- input$testeT1MediaPop
-                testeT1_params$dp <- input$testeT1DPPop
-                testeT1_params$X <- input$testeT1MediaA
-                testeT1_params$n <- input$testeT1TamanhoA
-                testeT1_params$alpha <- input$testeT1Alpha
-              })
-              
-              output$testeT1Plot <- renderPlot({
-                u <- testeT1_params$u
-                dp <- testeT1_params$dp
-                X <- testeT1_params$X
-                n <- testeT1_params$n
-                S <- dp/sqrt(n)
-                alpha <- testeT1_params$alpha
-                x_min <- u - 4*dp
-                x_max <- u + 4*dp
-                rc1 <- qnorm(alpha/2, mean=u, sd=S)
-                rc2 <- qnorm(1-alpha/2, mean=u, sd=S)
-                accept <- FALSE
-                if (X > rc1 && X < rc2) {
-                  accept <- TRUE
-                }
-                x1 <- c(seq(x_min, rc1, length = 200))
-                y1 <- dnorm(x1, mean=u, sd=S)
-                data1 <- as.data.frame(cbind(x1, y1))
-                colnames(data1) <- c("x", "y")
-                
-                x2 <- c(seq(rc2, x_max, length=200))
-                y2 <- dnorm(x2, mean=u, sd=S)
-                data2 <- as.data.frame(cbind(x2, y2))
-                colnames(data2) <- c("x", "y")
-                
-                point <- data.frame(X, dnorm(X, u, S)/2)
-                colnames(point) <- c("x", "y")
-                
-                g <- ggplot(data=data1, aes(x=x, y=y))  + 
-                  geom_area(stat="identity", fill="#0C7BDC", alpha = 0.4) + 
-                  geom_area(data=data2, aes(x=x, y=y), stat="identity", fill="#0C7BDC", alpha=0.4) +
-                  stat_function(fun=dnorm, n=300, args = list(mean=u, sd=S), color = "#E66100") + 
-                  scale_x_continuous(limits = c(x_min, x_max)) + 
-                  geom_segment(aes(x=u, xend=u, y=0, yend=dnorm(u, u, S)), color = "gray", linetype=2, alpha=0.6) + 
-                  annotate(geom="text", x=u, y=1.1*dnorm(u,u,S), label=paste0("μ = ", u), size=5, color=dark_cyan) + 
-                  geom_point(data=point, aes(x=x, y=y), 
-                             color = ifelse(accept, "#FFC20A", "#0C7BDC"), size = 8, shape = 8)+
-                  theme_minimal()
-                g
-              })
-              
-              output$testeT1Texto <- renderText({
-                u <- testeT1_params$u
-                dp <- testeT1_params$dp
-                X <- testeT1_params$X
-                n <- testeT1_params$n
-                S <- dp/sqrt(n)
-                alpha <- testeT1_params$alpha
-                rc1 <- qnorm(alpha/2, mean=u, sd=S)
-                rc2 <- qnorm(1-alpha/2, mean=u, sd=S)
-                accept <- FALSE
-                if (X > rc1 && X < rc2) {
-                  accept <- TRUE
-                }
-                p <- 2*pnorm(X, u, S, lower.tail = X < u)
-                
-                text <- paste0("H0: μ = ", u, "\nH1: μ ≠ ", u, 
-                               "\n\nX̄ ~ N(μ, σ/sqrt(n))\n",
-                               "X̄ ~ N(", u, ", ", round(S, digits = 4), ")\n",
-                               "α = P(Cometer Erro Tipo I) = ", alpha, " = ", scales::percent(alpha), "\n",
-                               "Região Crítica = RC = ]-∞, ", round(rc1, digits = 4), "] U [", round(rc2, digits = 4), ", ∞[\n"
-                )
-                
-                if (accept) {
-                  text <- paste0(text, "X̄̄ ∉ RC, logo H0 é aceita. μ = ", u, "\n")
-                } else {
-                  text <- paste0(text, "X̄ ∈ RC, logo H0 é rejeitada e a hipótese alternativa H1 é aceita. 
-                     μ ≠ ", u, "\n")
-                }
-                
-                text <- paste0(text, "\nValor-p: ", p)
-                text
-                
-              })
-              
-              
-              observeEvent(input$testeT2Refresh, {
-                testeT2_params$n <- input$testeT2TamanhoA
-                testeT2_params$u1 <- input$testeT2MediaP1
-                testeT2_params$u2 <- input$testeT2MediaP2
-                testeT2_params$dp1 <- input$testeT2DPP1
-                testeT2_params$dp2 <- input$testeT2DPP2
-                p1 <- rnorm(testeT2_params$n, testeT2_params$u1, testeT2_params$dp1)
-                p2 <- rnorm(testeT2_params$n, testeT2_params$u2, testeT2_params$dp2)
-                testeT2_params$p1 <- p1
-                testeT2_params$p2 <- p2
-                testeT2_params$D <- p1 - p2
-              })
-              
-              output$testeT2Table <- renderTable({
-                tab <- as.data.frame(rbind(testeT2_params$p1[1:10], testeT2_params$p2[1:10], testeT2_params$D[1:10]))
-                tab <- round(tab, 2)
-                rownames(tab) <- c("Amostra A1 de P1", "Amostra A2 de P2", "Diferença (A1 - A2)")
-                tab
-              }, colnames = FALSE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%")
-              
-              output$testeT2Graph1 <- renderPlot({
-                n <- testeT2_params$n
-                u1 <- testeT2_params$u1
-                u2 <- testeT2_params$u2
-                dp1 <- testeT2_params$dp1
-                dp2 <- testeT2_params$dp2
-                
-                p1 <- testeT2_params$p1
-                p2 <- testeT2_params$p2
-                p <- as.data.frame(cbind(c(p1, p2), c(rep("População 1", n), rep("População 2", n))))
-                colnames(p) <- c("x", "pop")
-                p$x <- as.numeric(as.character(p$x))
-                
-                g <- ggplot(data=p, aes(x=x)) + 
-                  geom_density(aes(group = pop, color = pop)) + 
-                  scale_x_continuous(limits = c(min(u1 - 4*dp1, u2 - 4*dp2), max(u1 + 4*dp1, u2 + 4*dp2))) + 
-                  scale_color_discrete(name="População") + 
-                  xlab(" ") +
-                  ylab("Densidade")+
-                  theme_minimal()
-                g
-                
-              })
-              
-              output$testeT2Graph2 <- renderPlot({
-                u1 <- testeT2_params$u1
-                u2 <- testeT2_params$u2
-                dp1 <- testeT2_params$dp1
-                dp2 <- testeT2_params$dp2
-                D <- as.data.frame(testeT2_params$D)
-                colnames(D) <- c("x")
-                
-                g <- ggplot(data=D, aes(x=x)) + 
-                  geom_density() + 
-                  scale_x_continuous(limits = c(min(u1 - u2, u2 - u1) - 4*(max(dp1, dp2)), max(u1 - u2, u2 - u1) + 4*max(dp1, dp2))) + 
-                  xlab("Diferença") + 
-                  ylab("Densidade")+
-                  theme_minimal()
-                g
-                
-                
-              })
-              
-              output$testeT2Calc <- renderText({
-                D <- testeT2_params$D
-                n <- testeT2_params$n
-                t <- mean(D)/(sd(D)/sqrt(n))
-                p <- dt(t, df=n-1)
-                alpha <- input$testeT2Alpha
-                print(t.test(D, alternative = "two.sided", mu = 0, conf.level = .95))
-                text <- paste0("H0: µ1 = µ2\nH1:µ1 ≠ µ2\n\n")
-                
-                text <- paste0(text, "Valor do teste = T = ", round(mean(D), 4), "/(", round(sd(D), 4), "/sqrt(", n, ")) = \n
-                   ", round(t, 4), "\n\n
-                   p-valor = P(T > |", round(t, 4), "| + P(T < - |", round(t, 4), "|) = \n
-                   ", round(p, 4))
-                
-                if (p < alpha) {
-                  text <- paste0(text, "\nComo p-valor = ", round(p, 4), " < ", "α = ", alpha, ", rejeita-se a hipótese nula H0 e aceita-se H1:\n
-                     µ1 ≠ µ2")
-                } else {
-                  text <- paste0(text, "\nComo p-valor = ", round(p, 4), " >= ", "α = ", alpha, ", aceita-se a hipótese nula H0:\n
-                     µ1 = µ2")
-                }
-                text 
-              })
-              
-              output$testeT2Graph3 <- renderPlot({
-                D <- testeT2_params$D
-                n <- testeT2_params$n
-                t <- mean(D)/(sd(D)/sqrt(n))
-                p <- dt(t, df=n-1)
-                alpha <- input$testeT2Alpha
-                accept <- p >= alpha
-                
-                lower_p <- qt(alpha/2, df=n-1)
-                upper_p <- qt(1 - alpha/2, df=n-1)
-                
-                x1 <- seq(-6, lower_p, length = 200)
-                x2 <- seq(upper_p, 6, length = 200)
-                y1 <- dt(x1, df=n-1)
-                y2 <- dt(x2, df=n-1)
-                
-                data1 <- data.frame(x1, y1)
-                data2 <- data.frame(x2, y2)
-                
-                colnames(data1) <- c("x", "y")
-                colnames(data2) <- c("x", "y")
-                
-                point <- data.frame(t, dt(t, df=n-1)/2)
-                colnames(point) <- c("x", "y")
-                g <- ggplot(data=data1, aes(x=x, y=y)) + 
-                  stat_function(fun=dt, n=101, args=list(df=n-1), color = "black") + 
-                  geom_area(data=data1, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
-                  geom_area(data=data2, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
-                  geom_point(data=point, aes(x=x, y=y), 
-                             color = ifelse(accept, "#FFC20A", "#0C7BDC"), size = 8, shape = 8) + 
-                  scale_x_continuous(limits = c(-6, 6)) + 
-                  ylab("f(x)")+
-                ggtitle(paste0("Distribuição T de Student com ", n-1, " graus de liberdade"))+
-                  theme_minimal()
-                g
-                
-                
-                
-              })
-              
-              
-              observeEvent(input$testeQuiRefresh, {
-                testeQui_params$matrix <- rbind(c(input$testeQuiValor1, input$testeQuiValor2, input$testeQuiValor1 + input$testeQuiValor2), 
-                                                c(input$testeQuiValor3, input$testeQuiValor4, input$testeQuiValor3 + input$testeQuiValor4), 
-                                                c(input$testeQuiValor1 + input$testeQuiValor3, input$testeQuiValor2 + input$testeQuiValor4, 
-                                                  input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4))
-                testeQui_params$colnames <- c(input$testeQuiCol1, input$testeQuiCol2, "Total")
-                testeQui_params$rownames <- c(input$testeQuiRow1, input$testeQuiRow2, "Total")
-                p <- (input$testeQuiValor1 + input$testeQuiValor3)/
-                  (input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4)
-                testeQui_params$expected <- rbind(c(round(p*(input$testeQuiValor1 + input$testeQuiValor2)), 
-                                                    round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2)),
-                                                    input$testeQuiValor1 + input$testeQuiValor2
-                ),
-                c(round(p*(input$testeQuiValor3 + input$testeQuiValor4)),
-                  round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)),
-                  input$testeQuiValor3 + input$testeQuiValor4
-                ),
-                c(input$testeQuiValor1 + input$testeQuiValor3, input$testeQuiValor2 + input$testeQuiValor4, 
-                  input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4))
-                testeQui_params$chi <- 
-                  ((input$testeQuiValor1 - round(p*(input$testeQuiValor1 + input$testeQuiValor2)))^2)/(round(p*(input$testeQuiValor1 + input$testeQuiValor2))) +
-                  ((input$testeQuiValor2 - round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2)))^2)/(round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2))) +
-                  ((input$testeQuiValor3 - round(p*(input$testeQuiValor3 + input$testeQuiValor4)))^2)/(round(p*(input$testeQuiValor3 + input$testeQuiValor4))) +
-                  ((input$testeQuiValor4 - round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)))^2)/(round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)))
-              })
-              
-              output$testeQuiTabela <- renderTable({
-                tab <- as.data.frame(testeQui_params$matrix)
-                colnames(tab) <- testeQui_params$colnames
-                rownames(tab) <- testeQui_params$rownames
-                
-                tab
-              }, colnames = TRUE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%", digits = 0, align = "c")
-              
-              output$testeQuiEsperado <- renderTable({
-                tab <- as.data.frame(testeQui_params$expected)
-                colnames(tab) <- testeQui_params$colnames
-                rownames(tab) <- testeQui_params$rownames
-                
-                tab
-              }, colnames = TRUE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%", digits = 0, align = "c")
-              
-              output$testeQuiCalc <- renderUI({
-                matrix <- testeQui_params$matrix
-                exp <- testeQui_params$expected
-                chi <- 0
-                for (i in c(1, 2, 4, 5)) {
-                  chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-                }
-                withMathJax(helpText(paste0("$$\\chi^{2} = ", round(chi, 2), "$$")))
-              })
-              
-              output$testeQuiPlot <- renderPlot({
-                matrix <- testeQui_params$matrix
-                exp <- testeQui_params$expected
-                chi <- 0
-                rc <- qchisq(1 - input$testeQuiAlpha, 1)
-                for (i in c(1, 2, 4, 5)) {
-                  chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-                }
-                
-                accept <- chi < rc
-                
-                x <- seq(rc, 8, length = 300)
-                y <- dchisq(x, df=1)
-                
-                data <- data.frame(x, y)
-                colnames(data) <- c("x", "y")
-                
-                point <- data.frame(chi, dchisq(chi, df=1)/2)
-                colnames(point) <- c("x", "y")
-                
-                g <- ggplot(data, aes(x=x, y=y)) + 
-                  geom_area(stat="identity", fill = "#0c7bdc", alpha = 0.4) + 
-                  stat_function(fun=dchisq, n=101, args = list(df = 1), color="black") + 
-                  geom_point(data=point, aes(x=x, y=y), color = ifelse(accept, "#ffc20a", "#0c7bdc"), size = 8, shape = 8) + 
-                  scale_x_continuous(limits = c(0, max(7, 1.2*chi))) + 
-                  xlab("x") +
-                  ylab("f(x)") + 
-                  ggtitle("Distribuição Qui-quadrado com 1 grau de liberdade")+
-                  theme_minimal()
-                
-                g
-              })
-              
-              output$testeQuiConta <- renderText({
-                matrix <- testeQui_params$matrix
-                exp <- testeQui_params$expected
-                chi <- 0
-                rc <- qchisq(1 - input$testeQuiAlpha, 1)
-                for (i in c(1, 2, 4, 5)) {
-                  chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-                }
-                
-                accept <- chi < rc
-                text <- paste0("H0: Não há influência (independente)\nH1: Há influência (não é independente)\n
-    Valor-qui = ", round(chi, 4), "\nRegião Crítica RC = [", round(rc, 4), ", +∞[\n")
-                if (accept) {
-                  text <- paste0(text, "Como o valor-qui está fora da região crítica, aceita-se H0 e portanto 
-=======
   })
   
   expPlot <- reactive({
@@ -2755,7 +1237,21 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   })
   
   
-## Inferência ----
+  ## Inferência -------
+  
+  ## T uma amostra
+  
+  observeEvent(input$linkTesteT1, { 
+    updateNavbarPage(session, "mainNav", selected = "tabTesteT1")
+  })
+  
+  
+  testeT1_params <- reactiveValues()
+  testeT1_params$u <- 0
+  testeT1_params$dp <- 1
+  testeT1_params$X <- 0.18
+  testeT1_params$n <- 10
+  testeT1_params$alpha <- 0.05
   
   observeEvent(input$testeT1Refresh, {
     testeT1_params$u <- input$testeT1MediaPop
@@ -2842,476 +1338,20 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
   })
   
   
-  observeEvent(input$testeT2Refresh, {
-    testeT2_params$n <- input$testeT2TamanhoA
-    testeT2_params$u1 <- input$testeT2MediaP1
-    testeT2_params$u2 <- input$testeT2MediaP2
-    testeT2_params$dp1 <- input$testeT2DPP1
-    testeT2_params$dp2 <- input$testeT2DPP2
-    p1 <- rnorm(testeT2_params$n, testeT2_params$u1, testeT2_params$dp1)
-    p2 <- rnorm(testeT2_params$n, testeT2_params$u2, testeT2_params$dp2)
-    testeT2_params$p1 <- p1
-    testeT2_params$p2 <- p2
-    testeT2_params$D <- p1 - p2
-  })
-  
-  output$testeT2Table <- renderTable({
-    tab <- as.data.frame(rbind(testeT2_params$p1[1:10], testeT2_params$p2[1:10], testeT2_params$D[1:10]))
-    tab <- round(tab, 2)
-    rownames(tab) <- c("Amostra A1 de P1", "Amostra A2 de P2", "Diferença (A1 - A2)")
-    tab
-  }, colnames = FALSE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%")
-  
-  output$testeT2Graph1 <- renderPlot({
-    n <- testeT2_params$n
-    u1 <- testeT2_params$u1
-    u2 <- testeT2_params$u2
-    dp1 <- testeT2_params$dp1
-    dp2 <- testeT2_params$dp2
-    
-    p1 <- testeT2_params$p1
-    p2 <- testeT2_params$p2
-    p <- as.data.frame(cbind(c(p1, p2), c(rep("População 1", n), rep("População 2", n))))
-    colnames(p) <- c("x", "pop")
-    p$x <- as.numeric(as.character(p$x))
-    
-    g <- ggplot(data=p, aes(x=x)) + 
-      geom_density(aes(group = pop, color = pop)) + 
-      scale_x_continuous(limits = c(min(u1 - 4*dp1, u2 - 4*dp2), max(u1 + 4*dp1, u2 + 4*dp2))) + 
-      scale_color_discrete(name="População") + 
-      xlab(" ") +
-      ylab("Densidade")+
-      theme_minimal()
-    g
-    
-  })
-  
-  output$testeT2Graph2 <- renderPlot({
-    u1 <- testeT2_params$u1
-    u2 <- testeT2_params$u2
-    dp1 <- testeT2_params$dp1
-    dp2 <- testeT2_params$dp2
-    D <- as.data.frame(testeT2_params$D)
-    colnames(D) <- c("x")
-    
-    g <- ggplot(data=D, aes(x=x)) + 
-      geom_density() + 
-      scale_x_continuous(limits = c(min(u1 - u2, u2 - u1) - 4*(max(dp1, dp2)), max(u1 - u2, u2 - u1) + 4*max(dp1, dp2))) + 
-      xlab("Diferença") + 
-      ylab("Densidade")+
-      theme_minimal()
-    g
-    
-    
-  })
-  
-  output$testeT2Calc <- renderText({
-    D <- testeT2_params$D
-    n <- testeT2_params$n
-    t <- mean(D)/(sd(D)/sqrt(n))
-    p <- dt(t, df=n-1)
-    
-    alpha <- input$testeT2Alpha
-    print(t.test(D, alternative = "two.sided", mu = 0, conf.level = .95))
-    text <- paste0("H0: µ1 = µ2\nH1:µ1 ≠ µ2\n\n")
-    
-    text <- paste0(text, "Estatística do teste observada = ", round(t, 4))
-    
-    if (p < alpha) {
-      text <- paste0(text, "\nComo p-valor = ", round(p, 4), " < ", "α = ", alpha, ", rejeita-se a hipótese nula H0. Ou seja, µ1 ≠ µ2 ao
-                  nível de significância de ", alpha * 100, "%\n")
-    } else {
-      text <- paste0(text, "\nComo p-valor = ", round(p, 4), " >= ", "α = ", alpha, ", não se rejeita a hipótese nula H0. Ou seja, µ1 = µ2 ao
-                  nível de significância de ", alpha * 100, "%\n ")
-    }
-    text 
-  })
-  
-  output$testeT2Graph3 <- renderPlot({
-    D <- testeT2_params$D
-    n <- testeT2_params$n
-    t <- mean(D)/(sd(D)/sqrt(n))
-    p <- dt(t, df=n-1)
-    alpha <- input$testeT2Alpha
-    accept <- p >= alpha
-    
-    lower_p <- qt(alpha/2, df=n-1)
-    upper_p <- qt(1 - alpha/2, df=n-1)
-    
-    x1 <- seq(-6, lower_p, length = 200)
-    x2 <- seq(upper_p, 6, length = 200)
-    y1 <- dt(x1, df=n-1)
-    y2 <- dt(x2, df=n-1)
-    
-    data1 <- data.frame(x1, y1)
-    data2 <- data.frame(x2, y2)
-    
-    colnames(data1) <- c("x", "y")
-    colnames(data2) <- c("x", "y")
-    
-    point <- data.frame(t, dt(t, df=n-1)/2)
-    colnames(point) <- c("x", "y")
-    g <- ggplot(data=data1, aes(x=x, y=y)) + 
-      stat_function(fun=dt, n=101, args=list(df=n-1), color = "black") + 
-      geom_area(data=data1, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
-      geom_area(data=data2, aes(x=x, y=y), fill="#0C7BDC", alpha=0.4) + 
-      geom_point(data=point, aes(x=x, y=y), 
-                 color = ifelse(accept, "#FFC20A", "#0C7BDC"), size = 8, shape = 8) + 
-      scale_x_continuous(limits = c(-6, 6)) + 
-      ylab("f(x)")+
-      ggtitle(paste0("Distribuição T de Student com ", n-1, " graus de liberdade"))+
-      theme_minimal()
-    g
-    
-    
-    
-  })
-  
-  
-  observeEvent(input$testeQuiRefresh, {
-    testeQui_params$matrix <- rbind(c(input$testeQuiValor1, input$testeQuiValor2, input$testeQuiValor1 + input$testeQuiValor2), 
-                                    c(input$testeQuiValor3, input$testeQuiValor4, input$testeQuiValor3 + input$testeQuiValor4), 
-                                    c(input$testeQuiValor1 + input$testeQuiValor3, input$testeQuiValor2 + input$testeQuiValor4, 
-                                      input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4))
-    testeQui_params$colnames <- c(input$testeQuiCol1, input$testeQuiCol2, "Total")
-    testeQui_params$rownames <- c(input$testeQuiRow1, input$testeQuiRow2, "Total")
-    p <- (input$testeQuiValor1 + input$testeQuiValor3)/
-      (input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4)
-    testeQui_params$expected <- rbind(c(round(p*(input$testeQuiValor1 + input$testeQuiValor2)), 
-                                        round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2)),
-                                        input$testeQuiValor1 + input$testeQuiValor2
-    ),
-    c(round(p*(input$testeQuiValor3 + input$testeQuiValor4)),
-      round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)),
-      input$testeQuiValor3 + input$testeQuiValor4
-    ),
-    c(input$testeQuiValor1 + input$testeQuiValor3, input$testeQuiValor2 + input$testeQuiValor4, 
-      input$testeQuiValor1 + input$testeQuiValor2 + input$testeQuiValor3 + input$testeQuiValor4))
-    testeQui_params$chi <- 
-      ((input$testeQuiValor1 - round(p*(input$testeQuiValor1 + input$testeQuiValor2)))^2)/(round(p*(input$testeQuiValor1 + input$testeQuiValor2))) +
-      ((input$testeQuiValor2 - round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2)))^2)/(round((1-p)*(input$testeQuiValor1 + input$testeQuiValor2))) +
-      ((input$testeQuiValor3 - round(p*(input$testeQuiValor3 + input$testeQuiValor4)))^2)/(round(p*(input$testeQuiValor3 + input$testeQuiValor4))) +
-      ((input$testeQuiValor4 - round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)))^2)/(round((1-p)*(input$testeQuiValor3 + input$testeQuiValor4)))
-  })
-  
-  output$testeQuiTabela <- renderTable({
-    tab <- as.data.frame(testeQui_params$matrix)
-    colnames(tab) <- testeQui_params$colnames
-    rownames(tab) <- testeQui_params$rownames
-    
-    tab
-  }, colnames = TRUE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%", digits = 0, align = "c")
-  
-  output$testeQuiEsperado <- renderTable({
-    tab <- as.data.frame(testeQui_params$expected)
-    colnames(tab) <- testeQui_params$colnames
-    rownames(tab) <- testeQui_params$rownames
-    
-    tab
-  }, colnames = TRUE, rownames = TRUE, bordered = TRUE, striped = TRUE, width = "100%", digits = 0, align = "c")
-  
-  output$testeQuiCalc <- renderUI({
-    matrix <- testeQui_params$matrix
-    exp <- testeQui_params$expected
-    chi <- 0
-    for (i in c(1, 2, 4, 5)) {
-      chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-    }
-    withMathJax(helpText(paste0("$$\\chi^{2} = ", round(chi, 2), "$$")))
-  })
-  
-  output$testeQuiPlot <- renderPlot({
-    matrix <- testeQui_params$matrix
-    exp <- testeQui_params$expected
-    chi <- 0
-    rc <- qchisq(1 - input$testeQuiAlpha, 1)
-    for (i in c(1, 2, 4, 5)) {
-      chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-    }
-    
-    accept <- chi < rc
-    
-    x <- seq(rc, 8, length = 300)
-    y <- dchisq(x, df=1)
-    
-    data <- data.frame(x, y)
-    colnames(data) <- c("x", "y")
-    
-    point <- data.frame(chi, dchisq(chi, df=1)/2)
-    colnames(point) <- c("x", "y")
-    
-    g <- ggplot(data, aes(x=x, y=y)) + 
-      geom_area(stat="identity", fill = "#0c7bdc", alpha = 0.4) + 
-      stat_function(fun=dchisq, n=101, args = list(df = 1), color="black") + 
-      geom_point(data=point, aes(x=x, y=y), color = ifelse(accept, "#ffc20a", "#0c7bdc"), size = 8, shape = 8) + 
-      scale_x_continuous(limits = c(0, max(7, 1.2*chi))) + 
-      xlab("x") +
-      ylab("f(x)") + 
-      ggtitle("Distribuição Qui-quadrado com 1 grau de liberdade")+
-      theme_minimal()
-    
-    g
-  })
-  
-  output$testeQuiConta <- renderText({
-    matrix <- testeQui_params$matrix
-    exp <- testeQui_params$expected
-    chi <- 0
-    rc <- qchisq(1 - input$testeQuiAlpha, 1)
-    for (i in c(1, 2, 4, 5)) {
-      chi <- chi + (matrix[i] - exp[i])^2/(exp[i])
-    }
-    
-    
-    
-    accept <- chi < rc
-    text <- paste0("H0: As variáveis são independentes\nH1: As variáveis não são independentes\n
-    Estatística de teste observada = ", round(chi, 4), "\nRegião Crítica RC = [", round(rc, 4), ", +∞[\n")
-    if (accept) {
-      text <- paste0(text, "Como o valor-qui está fora da região crítica, aceita-se H0 e portanto 
->>>>>>> Stashed changes
-                     não há influência se ", input$testeQuiRow1, " ou ", input$testeQuiRow2, ".")
-    } else {
-      text <- paste0(text, "Como o valor-qui está dentro da região crítica, H0 é rejeitada e portanto H1 é aceita, ou seja,
-                     há influência quando ", input$testeQuiRow1, " ou ", input$testeQuiRow2, ".")
-<<<<<<< Updated upstream
-                }
-                
-                text
-              })
-              
-              output$testeCorrExplicacao <- renderUI({
-                tags <- NULL
-                req(input$tipoTesteCorr)
-                if (input$tipoTesteCorr == "spearman") {
-                  
-                } else {
-                  tags <- tagList(
-                    withMathJax(helpText("Coeficiente ρ = 
-                                                              $$\\frac{1}{n}\\sum_{i=1}^{n}
-                                                              (\\frac{x_{i} - \\bar{x}}{dp(X)})
-                                                              (\\frac{y_{i} - \\bar{y}}{dp(Y)})$$")),
-                    p("ρ = -1: Correlação linear perfeita negativa"),
-                    p("ρ = 0: Não há nenhuma relação linear"),
-                    p("ρ = 1: Correlação linear perfeita positiva")
-                  )
-                }
-                tags
-              })
-              
-              getCorrPlotData <- reactive({
-                req(input$testeCorrVar1)
-                req(input$testeCorrVar2)
-                req(input$testeCorrVar1 %in% colnames(userData$data))
-                req(input$testeCorrVar2 %in% colnames(userData$data))
-                return (as.data.frame(cbind(userData$data[,colnames(userData$data) == input$testeCorrVar1], 
-                                            userData$data[,colnames(userData$data) == input$testeCorrVar2])))
-              })
-              
-              output$selectTesteCorrVarUI <- renderUI({
-                tags <- NULL
-                if (sum(userData$numbers) >= 2) {
-                  tags <- tagList(
-                    selectInput("testeCorrVar1", "Variável 1", 
-                                choices = colnames(userData$data)[userData$numbers], 
-                                selected = colnames(userData$data)[userData$numbers][1]),
-                    selectInput("testeCorrVar2", "Variável 2", 
-                                choices = colnames(userData$data)[userData$numbers],
-                                selected = colnames(userData$data)[userData$numbers][2])
-                  )
-                } else {
-                  tags <- tagList(p("Os dados que você está utilizando não possuem uma quantidade suficiente de variáveis 
-        quantitativas (duas). Por favor selecione outro conjunto de dados ou utilize nosso padrão."))
-                }
-                
-                tags
-              })
-              
-              output$testeCorrPlot <- renderPlot({
-                selData <- getCorrPlotData()
-                colnames(selData) <- c("Var1", "Var2")
-                g <- ggplot(selData, aes(x=Var1, y=Var2)) + 
-                  geom_point(color=dark_cyan, size = 2) + 
-                  geom_smooth(method=lm) + 
-                  xlab(input$testeCorrVar1) + 
-                  ylab(input$testeCorrVar2) + 
-                  theme(axis.text.x = element_text(size=12), axis.text.y = element_text(size = 12))+
-                  theme_minimal()
-                
-                g
-              })
-              
-              output$testeCorrConta <- renderText({
-                selData <- getCorrPlotData()
-                colnames(selData) <- c("Var1", "Var2")
-                correlacao <- cor(selData$Var1, selData$Var2, method = input$tipoTesteCorr, use = "all.obs")
-                text <- paste0("Correlação(", input$testeCorrVar1, ", ", input$testeCorrVar2, ") = ", correlacao)
-                text
-              })
-              
-              
-              output$tabelaInformativa <- renderTable({
-                tab <- rbind(c("Sexo", "Sexo do aluno: Masculino ou Feminino."),
-                             c("Ano letivo", "Ano do curso em que o aluno se encontra. 1 é o primeiro ano e 4, o último."),
-                             c("Peso", "Peso do aluno, em kg."),
-                             c("Trabalha", "Variável que indica se o aluno trabalha ou não, e se trabalha, se é meio período ou integral."),
-                             c("Relacionamento", "Estado de relacionamento do aluno."),
-                             c("Cozinha", "Frequência em que o aluno costuma cozinhar, de nunca até sempre."),
-                             c("Come fora", "Frequência em que o aluno come fora de casa, em algum restaurante."),
-                             c("Percepção de saúde", "Como o aluno classifica, de 1 a 10, sua saúde, sendo 1 péssima e 10 excelente."), 
-                          #Retirei culinária favorita - Gabriel
-                             c("Vegetais nas refeições", "Frequência em que o aluno tem vegetais como parte de suas refeições"),
-                             c("Pratica exercícios", "Frequência em que o aluno se exercita."),
-                             c("Pratica esportes", "Se o aluno participa de algum esporte ou não."),
-                             c("Toma vitaminas", "Se o aluno toma vitaminas."),
-                             c("Altura", "Altura do aluno, em metros."),
-                          c('Álcool: consumo mensal', 'Frequência de consumo de álcool por mês.'),
-                          c('Álcool: dose', 'Dose de álcool por consumo.'),
-                          #Não tenho certeza desse período - Gabriel
-                          c('Consumo tabaco', 'Quantos cigarros o aluno consome em um dia.'),
-                          c('Idade', 'Idade em anos completos.'),
-                          c('HDL', 'Concentração de HDL em mg/dL.'),
-                          c('LDL', 'Concentração de LDL em mg/dL.'),
-                          c('Triglicérides', 'Concentração de triglicérides em mg/dL.')
-
-                          )
-                
-                tab <- as.data.frame(tab)
-                tab
-              }, colnames = FALSE, striped = TRUE, bordered = TRUE, width = "100%", align = "c")
-              
-
-              
-              pergunta_atual <- reactiveVal(1)
-              feedback <- reactiveVal(NULL)
-              counter <- reactiveVal(0)
-              botao <- reactiveVal(T)
-              acertos <- reactiveVal(0)
-              erros <- reactiveVal(0)
-              
-              
-              #pergunta
-              
-              output$pergunta <- renderUI({
-                if(pergunta_atual() <= length(perguntas_respostas)){
-                  pergunta <- perguntas_respostas[[pergunta_atual()]]
-                  HTML(paste('<h4>Questão', pergunta_atual(), ':', pergunta$pergunta, '</p>'))
-                } else {
-                  HTML('<h3>Questionário finalizado.</h3>')
-                }
-              })
-              
-              #opções de resposta
-              
-              output$opcoes_resposta <- renderUI({
-                if(pergunta_atual() <= length(perguntas_respostas)){
-                  pergunta <- perguntas_respostas[[pergunta_atual()]]
-                  radioButtons('resposta', 'Escolha uma opção:', choices = pergunta$respostas)
-                }
-              })
-              
-              
-              #botao de proxima
-              observeEvent(input$proximo, {
-                pergunta_atual(pergunta_atual() + 1)
-              })
-              
-              #botao de voltar
-              observeEvent(input$anterior, {
-                if(pergunta_atual() >= 2){
-                  pergunta_atual(pergunta_atual() - 1)}
-                else{
-                  NULL
-                }
-              })
-              
-              #verificação da resposta
-              
-              observeEvent(input$confirmar_resposta, {
-                if(pergunta_atual() <= length(perguntas_respostas)){
-                  pergunta <- perguntas_respostas[[pergunta_atual()]]
-                  resposta_correta <- pergunta$resposta_correta
-                  if (input$resposta == pergunta$respostas[resposta_correta]) {
-                    feedback('Resposta Correta.')
-                    acertos(acertos() + 1)
-                    counter(counter() + 1)
-                  } else {
-                    feedback('Resposta Incorreta.')
-                    erros(erros() + 1)
-                  }
-                  
-                }
-                
-                #sumuir com o botao de verificar
-                
-                if(pergunta_atual() > length(perguntas_respostas)){
-                  botao(F)
-                }
-              })
-              
-              #counter de questõoes erradas e certas
-              output$score <- render_gt({
-                data <- data.frame(
-                  Categoria = c("Acertos", "Erros"),
-                  Quantidade = c(acertos(), erros())
-                )
-                
-                data %>%
-                  gt() %>%
-                  tab_header(title = "Pontuação")
-              })
-              
-            
-              
-              #printar resultado
-              
-              output$resultado <- renderText({
-                if(pergunta_atual() <= length(perguntas_respostas)){
-                  feedback()
-                } else{
-                  ''
-                }
-              })
-              
-              #printar mensagem final
-              
-              observe({
-                if (pergunta_atual() > length(perguntas_respostas)) {
-                  if (acertos() == length(perguntas_respostas)) {
-                    shinyalert(
-                      title = "Parabéns!",
-                      text = "Você acertou todas as perguntas.",
-                      type = "success"
-                    )
-                  } else {
-                    shinyalert(
-                      title = "Resultado",
-                      text = paste("Você acertou", acertos(), "perguntas."),
-                      type = "info"
-                    )
-                  }
-                  botao(FALSE) # Desativar o botão de verificar
-                }
-              })
-              
-              observe({
-                shinyjs::toggle('confirmar_resposta', condition = botao())
-              })
-              
-              
-              
-              #linkTexts
-              
-              
-              'observeEvent(input$linkTiposVariaveis, { 
-=======
-    }
-    
-    text
-  })
-  
-  
   #### código gabriel qui quadrado
+  
+  observeEvent(input$linkTesteQui, { 
+    updateNavbarPage(session, "mainNav", selected = "tabTesteQui")
+  })
+  
+  dataqui <- reactiveValues(data=dados_saude_alimentacao,
+                            custom=FALSE, 
+                            factors=var_factors, 
+                            numbers=var_numerics,
+                            shortLevels=shortLevels,
+                            uploaded = FALSE)
+  
+  
   output$testando_qui_q <- renderUI({
     tags <- NULL
     if (sum(dataqui$numbers) >= 2) {
@@ -3454,6 +1494,12 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     })
   })
   
+  ### Correlação
+  
+  observeEvent(input$linkTesteCorr, { 
+    updateNavbarPage(session, "mainNav", selected = "tabTesteCorr")
+  })
+  
   
   output$testeCorrExplicacao <- renderUI({
     tags <- NULL
@@ -3570,1996 +1616,19 @@ medidas resumo, e construção de histogramas e boxplots, para a variável quant
     text
   })
   
+  ### Calculadora qui-quadrado
   
-  # linkTexts ----
-  
-  observeEvent(input$linkTiposVariaveis, { 
->>>>>>> Stashed changes
-                updateNavbarPage(session, "mainNav", selected = "tipos_variaveis")
-              })
-  observeEvent(input$linkDistrFreq, { 
-                updateNavbarPage(session, "mainNav", selected = "tabTabFreqs")
-              })
-  observeEvent(input$linkMedidasResumo, { 
-                updateNavbarPage(session, "mainNav", selected = "tabMedidasResumo")
-              })
-  observeEvent(input$linkGrafQual, { 
-                updateNavbarPage(session, "mainNav", selected = "tabGrafQual")
-              })
-  observeEvent(input$linkGrafQuant, { 
-                updateNavbarPage(session, "mainNav", selected = "tabGrafQuant")
-              })
-  observeEvent(input$linkGrafBi, { 
-                updateNavbarPage(session, "mainNav", selected = "tabGrafBi")
-              })
-              
-  observeEvent(input$linkTesteT1, { 
-                updateNavbarPage(session, "mainNav", selected = "tabTesteT1")
-              })
-  observeEvent(input$linkTesteT2, { 
-                updateNavbarPage(session, "mainNav", selected = "tabTesteT2")
-              })
-  observeEvent(input$linkTesteQui, { 
-                updateNavbarPage(session, "mainNav", selected = "tabTesteQui")
-              })
-  observeEvent(input$linkTesteCorr, { 
-                updateNavbarPage(session, "mainNav", selected = "tabTesteCorr")
-              })
-<<<<<<< Updated upstream
-              '
-              ##################################################################
-              ##    PRATICA - PC
-              ##################################################################
-              ##################################################################
-              
-              numero_do_exercicio <- reactiveVal(0)
-              
-              
-              #Atualizando o valor do numero_do_exercicio
-              
-              observeEvent(input$tabs, {
-                if (input$tabs == 'ex1') {
-                  numero_do_exercicio(1)  
-                } else if (input$tabs == 'ex2') {
-                  numero_do_exercicio(2)  
-                } else if (input$tabs == 'ex3') {
-                  numero_do_exercicio(3)  
-                } else if (input$tabs == 'ex4') {
-                    numero_do_exercicio(4)  
-                } else if (input$tabs == 'ex5') {
-                    numero_do_exercicio(5)  
-                } else if (input$tabs == 'ex6') {
-                    numero_do_exercicio(6)  
-                } else if (input$tabs == 'ex7') {
-                    numero_do_exercicio(7)  
-                } else if (input$tabs == 'ex8') {
-                    numero_do_exercicio(8)  
-                } else if (input$tabs == 'ex9') {
-                    numero_do_exercicio(9)  
-                } else if (input$tabs == 'ex10') {
-                    numero_do_exercicio(10)  
-                }
-                  
-                 
-              })
-              
-              
-              #UI para exercício 1
-              output$ex1 <- renderUI({
-                enunciado <- enunciados_pc_novo[[1]]
-                
-                fluidRow(
-                  h3(''),
-                  column(6,
-                         wellPanel(
-                         p(HTML(enunciado))
-                         ),
-                         column(12,
-                         pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
-                                     choices = nomes_exibidos, multiple = TRUE),
-                         pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
-                                     choices = nomes_exibidos, multiple = TRUE),
-                         actionButton('verif_resp_ex1', 'Verificar'),
-                         align = 'center'
-                         )
-                  )
- 
-                )
-              })
-              
-              #UI para exercício 2
-              output$ex2 <- renderUI({
-                enunciado <- enunciados_pc_novo[[2]]
-                
-                fluidRow(
-                  h3(''),
-                  column(6,
-                         wellPanel(
-                         p(HTML(enunciado))
-                         ),
-                         column(12,
-                                pickerInput('variavel_ex2', 'Medidas-resumo',
-                                            choices = c('Média', 'Mediana', 
-                                                        'Porcentagem', 'Frequência absoluta',
-                                                        'Desvio-padrão', 'Frequência relativa'), 
-                                            multiple = TRUE),
-                                actionButton('verif_resp_ex2', 'Verificar'),
-                                align = 'center'
-                                )
-                  )
-                )
-              })
-              
-              #UI para exercício 3
-              output$ex3 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[3]]
-                  
-                  fluidRow(
-                    h3(''),
-                      column(6,
-                             wellPanel(
-                             p(HTML(enunciado))
-                             ),
-                             column(12,
-                                    pickerInput('variavel_ex3', 'Medidas-resumo',
-                                                choices = c('Média', 'Mediana', 'Porcentagem',
-                                                            'Frequência absoluta', 'Desvio-padrão',
-                                                            'Frequência relativa'),
-                                                multiple = TRUE),
-                                    actionButton('verif_resp_ex3', 'Verificar'),
-                                    align = 'center')
-                                    
-                                    )
-                  )
-              })
-              
-              #UI para exercício 4
-              output$ex4 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[4]]
-                  
-                  fluidRow(
-                    h3(''),
-                      column(6,
-                             wellPanel(
-                             p(HTML(enunciado))
-                             ),
-                             column(12,
-                                    pickerInput('variavel_ex4x', 'Eixo x',
-                                                choices = nomes_exibidos,
-                                                multiple = TRUE),
-                                    pickerInput('variavel_ex4y', 'Eixo y',
-                                                choices = c('Não se aplica', nomes_exibidos)),
-                                    pickerInput('variavel_ex4_graf', 'Tipo de gráfico',
-                                                choices = c('Barras', 'Boxplot', 'Dispersão')),
-                                    actionButton('graf_ex4', 'Gerar gráfico'),
-                                    align = 'center'
-                             )
-                             ),
-                    column(6,
-                           plotOutput('plot_ex4'),
-                           align = 'center')
-            
-                  )
-              })
-              
-              #UI para exercício 5
-              output$ex5 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[5]]
-                  
-                  fluidRow(
-                    h3(''),
-                      column(6,
-                             wellPanel(
-                             p(HTML(enunciado))
-                             ),
-                             column(12,
-                                    pickerInput('variavel_ex5x', 'Eixo x',
-                                                choices = nomes_exibidos,
-                                                multiple = TRUE),
-                                    pickerInput('variavel_ex5y', 'Eixo y',
-                                                choices = c('Não se aplica', nomes_exibidos)),
-                                    pickerInput('variavel_ex5_graf', 'Tipo de gráfico',
-                                                choices = c('Barras', 'Boxplot', 'Dispersão')
-                                    ),
-                                    actionButton('graf_ex5', 'Gerar gráfico'),
-                                    align = 'center'
-                             )
-                             ),
-                             column(6,
-                                    plotOutput('plot_ex5'),
-                                    align = 'center')
-                             
-                      )
-              })
-              
-              #UI para exercício 6
-              output$ex6 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[6]]
-                  
-                  fluidRow(
-                    h3(''),
-                    column(6,
-                           wellPanel(
-                             p(HTML(enunciado))
-                           ),
-                           column(12,
-                                  pickerInput('variavel_ex6x', 'Eixo x',
-                                              choices = nomes_exibidos,
-                                              multiple = TRUE),
-                                  pickerInput('variavel_ex6y', 'Eixo y',
-                                              choices = c('Não se aplica', nomes_exibidos)),
-                                  pickerInput('variavel_ex6_graf', 'Tipo de gráfico',
-                                              choices = c('Barras', 'Boxplot', 'Dispersão')
-                                  ),
-                                  actionButton('graf_ex6', 'Gerar gráfico'),
-                                  align = 'center')
-                    ),
-                    column(6,
-                           plotOutput('plot_ex6'))
-                             
-    
-                  )
-              })
-              
-              #UI para exercício 7
-              output$ex7 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[7]]
-                  
-                  fluidRow(
-                    h3(''),
-                      column(6,
-                             wellPanel(
-                             p(HTML(enunciado))
-                             ),
-                             column(12,
-                                    gt_output(outputId = 'tabela_pc'),
-                                    h3(''),
-                                    pickerInput('teste_ex7', 'Qual é o teste mais adequado?',
-                                                choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
-                                    actionButton('botao_teste_ex7', 'Verificar'),
-                                    verbatimTextOutput('resultado_teste_ex7'),
-                                    uiOutput('ex7_parteb'),
-                                    align = 'center'
-                                    )
-                      )
-                    
-                  )
-              })
-              
-              #UI para exercício 8
-              output$ex8 <- renderUI({
-                  enunciado <- enunciados_pc_novo[[8]]
-                  
-                  fluidRow(
-                    h3(''),
-                      column(6,
-                             wellPanel(
-                             p(HTML(enunciado))
-                             ),
-                             column(12,
-                                    gt_output(outputId = 'tabela_ex8_pc'),
-                                    h3(''),
-                                    pickerInput('teste_ex8', 'Qual é o teste mais adequado?',
-                                                choices = c('Fisher', 'Qui-Quadrado', 't de Student')),
-                                    actionButton('botao_teste_ex8', 'Verificar'),
-                                    verbatimTextOutput('resultado_teste_ex8'),
-                                    uiOutput('ex8_parteb'),
-                                    align = 'center')
-                      )
-                  )
-              })
-              
-              #UI para exercício 9
-              output$ex9 <- renderUI({
-                enunciado <- enunciados_pc_novo[[9]]
-                
-                fluidRow(
-                  h3(''),
-                  column(6,
-                         wellPanel(
-                           p(HTML(enunciado)),
-                         ),
-                         column(12,
-                                pickerInput('variavel_ex9x', 'Eixo x',
-                                            choices = nomes_exibidos,
-                                            multiple = FALSE),
-                                pickerInput('variavel_ex9y', 'Eixo y',
-                                            choices = nomes_exibidos,
-                                            multiple = FALSE),
-                                pickerInput('variavel_ex9_graf', 'Tipo de gráfico',
-                                            choices = c('Barras', 'Boxplot', 'Dispersão')
-                                ),
-                                actionButton('graf_ex9', 'Gerar gráfico'),
-                                uiOutput('ex9_parteb'),
-                                uiOutput('ex9_partec'),
-                                align = 'center')
-                  ),
-                  
-                  
-                  column(6, 
-                         plotOutput('plot_ex9'),
-                         h3(''),
-                         verbatimTextOutput('resultado_teste_ex9'),
-                         align = 'center')
-                  
-                )
-                
-              })
-              
-              #UI para exercício 10
-              
-              output$ex10 <- renderUI({
-                enunciado <- enunciados_pc_novo[[10]]
-                
-                fluidRow(
-                  h3(''),
-                  column(6,
-                         wellPanel(
-                         p(HTML(enunciado)),
-                         ),
-                         column(12,
-                                pickerInput('variavel_ex10x', 'Eixo x',
-                                            choices = nomes_exibidos,
-                                            multiple = FALSE),
-                                pickerInput('variavel_ex10y', 'Eixo y',
-                                            choices = nomes_exibidos,
-                                            multiple = FALSE),
-                                pickerInput('variavel_ex10_graf', 'Tipo de gráfico',
-                                            choices = c('Barras', 'Boxplot', 'Dispersão')
-                                ),
-                                actionButton('graf_ex10', 'Gerar gráfico'),
-                                uiOutput('ex10_parteb'),
-                                uiOutput('ex10_partec'),
-                                align = 'center')
-                  ),
-                         
-                         
-                         column(6, 
-                                plotOutput('plot_ex10'),
-                                h3(''),
-                                verbatimTextOutput('resultado_teste_ex10'),
-                                align = 'center')
-                         
-                  )
-                
-              })
-              
-                  
-              
-          
-              #Validação das respostas
-              
-              
-              #Ex1
-              observeEvent(input$verif_resp_ex1, {
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_quali) && is.null(input$variavel_quanti)) {
-                          return("Você não selecionou as respostas!")} else {
-                              if (identical(input$variavel_quali, c("sexo", "grupo", "perda_audit", "dist_comun", "dmo")) & 
-                                  identical(input$variavel_quanti, c("idade", "td_liquido", "td_pastoso", "td_solido"))) {
-                                  return("Resposta correta.")} else {
-                                      return("Há algo errado com as suas seleções.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-              #Ex2
-              observeEvent(input$verif_resp_ex2, {
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_ex2)) {
-                          return("Você não selecionou as respostas!")} else {
-                              if (identical(input$variavel_ex2, c('Média', 'Mediana', 'Desvio-padrão'))) {
-                                  return("Resposta correta.")} else {
-                                      return("Há algo errado com sua seleção.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-              #Ex3
-              observeEvent(input$verif_resp_ex3, {
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_ex3)) {
-                          return("Você não selecionou as respostas!")} else {
-                              if (identical(input$variavel_ex3, c('Porcentagem'))) {
-                                  return("Resposta correta.")} else {
-                                      return("Há algo errado com sua seleção.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-              #Ex4
-              observeEvent(input$graf_ex4, {
-                      output$plot_ex4 <- renderPlot({
-                          req(input$variavel_ex4x == 'dmo' && input$variavel_ex4y == 'Não se aplica' && input$variavel_ex4_graf == 'Barras')
-                          plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = input$variavel_ex4x))+
-                               geom_bar(stat = 'count')+
-                            theme_minimal()
-                          return(plot)
-                      })
-                      
-                  
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_ex4x) && is.null(input$variavel_ex4y) && is.null(input$variavel_ex4_graf)) {
-                          return("Você não selecionou as respostas!")}
-                      else {
-                              if (identical(input$variavel_ex4x, 'dmo') && identical(input$variavel_ex4y, 'Não se aplica') && identical(input$variavel_ex4_graf, 'Barras')) {
-                                  return("Resposta correta.")}
-                          else {
-                                      return("Há algo errado com sua seleção.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-              #Ex5
-              observeEvent(input$graf_ex5, {
-                  output$plot_ex5 <- renderPlot({
-                      req(input$variavel_ex5x == 'dist_comun' && input$variavel_ex5y == 'Não se aplica' && input$variavel_ex5_graf == 'Barras')
-                      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = input$variavel_ex5x))+
-                          geom_bar(stat = 'count')+
-                        theme_minimal()
-                      return(plot)
-                  })
-                  
-                  
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_ex5x) && is.null(input$variavel_ex5y) && is.null(input$variavel_ex5_graf)) {
-                          return("Você não selecionou as respostas!")}
-                      else {
-                          if (identical(input$variavel_ex5x, 'dist_comun') && identical(input$variavel_ex5y, 'Não se aplica') && identical(input$variavel_ex5_graf, 'Barras')) {
-                              return("Resposta correta.")}
-                          else {
-                              return("Há algo errado com sua seleção.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-              #Ex6
-              observeEvent(input$graf_ex6, {
-                  output$plot_ex6 <- renderPlot({
-                      req(input$variavel_ex6x == 'Não se aplica' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
-                      plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y))+
-                          geom_boxplot()+
-                        theme_minimal()
-                      return(plot)
-                  })
-                  
-                  
-                  
-                  mensagem <- reactive({
-                      if (is.null(input$variavel_ex6x) && is.null(input$variavel_ex6y) && is.null(input$variavel_ex6_graf)) {
-                          return("Você não selecionou as respostas!")}
-                      else {
-                          if (identical(input$variavel_ex6x, 'Não se aploca') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
-                              return("Resposta correta.")}
-                          else {
-                              return("Há algo errado com sua seleção.")}}
-                  })
-                  
-                  shinyalert(
-                      title = "",
-                      text = mensagem(),
-                      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                  )},
-                  ignoreNULL = T)
-              
-             #Ex7
-             output$tabela_pc <- render_gt({
-                 dados_paralisia%>%
-                     select(perda_audit, grupo)%>%
-                     tbl_summary(
-                         by = 'grupo',
-                         missing = 'no',
-                         digits = 
-                             list(all_continuous() ~ 1,
-                                  all_categorical() ~ c(0,2)),
-                         label = list(
-                             grupo ~ 'Grupo de crianças por condição de saúde',
-                             perda_audit ~ 
-                                 'Perda auditiva'))%>%
-                     modify_header(label = '**Variável**')%>%
-                     modify_footnote(update = starts_with('stat_') ~ 'n (%):
-  frequências absolutas e relativa')%>%
-                     as_gt
-             })
-             
-             observeEvent(input$botao_teste_ex7, {
-                 
-                 req(input$teste_ex7)
-                 if(input$teste_ex7 == 'Qui-Quadrado'){
-                     output$resultado_teste_ex7 <- renderPrint(
-                         chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo)
-                         
-                     )
-                 }
-                 mensagem <- reactive({
-                     if(input$teste_ex7 == 'Qui-Quadrado'){
-                         return('Resposta correta.')}
-                     else{
-                         if(is.null(input$teste_ex7)){
-                             return('Você não selecionou as respostas')}
-                            else{
-                                return('Há algo errado com sua seleção.')}
-                            }
-                         })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )},
-                 ignoreNULL = T)
-                 
-             output$ex7_parteb <- renderUI({
-                 req(input$teste_ex7 == 'Qui-Quadrado')
-                 if(input$teste_ex7 == 'Qui-Quadrado'){
-                     fluidRow(
-                         pickerInput('relacao', 'Há relação entre as variáveis?',
-                                     choices = c('Sim', 'Não')),
-                         actionButton('verificar_teste', 'Verificar')
-                     )
-                 
-                 }
-             })
-             
-             observeEvent(input$verificar_teste, {
-                 mensagem <- reactive({
-                     if(input$relacao == 'Não'){
-                         return('Resposta correta.')}
-                     else{
-                         if(is.null(input$relacao)){
-                             return('Você não selecionou as respostas')}
-                         else{
-                             return('Há algo errado com sua seleção.')}
-                     }
-                 })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )}
-             )
-             
-             #Verificar se as tabelas plotadas são iguais
-             #Ex8
-             output$tabela_ex8_pc <- render_gt({
-                 dados_paralisia%>%
-                     select(dist_comun, grupo)%>%
-                     tbl_summary(
-                         by = 'grupo',
-                         missing = 'no',
-                         digits = 
-                             list(all_continuous() ~ 1,
-                                  all_categorical() ~ c(0,2)),
-                         label = list(
-                             grupo ~ 'Grupo de crianças por condição de saúde',
-                             dist_comun ~ 
-                                 'Distúrbios de Comunicação'))%>%
-                     modify_header(label = '**Variável**')%>%
-                     modify_footnote(update = starts_with('stat_') ~ 'n (%):
-  frequências absolutas e relativa')%>%
-                     as_gt
-             })
-             
-             observeEvent(input$botao_teste_ex8, {
-                 
-                 req(input$teste_ex8)
-                 if(input$teste_ex8 == 'Qui-Quadrado'){
-                     output$resultado_teste_ex8 <- renderPrint(
-                         chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo)
-                         
-                     )
-                 }
-                 mensagem <- reactive({
-                     if(input$teste_ex8 == 'Qui-Quadrado'){
-                         return('Resposta correta.')}
-                     else{
-                         if(is.null(input$teste_ex8)){
-                             return('Você não selecionou as respostas')}
-                         else{
-                             return('Há algo errado com sua seleção.')}
-                     }
-                 })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )},
-                 ignoreNULL = T)
-             
-             output$ex8_parteb <- renderUI({
-                 req(input$botao_teste_ex8)
-                 req(input$teste_ex8 == 'Qui-Quadrado')
-                 if(input$teste_ex8 == 'Qui-Quadrado'){
-                     fluidRow(
-                         pickerInput('relacao_ex8', 'Há relação entre as variáveis?',
-                                     choices = c('Sim', 'Não')),
-                         actionButton('verificar_teste_ex8', 'Verificar')
-                     )
-                     
-                 }
-             })
-             
-             observeEvent(input$verificar_teste_ex8, {
-                 mensagem <- reactive({
-                     if(input$relacao_ex8 == 'Não'){
-                         return('Resposta correta.')}
-                     else{
-                         if(is.null(input$relacao_ex8)){
-                             return('Você não selecionou as respostas')}
-                         else{
-                             return('Há algo errado com sua seleção.')}
-                     }
-                 })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )}
-             )
-             
-             #Ex9
-             observeEvent(input$graf_ex9, {
-                 output$plot_ex9 <- renderPlot({
-                     req(input$variavel_ex9x == 'grupo' && input$variavel_ex9y == 'td_liquido' && input$variavel_ex9_graf == 'Boxplot')
-                     plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex9x, y = input$variavel_ex9y))+
-                         geom_boxplot()+
-                       theme_minimal()
-                     return(plot)
-                 })
-                 
-                 
-                 
-                 mensagem <- reactive({
-                     if (is.null(input$variavel_ex9x) && is.null(input$variavel_ex9y) && is.null(input$variavel_ex9_graf)) {
-                         return("Você não selecionou as respostas!")}
-                     else {
-                         if (identical(input$variavel_ex9x, 'grupo') && identical(input$variavel_ex9y, 'td_liquido') && identical(input$variavel_ex9_graf, 'Boxplot')) {
-                             return("Resposta correta.")}
-                         else {
-                             return("Há algo errado com sua seleção.")}}
-                 })
-                 
-                 shinyalert(
-                     title = "",
-                     text = mensagem(),
-                     type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-                 )},
-                 ignoreNULL = T)
-             
-             output$ex9_parteb <- renderUI({
-                 req(input$variavel_ex9x == 'grupo')
-                 req(input$variavel_ex9y == 'td_liquido')
-                 req(input$variavel_ex9_graf == 'Boxplot')
-                 req(input$graf_ex9)
-                 if(input$variavel_ex9x =='grupo' && input$variavel_ex9y =='td_liquido' && input$variavel_ex9_graf =='Boxplot'){
-                     fluidRow(
-                       
-                       verbatimTextOutput('resultado_teste_norm_ex9'),
-                         pickerInput('teste_ex9', 'Qual é o teste mais adequado?',
-                                     choices = c('Mann-Whitney', 'Qui-Quadrado', 't de Student')),
-                         actionButton('verificar_teste_ex9', 'Verificar')
-                     )
-                     
-                         
-                     
-                 }
-                 
-             })
-             
-             observeEvent(input$graf_ex9, {
-               if(input$variavel_ex9x =='grupo' && input$variavel_ex9y =='td_liquido' && input$variavel_ex9_graf =='Boxplot'){
-                 output$resultado_teste_norm_ex9 <- renderPrint({
-                   c(
-                   shapiro.test(SAN$td_liquido),
-                   shapiro.test(PC$td_liquido)
-                   )
-                 })
-               }
-             })
-             
-             SAN <- filter(dados_paralisia, grupo == 'SAN')
-             PC <- filter(dados_paralisia, grupo == 'PC')
-              
-             
-             
-                 
-             
-             
-             observeEvent(input$verificar_teste_ex9, {
-                 
-                 if(input$teste_ex9 == 'Mann-Whitney'){
-                     output$resultado_teste_ex9 <- renderPrint(
-                         wilcox.test(td_liquido ~ grupo, alternative = 'two.sided',
-                                     conf.level = 0.95, data = dados_paralisia)
-
-                     )
-                 }
-                 
-                 mensagem <- reactive({
-                     if(input$teste_ex9 == 'Mann-Whitney'){
-                         return('Resposta correta.')
-                         }
-                     else{
-                         if(is.null(input$teste_ex9)){
-                             return('Você não selecionou as respostas')}
-                         else{
-                             return('Há algo errado com sua seleção.')}
-                     }
-                 })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )}
-                 
-             )
-             
-             output$ex9_partec <- renderUI({
-                 req(input$verificar_teste_ex9)
-                 if(input$teste_ex9 == 'Mann-Whitney'){
-                     fluidRow(
-                         pickerInput('relacao_ex9', 'As variáveis estão associadas?',
-                                     choices = c('Sim', 'Não')),
-                         actionButton('verificar_relacao_ex9', 'Verificar')
-                         
-                     )
-                 }
-             })
-             
-             observeEvent(input$verificar_relacao_ex9, {
-                 mensagem <- reactive({
-                     if(input$relacao_ex9 == 'Sim'){
-                         return('Resposta correta.')
-                     }
-                     else{
-                         return('Há algo errado com sua seleção')
-                     }
-                 })
-                 shinyalert(
-                     title = '',
-                     text = mensagem(),
-                     type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-                 )
-             })
-             
-             
-             
-             
-             ##############
-             
-             #Ex10
-             observeEvent(input$graf_ex10, {
-               output$plot_ex10 <- renderPlot({
-                 req(input$variavel_ex10x == 'td_liquido' && input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf == 'Dispersão')
-                 plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex10x, y = input$variavel_ex10y))+
-                   geom_point()+
-                   theme_minimal()
-                 return(plot)
-               })
-               
-               
-               
-               mensagem <- reactive({
-                 if (is.null(input$variavel_ex10x) && is.null(input$variavel_ex10y) && is.null(input$variavel_ex10_graf)) {
-                   return("Você não selecionou as respostas!")}
-                 else {
-                   if (identical(input$variavel_ex10x, 'td_liquido') && identical(input$variavel_ex10y, 'td_solido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
-                     return("Resposta correta.")}
-                   else {
-                     return("Há algo errado com sua seleção.")}}
-               })
-               
-               shinyalert(
-                 title = "",
-                 text = mensagem(),
-                 type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-               )},
-               ignoreNULL = T)
-             
-             output$ex10_parteb <- renderUI({
-               req(input$variavel_ex10x == 'td_liquido')
-               req(input$variavel_ex10y == 'td_solido')
-               req(input$variavel_ex10_graf == 'Dispersão')
-               req(input$graf_ex10)
-               if(input$variavel_ex10x =='td_liquido' && input$variavel_ex10y =='td_solido' && input$variavel_ex10_graf =='Dispersão'){
-                 fluidRow(
-                   verbatimTextOutput('resultado_teste_norm_ex10'),
-                   pickerInput('teste_ex10', 'Qual é o teste mais adequado?',
-                               choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
-                   actionButton('verificar_teste_ex10', 'Verificar')
-                 )
-                 
-                 
-                 
-               }
-               
-             })
-             
-             observeEvent(input$graf_ex10, {
-               if(input$variavel_ex10x =='td_liquido' && input$variavel_ex10y =='td_solido' && input$variavel_ex10_graf =='Dispersão'){
-                 output$resultado_teste_norm_ex10 <- renderPrint({
-                   c(shapiro.test(dados_paralisia$td_liquido),
-                     shapiro.test(dados_paralisia$td_solido))
-                 })
-               }
-             })
-             
-             observeEvent(input$verificar_teste_ex10, {
-               
-               if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-                 output$resultado_teste_ex10 <- renderPrint(
-                   cor.test(dados_paralisia$td_liquido, dados_paralisia$td_solido,
-                            exact = F, method = 'spearman')
-
-                 )
-               }
-               
-               
-               
-               mensagem <- reactive({
-                 if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-                   return('Resposta correta.')
-                 }
-                 else{
-                   if(is.null(input$teste_ex10)){
-                     return('Você não selecionou as respostas')}
-                   else{
-                     return('Há algo errado com sua seleção.')}
-                 }
-               })
-               shinyalert(
-                 title = '',
-                 text = mensagem(),
-                 type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-               )}
-               
-             )
-             
-             output$ex10_partec <- renderUI({
-               req(input$verificar_teste_ex10)
-               if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-                 fluidRow(
-                   pickerInput('relacao_ex10', 'As variáveis estão associadas?',
-                               choices = c('Sim', 'Não')),
-                   actionButton('verificar_relacao_ex10', 'Verificar')
-                   
-                 )
-               }
-             })
-             
-             observeEvent(input$verificar_relacao_ex10, {
-               mensagem <- reactive({
-                 if(input$relacao_ex10 == 'Sim'){
-                   return('Resposta correta.')
-                 }
-                 else{
-                   return('Há algo errado com sua seleção')
-                 }
-               })
-               shinyalert(
-                 title = '',
-                 text = mensagem(),
-                 type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-=======
-  
+  calc_qui_qua_server("calc_qui_qua")
   
   ## Exercícios ----
   
   exerc_teoricos_server("exerc_teoricos")
   
-  ### Paralisia ----
   
-  observeEvent(input$tabs, {
-    if (input$tabs == 'ex1') {
-      numero_do_exercicio(1)  
-    } else if (input$tabs == 'ex2') {
-      numero_do_exercicio(2)  
-    } else if (input$tabs == 'ex3') {
-      numero_do_exercicio(3)  
-    } else if (input$tabs == 'ex4') {
-      numero_do_exercicio(4)  
-    } else if (input$tabs == 'ex5') {
-      numero_do_exercicio(5)  
-    } else if (input$tabs == 'ex6') {
-      numero_do_exercicio(6)  
-    } else if (input$tabs == 'ex7') {
-      numero_do_exercicio(7)  
-    } else if (input$tabs == 'ex8') {
-      numero_do_exercicio(8)  
-    } else if (input$tabs == 'ex9') {
-      numero_do_exercicio(9)  
-    } else if (input$tabs == 'ex10') {
-      numero_do_exercicio(10)  
-    }
-  })
+  exerc_paralisia_server("exerc_paralisia")
   
+  ## Referências ----
   
-  ####01UI para exercício 1 ----
-  output$ex1 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[1]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_quali', 'Quais variáveis são qualitativas?',
-                                choices = nomes_exibidos, 
-                                multiple = TRUE,
-                                selected = 'Nada selecionado'),
-                    pickerInput('variavel_quanti', 'Quais variáveis são quantitativas?',
-                                choices = nomes_exibidos, 
-                                multiple = TRUE,
-                                selected = 'Nada selecionado'),
-                    actionButton('verif_resp_ex1', 'Verificar'),
-                    align = 'center'
-             )
-      )
-      
-    )
-  })
-  
-  ####02UI para exercício 2 ----
-  output$ex2 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[2]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_ex2', 'Medidas-resumo',
-                                choices = c('Média', 'Mediana', 
-                                            'Porcentagem', 'Frequência absoluta',
-                                            'Desvio-padrão', 'Frequência relativa', 'Quartis'), 
-                                multiple = TRUE,
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    actionButton('verif_resp_ex2', 'Verificar'),
-                    align = 'center'
-             )
-      )
-    )
-  })
-  
-  ####03UI para exercício 3 ----
-  output$ex3 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[3]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_ex3', 'Medidas-resumo',
-                                choices = c('Média', 'Mediana', 'Porcentagem',
-                                            'Frequência absoluta', 'Desvio-padrão',
-                                            'Frequência relativa'),
-                                multiple = TRUE,
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    actionButton('verif_resp_ex3', 'Verificar'),
-                    align = 'center')
-             
-      )
-    )
-  })
-  
-  ####04UI para exercício 4 ----
-  output$ex4 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[4]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_ex4x', 'Eixo x',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex4y', 'Eixo y',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex4_graf', 'Tipo de gráfico',
-                                choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    actionButton('graf_ex4', 'Gerar gráfico'),
-                    align = 'center'
-             ),
-             plotOutput('plot_ex4')
-             )
-    )
-  })
-  
-  ####05UI para exercício 5 ----
-  output$ex5 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[5]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_ex5x', 'Eixo x',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex5y', 'Eixo y',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex5_graf', 'Tipo de gráfico',
-                                choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    actionButton('graf_ex5', 'Gerar gráfico'),
-                    align = 'center'
-             ),
-             plotOutput('plot_ex5')
-             ),
-      
-    )
-  })
-  
-  ####06UI para exercício 6 ----
-  output$ex6 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[6]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado))
-             ),
-             column(8,
-                    pickerInput('variavel_ex6x', 'Eixo x',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex6y', 'Eixo y',
-                                choices = c('Não se aplica', nomes_exibidos),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    pickerInput('variavel_ex6_graf', 'Tipo de gráfico',
-                                choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                options = list(noneSelectedText = 'Nada selecionado')),
-                    actionButton('graf_ex6', 'Gerar gráfico'),
-                    align = 'center'
-                    ),
-                    plotOutput('plot_ex6')
-             )
-      
-      
-    )
-  })
-  
-  ####07UI para exercício 7 ----
-  output$ex7 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[7]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado)),
-               column(8, 
-                      br(),
-                      
-                      gt_output(outputId = 'tabela_pc'),
-                      gt_output(outputId = 'tabela_esperada_ex7'),
-                      align = 'center'
->>>>>>> Stashed changes
-               )
-             )
-             
-      ),
-      
-      column(10,
-             wellPanel(
-               p(HTML('<b>a)</b> Com um nível de significância de 5%, escolha 
-             o teste estatístico mais apropriado para verificar se há 
-             associação estatisticamente significante 
-             entre essas variáveis?<br>')
-               ),
-               
-               column(8, 
-                      br(),
-                      br(),
-                      pickerInput('teste_ex7', 'Escolha um teste:',
-                                  choices = c('Qui-Quadrado', 'Qui-Quadrado via simulação de Monte Carlo'),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      actionButton('botao_teste_ex7', 'Verificar'),
-                      br(),
-                      br(),
-                      verbatimTextOutput('resultado_teste_ex7'),
-                      align = 'center'
-               ),
-             )
-      ),
-      column(10,
-             wellPanel(
-               p(HTML('<b>b)</b> De acordo com o resultado do teste,
-             é correto afirmar que as variáveis estão associadas ao nível 
-                    de significância de 5%?<br?')),
-               
-               column(8,
-                      br(),
-                      br(),
-                      uiOutput('ex7_parteb'),
-                      align = 'center'
-               )
-             )
-      )
-    )
-  })
-  
-  ####08UI para exercício 8 ----
-  output$ex8 <- renderUI({
-    enunciado <- questoes_paralisia[[8]]
-    
-    fluidRow(
-      h3(''),
-      
-      column(10,
-             wellPanel(
-               p(HTML(enunciado)),
-               column(8,
-                      br(),
-                      gt_output(outputId = 'tabela_ex8_pc'),
-                      gt_output(outputId = 'tabela_esperada_ex8'),
-                      align = 'center'
-               )
-             )
-      ),
-      column(10,
-             wellPanel(
-               p(HTML('<b>a)</b> Com um nível de significância de 5%,
-                      qual é o teste estatístico 
-                      mais apropriado para verificar se há associação 
-                      estatisticamente significante entre 
-                      essas variáveis?')),
-               column(8,
-                      br(),
-                      br(),
-                      pickerInput('teste_ex8', 'Escolha o teste:',
-                                  choices = c('Qui-Quadrado', 
-                                              'Qui-Quadrado via simulação de Monte Carlo'),
-                                  options = list(noneSelectedText =
-                                                   'Nada selecionado')),
-                      actionButton('botao_teste_ex8', 'Verificar'),
-                      br(),
-                      br(),
-                      verbatimTextOutput('resultado_teste_ex8'),
-                      align = 'center'
-               )
-               ),
-             ),
-      column(10,
-             wellPanel(
-               p(HTML('<b>b)</b> De acordo com o resultado do teste, 
-               é correto afirmar que as variáveis estão 
-                      associadas ao nível de significância de 5%?')),
-               column(8,
-                      br(),
-                      br(),
-                      uiOutput('ex8_parteb'),
-                      align = 'center'
-               )
-             )
-      )
-    )
-  })
-  
-  ####09UI para exercício 9 ----
-  "output$ex9 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[9]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado)),
-               column(8,
-                      pickerInput('variavel_ex9x', 'Eixo x',
-                                  choices = c('Não se aplica', nomes_exibidos),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      pickerInput('variavel_ex9y', 'Eixo y',
-                                  choices = c('Não se aplica', nomes_exibidos),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      pickerInput('variavel_ex9_graf', 'Tipo de gráfico',
-                                  choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      actionButton('graf_ex9', 'Gerar gráfico'),
-                      plotOutput('plot_ex9'),
-                      align = 'center'
-               )
-             )
-      ),
-      column(10,
-             wellPanel(
-               h5('<b>Testes de normalidade da variável quantitativa pelos níveis
-             da variável qualitativa:</b>'),
-               column(8,
-                      verbatimTextOutput('resultado_teste_norm_ex9'),
-                      align = 'center'
-               )
-             )
-      ),
-      column(10,
-             wellPanel(
-               p(HTML('<b>a)</b> A partir dos resultados dos testes de normalidade
-             exibidos, qual é o teste estatístico mais apropriado
-      para verificar se há associação estatisticamente significante entre essas 
-      variáveis a um nível de 5%?')),
-               column(8,
-                      uiOutput('ex9_parteb'),
-                      uiOutput('resultado_teste_ex9'),
-                      align = 'center'
-               )
-             )
-      ),
-      column(10,
-             wellPanel(
-               p(HTML('<b>b)</b> De acordo com o resultado do teste,
-           é correto afirmar que as variáveis estão 
-                  associadas ao nível de significância de 5%?')
-               ),
-               column(8,
-                      uiOutput('ex9_partec'),
-                      align = 'center'
-               )
-             )
-      )
-    )
-    
-  })"
-  
-  ####10UI para exercício 10 ----
-  
-  output$ex10 <- renderUI({
-    
-    enunciado <- questoes_paralisia[[10]]
-    
-    fluidRow(
-      h3(''),
-      column(10,
-             wellPanel(
-               p(HTML(enunciado)
-               ),
-               column(8,
-                      br(),
-                      br(),
-                      pickerInput('variavel_ex10x', 'Eixo x',
-                                  choices = c('Não se aplica', nomes_exibidos),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      pickerInput('variavel_ex10y', 'Eixo y',
-                                  choices = c('Não se aplica', nomes_exibidos),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      pickerInput('variavel_ex10_graf', 'Tipo de gráfico',
-                                  choices = c('Barras', 'Boxplot', 'Dispersão'),
-                                  options = list(noneSelectedText = 'Nada selecionado')),
-                      actionButton('graf_ex10', 'Gerar gráfico'),
-                      br(),
-                      br(),
-                      plotOutput('plot_ex10'),
-                      br(),
-                      align = 'center')
-             )
-      ),
-      br(),
-      br(),
-      column(10,
-             wellPanel(  
-               
-               h5(HTML('<b>Testes de normalidade da variável quantitativa pelos níveis
-             da variável qualitativa: </b>')),
-               column(8,
-                      br(),
-                      br(),
-                      verbatimTextOutput('resultado_teste_norm_ex10'),
-                      align = 'center'
-               )
-             )
-      ),
-      column(10,
-             wellPanel(  
-               p(HTML('<b>a)</b> A partir dos resultados dos testes de normalidade
-             exibidos, qual é o teste estatístico mais apropriado 
-             para verificar se há relação estatisticamente significante
-             entre elas a um nível de 5%?')),
-               
-               column(8, 
-                      uiOutput('ex10_parteb'),
-                      br(),
-                      verbatimTextOutput('resultado_teste_ex10'),
-                      align = 'center')
-             )
-      ),
-      column(10,
-             wellPanel(  
-               p(HTML('<b>b)</b> De acordo com o resultado do teste, 
-                  é correto afirmar que as variáveis estão
-                         relacionadas ao nível de significância de 5%?')
-               ),
-               column(8,
-                      uiOutput('ex10_partec'),
-                      align = 'center'
-               )
-             )
-      )
-    )
-    
-  })
-  
-  #Validação das respostas
-  
-  
-  #Ex1
-  observeEvent(input$verif_resp_ex1, {
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_quali) && is.null(input$variavel_quanti)) {
-        return("Você não selecionou as respostas!")} else {
-          if (identical(input$variavel_quali, c("sexo", "grupo", "perda_audit", "dist_comun", "dmo")) & 
-              identical(input$variavel_quanti, c("idade", "td_liquido", "td_pastoso", "td_solido"))) {
-            return("Resposta correta.")} else {
-              return("Há algo errado com as suas seleções.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex2
-  observeEvent(input$verif_resp_ex2, {
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex2)) {
-        return("Você não selecionou as respostas!")} else {
-          if (identical(input$variavel_ex2, c('Média', 'Mediana', 'Desvio-padrão', 'Quartis'))) {
-            return("Resposta correta.")} else {
-              return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex3
-  observeEvent(input$verif_resp_ex3, {
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex3)) {
-        return("Você não selecionou as respostas!")} else {
-          if (identical(input$variavel_ex3, c('Porcentagem'))) {
-            return("Resposta correta.")} else {
-              return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex4
-  observeEvent(input$graf_ex4, {
-    output$plot_ex4 <- renderPlot({
-      req(input$variavel_ex4x == 'dmo' && input$variavel_ex4y == 'Não se aplica' && input$variavel_ex4_graf == 'Barras')
-      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex4x, fill = input$variavel_ex4x))+
-        geom_bar(stat = 'count')+
-        theme_minimal()+
-        xlab('Disfunção Motora Oral')+
-        ylab('Frequência absoluta')+
-        labs(fill = 'DMO')+
-        scale_fill_manual(values = c(colorful[1], colorful[2], colorful[3], colorful[4], colorful[5]))
-      return(plot)
-    })
-    
-    
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex4x) && is.null(input$variavel_ex4y) && is.null(input$variavel_ex4_graf)) {
-        return("Você não selecionou as respostas!")}
-      else {
-        if (identical(input$variavel_ex4x, 'dmo') && identical(input$variavel_ex4y, 'Não se aplica') && identical(input$variavel_ex4_graf, 'Barras')) {
-          return("Resposta correta.")}
-        else {
-          return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex5
-  observeEvent(input$graf_ex5, {
-    output$plot_ex5 <- renderPlot({
-      req(input$variavel_ex5x == 'dist_comun' && input$variavel_ex5y == 'Não se aplica' && input$variavel_ex5_graf == 'Barras')
-      plot <- ggplot(dados_paralisia, aes_string(x = input$variavel_ex5x, fill = input$variavel_ex5x))+
-        geom_bar(stat = 'count')+
-        xlab('Distúrbio de Comunicação')+
-        ylab('Frequência absoluta')+
-        labs(fill = 'Distúrbio de Comunicação')+
-        scale_fill_manual(values = c(colorful[1], colorful[2]))+
-        theme_minimal()
-      return(plot)
-    })
-    
-    
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex5x) && is.null(input$variavel_ex5y) && is.null(input$variavel_ex5_graf)) {
-        return("Você não selecionou as respostas!")}
-      else {
-        if (identical(input$variavel_ex5x, 'dist_comun') && identical(input$variavel_ex5y, 'Não se aplica') && identical(input$variavel_ex5_graf, 'Barras')) {
-          return("Resposta correta.")}
-        else {
-          return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex6
-  observeEvent(input$graf_ex6, {
-    output$plot_ex6 <- renderPlot({
-      req(input$variavel_ex6x == 'Não se aplica' && input$variavel_ex6y == 'td_liquido' && input$variavel_ex6_graf == 'Boxplot')
-      plot <- ggplot(dados_paralisia, aes_string(y = input$variavel_ex6y, fill = as.factor(input$variavel_ex6y)))+
-        geom_boxplot()+
-        theme_minimal()+
-        scale_fill_manual(values = c(colorful[1]), labels = 'Tempo')+
-        ylab('Tempo Líquido')+
-        theme(axis.title.x=element_blank(),
-              axis.text.x=element_blank(),
-              axis.ticks.x=element_blank())+
-        labs(fill = 'Tempo Líquido')
-      
-      return(plot)
-    })
-    
-    
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex6x) && is.null(input$variavel_ex6y) && is.null(input$variavel_ex6_graf)) {
-        return("Você não selecionou as respostas!")}
-      else {
-        if (identical(input$variavel_ex6x, 'Não se aplica') && identical(input$variavel_ex6y, 'td_liquido') && identical(input$variavel_ex6_graf, 'Boxplot')) {
-          return("Resposta correta.")}
-        else {
-          return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  #Ex7
-  output$tabela_pc <- render_gt({
-    contagem_tabela <- dados_paralisia %>%
-      count(perda_audit, grupo) %>%
-      pivot_wider(names_from = grupo, values_from = n, values_fill = list(n = 0)) %>%
-      rename(
-        `Perda Auditiva` = perda_audit,
-        `PC` = PC,
-        `SAN` = SAN
-      )
-    
-    # Calcular as porcentagens
-    contagem_tabela <- contagem_tabela %>%
-      mutate(
-        Total_PC = sum(PC),
-        Total_SAN = sum(SAN),
-        `PC (%)` = paste(PC, "(", round((PC / Total_PC) * 100, 2), "%)", sep = ""),
-        `SAN (%)` = paste(SAN, "(", round((SAN / Total_SAN) * 100, 2), "%)", sep = "")
-      ) %>%
-      select(`Perda Auditiva`, `PC (%)`, `SAN (%)`)
-    
-    # Criar a tabela gt
-    gt(contagem_tabela) %>%
-      tab_header(
-        title = md("**Tabela Observada**")
-      ) %>%
-      cols_label(
-        `Perda Auditiva` = "Perda Auditiva",
-        `PC (%)` = "PC",
-        `SAN (%)` = "SAN"
-      ) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      fmt_markdown(
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências absolutas e relativas",
-        locations = cells_column_labels(columns = c(`PC (%)`, `SAN (%)`))
-      )
-  })
-  
-
-  output$tabela_esperada_ex7 <- render_gt({
-    qui_quad_ex7 <- chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
-    tabela_esperada_ex7 <- as.data.frame(qui_quad_ex7$expected)
-    
-    # Renomear colunas e linhas
-    colnames(tabela_esperada_ex7) <- c("PC", "SAN")
-    rownames(tabela_esperada_ex7) <- c("Não", "Sim")
-    
-    # Calcular porcentagens
-    total_coluna <- colSums(tabela_esperada_ex7)
-    tabela_esperada_ex7 <- tabela_esperada_ex7 %>%
-      mutate(PC = sprintf("%.2f (%.2f%%)", PC, PC / total_coluna["PC"] * 100),
-             SAN = sprintf("%.2f (%.2f%%)", SAN, SAN / total_coluna["SAN"] * 100))
-    
-    # Preparar tabela para renderização com gt
-    tabela_esperada_ex7 <- tabela_esperada_ex7 %>%
-      tibble::rownames_to_column(var = "Perda Auditiva") %>%
-      select(`Perda Auditiva`, `PC`, `SAN`)
-    
-    gt(tabela_esperada_ex7) %>%
-      tab_header(
-        title = md("**Tabela esperada do Teste Qui-Quadrado**")
-      ) %>%
-      cols_label(
-        `Perda Auditiva` = "Perda auditiva",
-        `PC` = "PC",
-        `SAN` = "SAN"
-      ) %>%
-      fmt_markdown(columns = everything()) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências esperadas e relativas",
-        locations = cells_column_labels(columns = c(`PC`, `SAN`))
-      )
-  })
-  
-  
-  observeEvent(input$botao_teste_ex7, {
-    
-    req(input$teste_ex7)
-    if(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo'){
-      output$resultado_teste_ex7 <- renderPrint({
-        qui_quad_7 <- chisq.test(dados_paralisia$perda_audit, dados_paralisia$grupo, simulate.p.value =  TRUE, B = 10000)
-        cat('p-valor do Teste Qui-Quadrado:', qui_quad_7$p.value)
-      }
-      )
-    }
-    mensagem <- reactive({
-      if(input$teste_ex7 == 'Qui-Quadrado via simulação de Monte Carlo'){
-        return('Resposta correta.')}
-      else{
-        if(is.null(input$teste_ex7)){
-          return('Você não selecionou as respostas')}
-        else{
-          return('Há algo errado com sua seleção.')}
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )},
-    ignoreNULL = T)
-  
-  output$ex7_parteb <- renderUI({
-    req(input$botao_teste_ex7)
-    req(input$teste_ex7 == 'Qui-Quadrado')
-    if(input$teste_ex7 == 'Qui-Quadrado'){
-      fluidRow(
-        pickerInput('relacao', 'Há relação entre as variáveis?',
-                    choices = c('Sim', 'Não')),
-        actionButton('verificar_teste', 'Verificar')
-      )
-      
-    }
-  })
-  
-  observeEvent(input$verificar_teste, {
-    mensagem <- reactive({
-      if(input$relacao == 'Não'){
-        return('Resposta correta.')}
-      else{
-        if(is.null(input$relacao)){
-          return('Você não selecionou as respostas')}
-        else{
-          return('Há algo errado com sua seleção.')}
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )}
-  )
-  
-  #Verificar se as tabelas plotadas são iguais
-  #Ex8
-  output$tabela_ex8_pc <- render_gt({
-    contagem_tabela <- dados_paralisia %>%
-      count(dist_comun, grupo) %>%
-      pivot_wider(names_from = grupo, values_from = n, values_fill = list(n = 0)) %>%
-      rename(
-        `Distúrbio de Comunicação` = dist_comun,
-        `PC` = PC,
-        `SAN` = SAN
-      )
-    
-    # Calcular as porcentagens
-    contagem_tabela <- contagem_tabela %>%
-      mutate(
-        Total_PC = sum(PC),
-        Total_SAN = sum(SAN),
-        `PC (%)` = paste(PC, "(", round((PC / Total_PC) * 100, 2), "%)", sep = ""),
-        `SAN (%)` = paste(SAN, "(", round((SAN / Total_SAN) * 100, 2), "%)", sep = "")
-      ) %>%
-      select(`Distúrbio de Comunicação`, `PC (%)`, `SAN (%)`)
-    
-    # Criar a tabela gt
-    gt(contagem_tabela) %>%
-      tab_header(
-        title = md("**Tabela Observada**")
-      ) %>%
-      cols_label(
-        `Distúrbio de Comunicação` = "Distúrbio de Comunicação",
-        `PC (%)` = "PC",
-        `SAN (%)` = "SAN"
-      ) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      fmt_markdown(
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências absolutas e relativas",
-        locations = cells_column_labels(columns = c(`PC (%)`, `SAN (%)`))
-      )
-  })
-  
-  output$tabela_esperada_ex8 <- render_gt({
-    qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
-    tabela_esperada_ex8 <- as.data.frame(qui_quad_ex8$expected)
-    
-    # Renomear colunas e linhas
-    colnames(tabela_esperada_ex8) <- c("PC", "SAN")
-    rownames(tabela_esperada_ex8) <- c("Não", "Sim")
-    
-    # Calcular porcentagens
-    total_coluna <- colSums(tabela_esperada_ex8)
-    tabela_esperada_ex8 <- tabela_esperada_ex8 %>%
-      mutate(PC = sprintf("%.2f (%.2f%%)", PC, PC / total_coluna["PC"] * 100),
-             SAN = sprintf("%.2f (%.2f%%)", SAN, SAN / total_coluna["SAN"] * 100))
-    
-    # Preparar tabela para renderização com gt
-    tabela_esperada_ex8 <- tabela_esperada_ex8 %>%
-      tibble::rownames_to_column(var = "Distúrbio de Comunicação") %>%
-      select(`Distúrbio de Comunicação`, `PC`, `SAN`)
-    
-    gt(tabela_esperada_ex8) %>%
-      tab_header(
-        title = md("**Tabela esperada do Teste Qui-Quadrado**")
-      ) %>%
-      cols_label(
-        `Distúrbio de Comunicação` = "Distúrbio de Comunicação",
-        `PC` = "PC",
-        `SAN` = "SAN"
-      ) %>%
-      fmt_markdown(columns = everything()) %>%
-      cols_align(
-        align = "center",
-        columns = everything()
-      ) %>%
-      tab_options(
-        table.width = pct(100),
-        heading.align = "center"
-      ) %>%
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(everything())
-      ) %>%
-      tab_footnote(
-        footnote = "n (%): frequências esperadas e relativas",
-        locations = cells_column_labels(columns = c(`PC`, `SAN`))
-      )
-  })
-  
-  observeEvent(input$botao_teste_ex8, {
-    
-    req(input$teste_ex8)
-    if(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo'){
-      output$resultado_teste_ex8 <- renderPrint({
-        qui_quad_ex8 <- chisq.test(dados_paralisia$dist_comun, dados_paralisia$grupo, simulate.p.value = TRUE, B = 10000)
-        cat('p-valor do teste Qui-Quadrado:', qui_quad_ex8$p.value)
-      }
-      )
-    }
-    mensagem <- reactive({
-      if(input$teste_ex8 == 'Qui-Quadrado via simulação de Monte Carlo'){
-        return('Resposta correta.')}
-      else{
-        if(is.null(input$teste_ex8)){
-          return('Você não selecionou as respostas')}
-        else{
-          return('Há algo errado com sua seleção.')}
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )},
-    ignoreNULL = T)
-  
-  output$ex8_parteb <- renderUI({
-    req(input$botao_teste_ex8)
-    req(input$teste_ex8 == 'Qui-Quadrado')
-    if(input$teste_ex8 == 'Qui-Quadrado'){
-      fluidRow(
-        pickerInput('relacao_ex8', 'Há relação entre as variáveis?',
-                    choices = c('Sim', 'Não')),
-        actionButton('verificar_teste_ex8', 'Verificar')
-      )
-      
-    }
-  })
-  
-  observeEvent(input$verificar_teste_ex8, {
-    mensagem <- reactive({
-      if(input$relacao_ex8 == 'Não'){
-        return('Resposta correta.')}
-      else{
-        if(is.null(input$relacao_ex8)){
-          return('Você não selecionou as respostas')}
-        else{
-          return('Há algo errado com sua seleção.')}
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )}
-  )
-  
-  ###Ex9 (deixei a parte do código no arquivo 'exercicios_nao_utilizados', troquei o nome de exibição do exercício 10 para ex 9 e escondi o ex9, pois necessita correção)
-  
-  
-  #Ex10
-  observeEvent(input$graf_ex10, {
-    output$plot_ex10 <- renderPlot({
-      req(input$variavel_ex10x != input$variavel_ex10y, 
-          (input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido'),
-          (input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido'),
-          input$variavel_ex10_graf == 'Dispersão')
-      
-      # Determine the labels based on the selected variables
-      x_label <- if (input$variavel_ex10x == 'td_liquido') {
-        'Tempo líquido'
-      } else {
-        'Tempo sólido'
-      }
-      
-      y_label <- if (input$variavel_ex10y == 'td_liquido') {
-        'Tempo líquido'
-      } else {
-        'Tempo sólido'
-      }
-      
-      plot <- ggplot(dados_paralisia,
-                     aes_string(x = input$variavel_ex10x, 
-                                y = input$variavel_ex10y)) +
-        geom_point() +
-        labs(x = x_label, y = y_label) +
-        theme_minimal()
-      
-      return(plot)
-    })
-    
-    
-    mensagem <- reactive({
-      if (is.null(input$variavel_ex10x) && is.null(input$variavel_ex10y) && is.null(input$variavel_ex10_graf)) {
-        return("Você não selecionou as respostas!")}
-      else {
-        if (identical(input$variavel_ex10x, 'td_liquido') && identical(input$variavel_ex10y, 'td_solido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
-          return("Resposta correta.")}
-        if (identical(input$variavel_ex10x, 'td_solido') && identical(input$variavel_ex10y, 'td_liquido') && identical(input$variavel_ex10_graf, 'Dispersão')) {
-          return("Resposta correta.")}
-        else {
-          return("Há algo errado com sua seleção.")}}
-    })
-    
-    shinyalert(
-      title = "",
-      text = mensagem(),
-      type = ifelse(mensagem() == "Resposta correta.", "success", "warning")
-    )},
-    ignoreNULL = T)
-  
-  output$ex10_parteb <- renderUI({
-    req(input$variavel_ex10x != input$variavel_ex10y, 
-        (input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido'),
-        (input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido'),
-        input$variavel_ex10_graf == 'Dispersão')
-    req(input$graf_ex10)
-    if(input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido' && input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf =='Dispersão' && input$variavel_ex10x != input$variavel_ex10y){
-      fluidRow(
-        br(),
-        br(),
-        pickerInput('teste_ex10', 'Escolha o teste:',
-                    choices = c('Teste de Correlação de Spearman', 'Qui-Quadrado', 't de Student')),
-        actionButton('verificar_teste_ex10', 'Verificar')
-      )
-      
-      
-      
-    }
-    
-  })
-  
-  observeEvent(input$graf_ex10, {
-    if(input$variavel_ex10x == 'td_liquido' || input$variavel_ex10x == 'td_solido' && input$variavel_ex10y == 'td_liquido' || input$variavel_ex10y == 'td_solido' && input$variavel_ex10_graf =='Dispersão' && input$variavel_ex10x != input$variavel_ex10y){
-      output$resultado_teste_norm_ex10 <- renderPrint({
-        shapiro_tdliq <- shapiro.test(dados_paralisia$td_liquido)
-        shapiro_tdsol <- shapiro.test(dados_paralisia$td_solido)
-        
-        cat('p-valor do teste de Shapiro-Wilk para tempo líquido',
-            shapiro_tdliq$p.value, '\n',
-            'p-valor do teste de Shapiro-Wilk para tempo sólido',
-            shapiro_tdsol$p.value)
-      })
-    }
-  })
-  
-  observeEvent(input$verificar_teste_ex10, {
-    
-    if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-      output$resultado_teste_ex10 <- renderPrint({
-        teste_cor_ex10 <- cor.test(dados_paralisia$td_liquido, 
-                                   dados_paralisia$td_solido,
-                                   exact = F, method = 'spearman')
-        cat('p-valor do Teste de Correlação de Spearman', teste_cor_ex10$p.value)
-        
-      })
-    }
-    
-    
-    
-    mensagem <- reactive({
-      if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-        return('Resposta correta.')
-      }
-      else{
-        if(is.null(input$teste_ex10)){
-          return('Você não selecionou as respostas')}
-        else{
-          return('Há algo errado com sua seleção.')}
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )}
-    
-  )
-  
-  output$ex10_partec <- renderUI({
-    req(input$verificar_teste_ex10)
-    if(input$teste_ex10 == 'Teste de Correlação de Spearman'){
-      fluidRow(
-        br(),
-        br(),
-        pickerInput('relacao_ex10', 'Escolha sua resposta:',
-                    choices = c('Sim', 'Não')),
-        actionButton('verificar_relacao_ex10', 'Verificar')
-        
-      )
-    }
-  })
-  
-  observeEvent(input$verificar_relacao_ex10, {
-    mensagem <- reactive({
-      if(input$relacao_ex10 == 'Sim'){
-        return('Resposta correta.')
-      }
-      else{
-        return('Há algo errado com sua seleção')
-      }
-    })
-    shinyalert(
-      title = '',
-      text = mensagem(),
-      type = ifelse(mensagem() == 'Resposta correta.', 'success', 'warning')
-    )
-  })
-  
-  
+  ref_biblio_server("ref")
   
 }

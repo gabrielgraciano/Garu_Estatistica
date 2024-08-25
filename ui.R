@@ -1,55 +1,20 @@
-library(shiny)
-library(shinyjs)
-library(shinyalert)
-library(shinydashboard)
-library(shinyWidgets)
-library(tidyverse)
-library(htmltools)
-library(gtsummary)
-library(gt)
-library(ggthemes)
-<<<<<<< Updated upstream
-library(keras)
-#Testando commits
-source("data_handling.R")
-source("inicio.R")
-=======
-library(fontawesome)
-
-source("data.R")
 source("inicio_projeto.R")
 source("inicio_equipe.R")
 source("inicio_contato.R")
 source('conjunto_dados.R')
->>>>>>> Stashed changes
 source("tipos_variaveis.R")
 source("tabela_frequencias.R")
 source("medidas_resumo.R")
 source('graficos.R')
 source('distr_prob.R')
 source("inferencia.R") 
-<<<<<<< Updated upstream
-source("geometry.R")
-source('print_glossario.R')
-source('questionario.R')
-source('perguntaspibiti.R')
-source('expraticos.R')
-source('enunciados_pc.R')
-source('data_cleaning_paralisia.R')
-source('conjunto_dados.R')
-=======
+source("calc_qui_qua.R")
 source('exerc_teoricos.R')
 source('exerc_paralisia.R')
+source('ref_biblio.R')
 options(OutDec = ",")
 
->>>>>>> Stashed changes
-
-useShinyalert(force=TRUE)
-
 dashboardPage(
-<<<<<<< Updated upstream
-  dashboardHeader(title = 'Garu Estatística'),
-=======
   
   dashboardHeader(title = HTML('Garu Estatística'),
                   tags$li(class = "dropdown", 
@@ -61,7 +26,7 @@ dashboardPage(
                                  icon("envelope", lib = "font-awesome"), 
                                  "Contato"))
   ),
->>>>>>> Stashed changes
+  
   dashboardSidebar(
     
     sidebarMenu(
@@ -79,7 +44,7 @@ dashboardPage(
       
       menuItem('Conjuntos de dados', 
                tabName = 'conjunto_dados', 
-               icon = icon('dice', 
+               icon = icon('database', 
                            lib = 'font-awesome')),
       
       menuItem('Descritiva', icon = icon("table", 
@@ -91,13 +56,6 @@ dashboardPage(
                menuSubItem('Medidas Resumo', 
                            tabName = 'medidas_resumo')),
       
-<<<<<<< Updated upstream
-      menuItem('Inferência', icon = icon('chart-area', lib= 'font-awesome'),
-               menuSubItem('Teste T para uma amostra', tabName = 'teste_t_1'),
-               menuSubItem('Teste T para duas amotras', tabName = 'teste_t_2'),
-               menuSubItem('Teste qui quadrado', tabName = 'teste_qui'),
-               menuSubItem('Teste de Correlação', tabName= 'teste_corr')),
-=======
       menuItem('Gráficos', icon = icon("pie-chart", 
                                        lib="font-awesome"),
                menuSubItem('Variáveis Qualitativas',
@@ -115,13 +73,12 @@ dashboardPage(
                                          lib= 'font-awesome'),
                menuSubItem('Teste T para uma amostra', 
                            tabName = 'teste_t_1'),
-               menuSubItem('Teste T para duas amotras', 
-                           tabName = 'teste_t_2'),
                menuSubItem('Teste Qui-quadrado',
                            tabName = 'teste_qui'),
                menuSubItem('Teste de Correlação', 
-                           tabName= 'teste_corr')),
->>>>>>> Stashed changes
+                           tabName= 'teste_corr'),
+               menuSubItem('Calculadora Qui-quadrado', 
+                           tabName= 'calc_qui_qua')),
       
       
       menuItem('Exercícios', icon = icon("pencil", 
@@ -129,24 +86,40 @@ dashboardPage(
                menuSubItem('Exercícios Teóricos', 
                            tabName = 'exerc_teoricos'),
                menuSubItem('Exercícios Práticos',
-                           tabName = 'exerc_paralisia')
-      )
+                           tabName = 'exerc_paralisia')),
+      
+      menuItem('Referências', 
+               tabName = 'ref_biblio', 
+               icon = icon("book", 
+                           lib = "font-awesome"))
       
     )
   ),
   
   dashboardBody(
-    tags$head(tags$script(HTML('
-      var fakeClick = function(tabName) {
-        var dropdownList = document.getElementsByTagName("a");
-        for (var i = 0; i < dropdownList.length; i++) {
-          var link = dropdownList[i];
-          if(link.getAttribute("data-value") == tabName) {
-            link.click();
-          };
-        }
-      };
-    '))),
+    tags$head(
+      tags$script(HTML('
+        var fakeClick = function(tabName) {
+          var dropdownList = document.getElementsByTagName("a");
+          for (var i = 0; i < dropdownList.length; i++) {
+            var link = dropdownList[i];
+            if(link.getAttribute("data-value") == tabName) {
+              link.click();
+            };
+          }
+        };
+      ')),
+      tags$meta(property = "og:title", 
+                content = "Garu Estatística"),
+      tags$meta(property = "og:description", 
+      content = "Uma ferramenta para ensino de Estatística"),
+      tags$meta(property = "og:image", 
+                content = "https://garuestatistica.unifesp.br/images/garu_3.png"),
+      tags$meta(property = "og:url", 
+                content = "https://garuestatistica.unifesp.br/"),
+      tags$meta(property = "og:type", 
+                content = "website")
+    ),
     tabItems(
       tabItem(tabName = 'inicio_projeto', inicio_projeto_ui("inicio_projeto")),
       tabItem(tabName = 'inicio_equipe', inicio_equipe_ui("inicio_equipe")),
@@ -160,12 +133,12 @@ dashboardPage(
       graf_bidimensional,
       distr_prob,
       teste_t_1,
-      teste_t_2,
       teste_qui,
       teste_corr,
+      tabItem(tabName = 'calc_qui_qua', calc_qui_qua_ui("calc_qui_qua")),
       tabItem(tabName = 'exerc_teoricos', exerc_teoricos_ui("exerc_teoricos")),
-      exerc_paralisia
+      tabItem(tabName = 'exerc_paralisia', exerc_paralisia_ui("exerc_paralisia")),
+      tabItem(tabName = 'ref_biblio', ref_biblio_ui("ref"))
     )
   )
-  #selected = "inicio_projeto"  # Define a guia inicial selecionada
 )

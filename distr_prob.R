@@ -2,15 +2,16 @@ distr_prob <- tabItem(
   tabName = 'distr_prob',
   fluidPage(
     h3(strong("Distribuições de Probabilidade")),
-    p("Distribuições de Probabilidade são vistas como medida de comportamento de uma variável aleatória, discreta ou contínua."),
+    p("Distribuições de Probabilidade são vistas como medida de comportamento
+      de uma variável aleatória, discreta ou contínua."),
     selectInput("distribuicao", "Distribuição", 
                 choices =# c("Bernoulli" = "bernoulli",
-                          #  "Binomial" = "binomial", 
-                          #  "Poisson" = "poisson",
-                            ("normal" = "Normal")), #Tive que inverter a ordem (de maíuscula -> minúscula para minúscula -> maiúscula) ~Gabriel
-                          #  "Exponencial" = "exp",
-                          #  "Qui-Quadrado" = "qui",
-                          #  "T de Student" = "t")),
+                  #  "Binomial" = "binomial", 
+                  #  "Poisson" = "poisson",
+                  ("normal" = "Normal")), #Tive que inverter a ordem (de maíuscula -> minúscula para minúscula -> maiúscula) ~Gabriel
+    #  "Exponencial" = "exp",
+    #  "Qui-Quadrado" = "qui",
+    #  "T de Student" = "t")),
     conditionalPanel("input.distribuicao == 'bernoulli'", 
                      p("Alguns eventos apresentam uma determinada característica: Tem possibilidades binárias de resultados. Por exemplo: sucesso ou fracasso, 0 ou 1, sim ou não, etc. Estes eventos, com duas possibilidades de resultados, são chamados de Eventos de Bernoulli. Dizemos que a probabilidade de que se obtenha 'sucesso' em um desses eventos é p. Logo, como o único outro possível resultado é o fracasso, sua probabilidade é de 1 - p."),
                      helpText("Exemplo: Jogar uma moeda é um evento de Bernoulli, pois tem dois resultados possíveis: cara ou coroa. Se ela for não-viciada, ela tem p = 0.5."),
